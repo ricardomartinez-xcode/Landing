@@ -13,7 +13,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://relead.vercel.app'),
+  metadataBase: new URL('https://relead.com.mx'),
   title: 'ReLead | Ecosistema digital para marcas que se mueven rápido',
   description:
     'Landing editorial y escalable para presentar el ecosistema Powered by ReLead: productos, apps y experiencias digitales con visión de marca.',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: 'ReLead',
     description:
       'Diseño, producto y crecimiento para un ecosistema de apps Powered by ReLead.',
-    url: 'https://relead.vercel.app',
+    url: 'https://relead.com.mx',
     siteName: 'ReLead',
     locale: 'es_MX',
     type: 'website'
@@ -45,7 +45,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${manrope.variable} ${playfair.variable}`}>{children}</body>
+      <body className={`${manrope.variable} ${playfair.variable}`}>
+        {children}
+        <footer className="siteLegalFooter">
+          <div className="siteLegalFooterInner">
+            <span>© {new Date().getFullYear()} ReLead</span>
+            <nav aria-label="Enlaces legales">
+              <a href="/privacy">Privacidad</a>
+              <a href="/terms">Términos</a>
+            </nav>
+          </div>
+        </footer>
+      </body>
     </html>
   );
 }
