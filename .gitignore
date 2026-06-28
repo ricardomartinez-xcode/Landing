@@ -1,5 +1,9 @@
 .next
+.open-next
+.wrangler
 node_modules
-.vercel
+.dev.vars
+.env*.local
+cloudflare-env.d.ts
 .DS_Store
 *.log
