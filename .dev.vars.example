@@ -1,0 +1,3 @@
+# Este proyecto no requiere secretos para funcionar.
+# Conserva este archivo como referencia si agregas bindings o variables de Cloudflare.
+NEXTJS_ENV=development
