@@ -46,14 +46,14 @@ No uses GitHub Pages ni Vercel para este repositorio.
 
 1. En Cloudflare, abre **Workers & Pages** y elige **Create application**.
 2. Selecciona **Import a repository** y conecta el repositorio `ricardomartinez-xcode/Landing`.
-3. Crea el Worker con el nombre exacto `relead-landing`. Debe coincidir con el campo `name` de `wrangler.jsonc`.
+3. Crea o conecta el Worker existente con el nombre exacto `landing`. Debe coincidir con el campo `name` y el binding `WORKER_SELF_REFERENCE` de `wrangler.jsonc`.
 4. En la configuración de Builds usa:
 
 ```txt
 Root directory: /
-Build command: npm run cf:build
-Deploy command: npm run cf:deploy:built
-Non-production branch deploy command: npm run cf:upload:built
+Build command: npx @opennextjs/cloudflare build
+Deploy command: npx @opennextjs/cloudflare deploy
+Non-production branch deploy command: npx @opennextjs/cloudflare upload
 Production branch: main
 ```
 
@@ -67,7 +67,7 @@ Cloudflare Workers Builds instala las dependencias del proyecto y utiliza la ver
 Después del primer deployment exitoso:
 
 1. Asegúrate de que la zona `relead.com.mx` esté administrada por Cloudflare. Si el DNS está en otro proveedor, cambia los nameservers por los que Cloudflare indique.
-2. En el Worker `relead-landing`, abre **Settings → Domains & Routes** y agrega `relead.com.mx` como Custom Domain.
+2. En el Worker `landing`, abre **Settings → Domains & Routes** y agrega `relead.com.mx` como Custom Domain.
 3. Agrega también `www.relead.com.mx` solo si quieres atender ese host; después crea una Redirect Rule en Cloudflare para redirigir `www` hacia `https://relead.com.mx/$1`.
 4. Elimina la configuración de dominio personalizado de GitHub Pages y la asignación previa del dominio en Vercel cuando hayas validado el Worker.
 
@@ -100,6 +100,7 @@ components/
   SectionReveal.tsx
 public/
   _headers
+next.config.ts
 open-next.config.ts
 wrangler.jsonc
 ```
