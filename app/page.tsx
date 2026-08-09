@@ -9,19 +9,19 @@ const capabilities = [
   {
     number: '01',
     title: 'Control remoto centralizado',
-    body: 'Administra tus equipos desde un solo lugar, con comandos remotos, sesiones de terminal interactiva y acciones operativas por nodo.',
+    body: 'Administra tus equipos desde un solo lugar, con comandos remotos, terminal interactiva persistente y acciones operativas por nodo.',
     tag: 'Control'
   },
   {
     number: '02',
-    title: 'Red privada entre nodos',
-    body: 'Conecta Windows, Linux y otros equipos dentro de una LAN privada de RelNet, sin exponer servicios de administración directamente a Internet.',
+    title: 'Red privada RelNet Mesh',
+    body: 'Conecta Windows, Linux y otros equipos dentro de una red privada propia de RelNet para comunicar nodos sin exponer la operación directamente a Internet.',
     tag: 'Mesh'
   },
   {
     number: '03',
     title: 'Archivos y recursos compartidos',
-    body: 'Mueve archivos entre nodos y habilita recursos compartidos para que tus equipos colaboren como si estuvieran en la misma red local.',
+    body: 'Transfiere archivos entre nodos y habilita carpetas o recursos compartidos para trabajar como si los equipos estuvieran en la misma LAN.',
     tag: 'Files'
   },
   {
@@ -32,15 +32,33 @@ const capabilities = [
   },
   {
     number: '05',
+    title: 'Telemetría y servicios',
+    body: 'Consulta estado, memoria, almacenamiento, uptime y servicios del sistema para detectar y resolver incidencias desde el plano central.',
+    tag: 'Health'
+  },
+  {
+    number: '06',
+    title: 'Automatización remota',
+    body: 'Los nodos compatibles pueden exponer automatización de escritorio, Chrome remoto y flujos web para tareas que van más allá de una terminal.',
+    tag: 'Automation'
+  },
+  {
+    number: '07',
     title: 'Políticas y acceso',
     body: 'Define quién puede enlazar, operar o utilizar cada recurso. RelNet separa vinculación, aprobación, reautenticación y permisos.',
     tag: 'Policy'
   },
   {
-    number: '06',
-    title: 'Telemetría operativa',
-    body: 'Consulta estado, conectividad y señales de salud de tu red privada para detectar rápidamente qué nodo necesita atención.',
-    tag: 'Health'
+    number: '08',
+    title: 'Identidad por nodo',
+    body: 'Cada equipo se incorpora con identidad Ed25519, aprobación explícita y capacidades declaradas para mantener control sobre lo que puede operar.',
+    tag: 'Identity'
+  },
+  {
+    number: '09',
+    title: 'Operación protegida',
+    body: 'RelNet incorpora rotación de credenciales, actualizaciones firmadas y leases de comandos para reducir el riesgo de acciones remotas no autorizadas.',
+    tag: 'Security'
   }
 ];
 
@@ -58,17 +76,17 @@ const steps = [
   {
     number: '03',
     title: 'Opera desde Console',
-    body: 'Administra conectividad, políticas, sesiones y recursos desde una interfaz central.'
+    body: 'Administra conectividad, políticas, sesiones, recursos y telemetría desde una interfaz central.'
   }
 ];
 
 const securityPoints = [
-  'Identidad criptográfica por nodo',
+  'Identidad Ed25519 por nodo',
   'Aprobación explícita de dispositivos',
-  'Políticas de acceso por capacidad',
-  'Separación entre operación y administración',
-  'Canales privados para tareas remotas',
-  'Reautenticación y revocación controladas'
+  'Capacidades y políticas por nodo',
+  'Actualizaciones firmadas',
+  'Rotación de credenciales',
+  'Leases para comandos remotos'
 ];
 
 export default function HomePage() {
@@ -112,8 +130,8 @@ export default function HomePage() {
             </div>
             <div className={styles.heroNotes} aria-label="Características principales de RelNet">
               <span>Windows + Linux</span>
+              <span>Mesh privado</span>
               <span>Control centralizado</span>
-              <span>Acceso privado</span>
             </div>
           </SectionReveal>
 
@@ -205,7 +223,7 @@ export default function HomePage() {
               <span className={styles.eyebrow}>Capacidades</span>
               <h2>Una red que también sabe operar.</h2>
             </div>
-            <p>Conectividad privada, administración remota y recursos compartidos dentro de una misma experiencia.</p>
+            <p>Conectividad privada, administración remota, recursos compartidos y salida a Internet dentro de una misma experiencia.</p>
           </SectionReveal>
 
           <div className={styles.capabilityGrid}>
@@ -307,7 +325,7 @@ export default function HomePage() {
             <span className={styles.eyebrow}>Seguridad por diseño</span>
             <h2>El acceso remoto empieza por saber qué nodo es cuál.</h2>
             <p>
-              RelNet trata cada equipo como una identidad independiente y conserva la aprobación, las políticas y la administración como pasos separados. El objetivo es que conectar un nodo no signifique darle acceso irrestricto.
+              RelNet trata cada equipo como una identidad independiente y conserva la aprobación, las políticas y la operación como pasos separados. Con identidad Ed25519, actualizaciones firmadas y leases de comandos, conectar un nodo no equivale a darle acceso irrestricto.
             </p>
           </SectionReveal>
 
