@@ -28,7 +28,7 @@ export function LegalPage({
       <article className={styles.content}>
         <header className={styles.header}>
           <Link href="/" className={styles.backLink}>
-            ← Volver a ReLead
+            ← Volver a RelNet
           </Link>
           <p className={styles.eyebrow}>{eyebrow}</p>
           <h1>{title}</h1>
