@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import styles from './install.module.css';
 
 type InstallPromptEvent = Event & {
@@ -25,15 +25,23 @@ function isStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches || navigatorWithStandalone.standalone === true;
 }
 
+const subscribeStatic = () => () => {};
+
+function subscribeStandalone(callback: () => void) {
+  const media = window.matchMedia('(display-mode: standalone)');
+  media.addEventListener('change', callback);
+  return () => media.removeEventListener('change', callback);
+}
+
 export function InstallExperience() {
-  const [platform, setPlatform] = useState<Platform>('other');
+  const platform = useSyncExternalStore(subscribeStatic, detectPlatform, () => 'other' as Platform);
+  const standalone = useSyncExternalStore(subscribeStandalone, isStandalone, () => false);
   const [installPrompt, setInstallPrompt] = useState<InstallPromptEvent | null>(null);
-  const [installed, setInstalled] = useState(false);
+  const [appInstalled, setAppInstalled] = useState(false);
   const [message, setMessage] = useState('');
+  const installed = standalone || appInstalled;
 
   useEffect(() => {
-    setPlatform(detectPlatform());
-    setInstalled(isStandalone());
 
     const onBeforeInstallPrompt = (event: Event) => {
       event.preventDefault();
@@ -41,7 +49,7 @@ export function InstallExperience() {
     };
 
     const onInstalled = () => {
-      setInstalled(true);
+      setAppInstalled(true);
       setInstallPrompt(null);
       setMessage('RelNet quedó instalado en este dispositivo.');
     };
@@ -55,12 +63,7 @@ export function InstallExperience() {
     };
   }, []);
 
-  const platformName = useMemo(() => {
-    if (platform === 'ios') return 'iPhone / iPad';
-    if (platform === 'android') return 'Android';
-    if (platform === 'windows') return 'Windows';
-    return 'este dispositivo';
-  }, [platform]);
+  const platformName = platform === 'ios' ? 'iPhone / iPad' : platform === 'android' ? 'Android' : platform === 'windows' ? 'Windows' : 'este dispositivo';
 
   const install = async () => {
     if (!installPrompt) return;
@@ -92,7 +95,7 @@ export function InstallExperience() {
           ) : platform === 'ios' ? (
             <a className={styles.primaryButton} href="#ios-instructions">Ver cómo instalar en iPhone</a>
           ) : (
-            <span className={styles.pendingBadge}>Instalación disponible desde el menú del navegador</span>
+            <span className={styles.pendingBadge}>Base PWA preparada; falta el icono oficial para habilitar la promoción completa</span>
           )}
           <a className={styles.secondaryButton} href="https://api.relead.com.mx/console">
             Abrir RelNet Console
@@ -123,13 +126,13 @@ export function InstallExperience() {
             {platform === 'android' ? <small>Este dispositivo</small> : null}
           </div>
           <h2>PWA ahora, APK después</h2>
-          <p>La PWA se instala desde Chrome. El canal APK firmado quedará separado para capacidades nativas de Android.</p>
+          <p>La PWA queda preparada para Chrome. El canal APK firmado permanecerá separado para capacidades nativas de Android.</p>
           {installPrompt ? (
             <button className={styles.cardButton} onClick={install} type="button">Instalar PWA</button>
           ) : (
-            <span className={styles.cardState}>PWA preparada</span>
+            <span className={styles.cardState}>PWA preparada; promoción automática pendiente de iconos oficiales</span>
           )}
-          <span className={styles.cardState}>APK: infraestructura preparada, paquete pendiente de icono oficial</span>
+          <span className={styles.cardState}>APK: estructura prevista; empaquetado final pendiente del icono oficial</span>
         </article>
 
         <article className={`${styles.card} ${platform === 'windows' ? styles.detected : ''}`}>
