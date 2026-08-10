@@ -60,7 +60,7 @@ export function InstallExperience() {
             {platform === 'android' ? <small>Este dispositivo</small> : null}
           </div>
           <h2>PWA ahora, APK después</h2>
-          <p>Abre RelNet Console en Chrome. Desde el menú del navegador podrás agregarla a la pantalla de inicio; el canal APK firmado queda separado para capacidades nativas posteriores.</p>
+          <p>Abre RelNet Console en Chrome. La base PWA ya está preparada; la instalación completa desde el navegador se habilitará cuando agreguemos los iconos oficiales. El canal APK firmado queda separado para capacidades nativas posteriores.</p>
           <a className={styles.cardButton} href={CONSOLE_URL}>Abrir Console</a>
           <span className={styles.cardState}>APK: estructura prevista; empaquetado final pendiente del icono oficial.</span>
         </article>
