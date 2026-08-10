@@ -1,14 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 import './globals.css';
-import { ServiceWorkerRegister } from './ServiceWorkerRegister';
 
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://relead.com.mx'),
-  applicationName: 'RelNet',
-  manifest: '/manifest.webmanifest',
   title: 'RelNet by ReLead | Tu red privada bajo control',
   description: 'RelNet conecta y administra tus equipos dentro de una red privada con control remoto, políticas, telemetría, transferencia de archivos y operación centralizada.',
   keywords: ['RelNet', 'ReLead', 'red privada', 'control remoto', 'administración de nodos', 'infraestructura remota'],
@@ -24,24 +21,15 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'RelNet by ReLead',
     description: 'Conecta, controla y opera tus equipos desde una red privada.'
-  },
-  appleWebApp: {
-    capable: true,
-    title: 'RelNet',
-    statusBarStyle: 'black-translucent'
-  },
-  formatDetection: {
-    telephone: false
   }
 };
 
-export const viewport: Viewport = { themeColor: '#08101c', viewportFit: 'cover' };
+export const viewport: Viewport = { themeColor: '#08101c' };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
       <body className={manrope.variable}>
-        <ServiceWorkerRegister />
         {children}
         <footer className="siteLegalFooter">
           <div className="siteLegalFooterInner">
