@@ -1,6 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
+import Image from 'next/image';
 import styles from './install.module.css';
 
 type Platform = 'ios' | 'android' | 'windows' | 'other';
@@ -24,7 +25,7 @@ export function InstallExperience() {
   return (
     <main className={styles.page}>
       <section className={styles.hero}>
-        <div className={styles.brandMark} aria-hidden="true">R</div>
+        <Image className={styles.brandLogo} src="/relnet-brand.webp" alt="RelNet" width={420} height={202} priority />
         <p className={styles.eyebrow}>RELNET MOBILE</p>
         <h1>Tu red privada, también desde el teléfono.</h1>
         <p className={styles.lead}>

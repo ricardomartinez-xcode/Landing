@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './page.module.css';
 import { SectionReveal } from '@/components/SectionReveal';
 
@@ -95,15 +96,7 @@ export default function HomePage() {
       <nav className={styles.nav} aria-label="Navegación principal">
         <div className={`${styles.shell} ${styles.navInner}`}>
           <Link href="#inicio" className={styles.brand} aria-label="Ir al inicio de RelNet">
-            <span className={styles.brandMark} aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </span>
-            <span className={styles.brandText}>
-              <strong>RelNet</strong>
-              <small>by ReLead</small>
-            </span>
+            <Image className={styles.brandImage} src="/relnet-brand.webp" alt="RelNet" width={420} height={202} priority />
           </Link>
 
           <div className={styles.navLinks}>
@@ -354,11 +347,8 @@ export default function HomePage() {
               <Link href="/install" className={styles.buttonSecondary}>Instalar RelNet</Link>
             </div>
           </SectionReveal>
-          <SectionReveal className={styles.finalMark} delay={100}>
-            <span />
-            <span />
-            <span />
-            <strong>R</strong>
+          <SectionReveal className={styles.finalBrand} delay={100}>
+            <Image src="/relnet-brand.webp" alt="RelNet" width={420} height={202} />
           </SectionReveal>
         </div>
       </section>
