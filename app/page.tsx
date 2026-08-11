@@ -95,15 +95,7 @@ export default function HomePage() {
       <nav className={styles.nav} aria-label="Navegación principal">
         <div className={`${styles.shell} ${styles.navInner}`}>
           <Link href="#inicio" className={styles.brand} aria-label="Ir al inicio de RelNet">
-            <span className={styles.brandMark} aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </span>
-            <span className={styles.brandText}>
-              <strong>RelNet</strong>
-              <small>by ReLead</small>
-            </span>
+            <img src="/relnet-brand.webp" alt="RelNet" className={styles.brandLogo} />
           </Link>
 
           <div className={styles.navLinks}>
