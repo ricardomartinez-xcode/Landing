@@ -973,8 +973,8 @@
 }
 .brand { gap: 0; }
 .brandLogo {
-  width: 174px;
-  height: 56px;
+  width: 148px;
+  height: auto;
   object-fit: contain;
   object-position: left center;
   mix-blend-mode: multiply;
@@ -1120,5 +1120,5 @@
 .finalMark::before,
 .finalMark::after { background: rgba(76, 84, 200, 0.30); }
 @media (max-width: 640px) {
-  .brandLogo { width: 142px; height: 46px; }
+  .brandLogo { width: 132px; height: auto; }
 }
