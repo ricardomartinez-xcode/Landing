@@ -54,3 +54,23 @@
   .sections section { grid-template-columns: 1fr; gap: 4px; }
   .footer { align-items: flex-start; flex-direction: column; }
 }
+
+/* RelNet staging light-surface correction */
+.page {
+  background:
+    radial-gradient(circle at 88% 0%, rgba(8, 189, 235, 0.08), transparent 30rem),
+    radial-gradient(circle at 0% 20%, rgba(109, 74, 255, 0.09), transparent 25rem),
+    #F7F9FF;
+}
+.backLink, .number, .footer a { color: #175CFF; }
+.eyebrow { color: #6D4AFF; }
+.summary, .sections p, .sections li { color: #53627A; }
+.index {
+  border-color: rgba(23, 92, 255, 0.14);
+  background: #FFFFFF;
+  box-shadow: 0 14px 32px rgba(37, 66, 154, 0.07);
+}
+.index > span { color: #6D4AFF; }
+.index a { color: #53627A; }
+.index a:hover, .index a:focus-visible { color: #175CFF; }
+.sections li::marker { color: #08BDEB; }
