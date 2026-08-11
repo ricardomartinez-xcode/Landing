@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "platform": "ios-shortcuts",
+  "product": "RelNet",
+  "shortcuts": [
+    {"id":"status","name":"RelNet · Estado","transport":"api","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_STATUS"},
+    {"id":"actions","name":"RelNet · Ejecutar acción","transport":"api","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_ACTIONS"},
+    {"id":"send","name":"RelNet · Enviar a PC","transport":"api","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_SEND"},
+    {"id":"continue","name":"RelNet · Continuar en PC","transport":"api","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_CONTINUE"},
+    {"id":"terminal","name":"RelNet · Terminal","transport":"api","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_TERMINAL"},
+    {"id":"fans","name":"RelNet · Ventiladores Latitude","transport":"ssh","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_FANS","profiles":["Quiet","Optimized","Cool","Ultra"]}
+  ]
+}

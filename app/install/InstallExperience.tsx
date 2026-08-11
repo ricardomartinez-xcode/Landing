@@ -1,12 +1,88 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import styles from './install.module.css';
 
 type Platform = 'ios' | 'android' | 'windows' | 'other';
 
+type ShortcutItem = {
+  id: string;
+  name: string;
+  description: string;
+  transport: 'RelNet API' | 'SSH';
+  siri: string;
+  importUrl?: string;
+  recipe: string;
+};
+
 const CONSOLE_URL = 'https://api.relead.com.mx/console/';
+
+const shortcutImportUrls: Record<string, string | undefined> = {
+  status: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_STATUS,
+  actions: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_ACTIONS,
+  send: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_SEND,
+  continue: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_CONTINUE,
+  terminal: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_TERMINAL,
+  fans: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_FANS,
+};
+
+const SHORTCUTS: ShortcutItem[] = [
+  {
+    id: 'status',
+    name: 'RelNet · Estado',
+    description: 'Consulta red, relay y nodos disponibles y muestra un resumen en el iPhone.',
+    transport: 'RelNet API',
+    siri: 'Estado de RelNet',
+    importUrl: shortcutImportUrls.status,
+    recipe: `RelNet · Estado\n1. Obtener contenido de URL: POST https://api.relead.com.mx/v1/relnet/query\n2. Header Authorization: Bearer [TOKEN DE DISPOSITIVO RELNET]\n3. JSON: {"operation":"status","parameters":{}}\n4. Extraer state, online_nodes y relay_state.\n5. Mostrar resultado.`,
+  },
+  {
+    id: 'actions',
+    name: 'RelNet · Ejecutar acción',
+    description: 'Elige nodo y acción para servicios, métricas, Chrome, escritorio u operaciones permitidas.',
+    transport: 'RelNet API',
+    siri: 'Controlar RelNet',
+    importUrl: shortcutImportUrls.actions,
+    recipe: `RelNet · Ejecutar acción\n1. Consultar nodos con POST /v1/relnet/query, operation=nodes.\n2. Elegir nodo.\n3. Elegir una acción segura.\n4. POST /v1/relnet/execute con operation=dispatch y los parámetros del nodo.\n5. Si la API responde confirmation_required, pedir confirmación y reenviar con confirmation_token.\n6. Mostrar resultado.`,
+  },
+  {
+    id: 'send',
+    name: 'RelNet · Enviar a PC',
+    description: 'Recibe archivos desde Compartir y los prepara para enviarlos al nodo elegido mediante RelDrop.',
+    transport: 'RelNet API',
+    siri: 'Enviar a mi PC',
+    importUrl: shortcutImportUrls.send,
+    recipe: `RelNet · Enviar a PC\n1. Aceptar Archivos, Imágenes, PDF y URLs desde la hoja Compartir.\n2. Elegir nodo destino.\n3. Preparar RelDrop mediante la API de RelNet.\n4. Confirmar transferencia.\n5. Mostrar destino y estado.`,
+  },
+  {
+    id: 'continue',
+    name: 'RelNet · Continuar en PC',
+    description: 'Toma la URL que estás viendo y la abre en Chrome del nodo Windows compatible.',
+    transport: 'RelNet API',
+    siri: 'Continuar esto en Windows',
+    importUrl: shortcutImportUrls.continue,
+    recipe: `RelNet · Continuar en PC\n1. Obtener lo que aparece en pantalla o recibir una URL desde Compartir.\n2. Extraer la primera URL.\n3. Elegir nodo con browser.chrome.\n4. Enviar dispatch por RelNet para abrir la URL.\n5. Mostrar confirmación.`,
+  },
+  {
+    id: 'terminal',
+    name: 'RelNet · Terminal',
+    description: 'Crea una sesión remota, envía una orden breve y devuelve stdout al iPhone.',
+    transport: 'RelNet API',
+    siri: 'Terminal de RelNet',
+    importUrl: shortcutImportUrls.terminal,
+    recipe: `RelNet · Terminal\n1. Elegir nodo.\n2. POST /v1/relnet/execute operation=terminal_create.\n3. Pedir texto al usuario.\n4. Enviar terminal_write.\n5. Consultar terminal_read hasta recibir salida.\n6. Mostrar stdout y ofrecer cerrar sesión.`,
+  },
+  {
+    id: 'fans',
+    name: 'RelNet · Ventiladores Latitude',
+    description: 'Cambia el perfil térmico de la Dell Latitude entre Silencioso, Equilibrado, Frío y Rendimiento.',
+    transport: 'SSH',
+    siri: 'Cambiar ventiladores de la Latitude',
+    importUrl: shortcutImportUrls.fans,
+    recipe: `RelNet · Ventiladores Latitude\nUsar la acción “Ejecutar script por SSH” contra la Latitude.\nHost actual: 100.102.231.18, puerto 2222.\nMenú:\n• Silencioso -> Quiet\n• Equilibrado -> Optimized\n• Frío -> Cool\n• Rendimiento -> Ultra\nComando: & 'C:\\Program Files\\Dell\\DellOptimizer\\do-cli.exe' /configure -name=SystemPowerConfiguration.ThermalMode -value=[PERFIL]\nDespués consultar: do-cli.exe /get -name=SystemPowerConfiguration.ThermalMode y mostrar el resultado.`,
+  },
+];
 
 function detectPlatform(): Platform {
   const ua = navigator.userAgent.toLowerCase();
@@ -21,6 +97,17 @@ const subscribeStatic = () => () => {};
 
 export function InstallExperience() {
   const platform = useSyncExternalStore(subscribeStatic, detectPlatform, () => 'other' as Platform);
+  const [shortcutStatus, setShortcutStatus] = useState('');
+
+  async function prepareShortcut(item: ShortcutItem) {
+    try {
+      await navigator.clipboard.writeText(item.recipe);
+      setShortcutStatus(`Receta de “${item.name}” copiada. Se abrirá Atajos para crearla mientras queda disponible el enlace firmado de importación.`);
+    } catch {
+      setShortcutStatus(`Abriendo Atajos para preparar “${item.name}”.`);
+    }
+    window.location.href = 'shortcuts://create-shortcut';
+  }
 
   return (
     <main className={styles.page}>
@@ -29,7 +116,7 @@ export function InstallExperience() {
         <p className={styles.eyebrow}>RELNET MOBILE</p>
         <h1>Tu red privada, también desde el teléfono.</h1>
         <p className={styles.lead}>
-          Instala la propia RelNet Console en iPhone, iPad o Android. Así la sesión, la navegación y las operaciones permanecen dentro de la experiencia instalada.
+          Instala RelNet Console en iPhone, iPad o Android y añade el kit de Atajos para controlar la red desde Siri, Compartir y automatizaciones de iOS.
         </p>
 
         <div className={styles.actions}>
@@ -44,13 +131,13 @@ export function InstallExperience() {
             <span>iPhone / iPad</span>
             {platform === 'ios' ? <small>Este dispositivo</small> : null}
           </div>
-          <h2>Web App de RelNet</h2>
-          <p>La instalación se hace sobre RelNet Console, no sobre una página intermedia.</p>
+          <h2>Web App + Atajos</h2>
+          <p>Instala RelNet Console y después añade los Atajos de control desde el kit que aparece más abajo.</p>
           <ol className={styles.steps}>
             <li>Abre RelNet Console en Safari e inicia sesión.</li>
-            <li>Toca el botón Compartir.</li>
-            <li>Elige “Agregar a Inicio”.</li>
-            <li>Confirma “Agregar”.</li>
+            <li>Toca Compartir → “Agregar a Inicio”.</li>
+            <li>Vuelve a esta página y abre “Kit de Atajos RelNet”.</li>
+            <li>Importa cada atajo disponible.</li>
           </ol>
           <a className={styles.cardButton} href={CONSOLE_URL}>Abrir Console</a>
         </article>
@@ -61,9 +148,9 @@ export function InstallExperience() {
             {platform === 'android' ? <small>Este dispositivo</small> : null}
           </div>
           <h2>PWA ahora, APK después</h2>
-          <p>Abre RelNet Console en Chrome. La base PWA ya está preparada; la instalación completa desde el navegador se habilitará cuando agreguemos los iconos oficiales. El canal APK firmado queda separado para capacidades nativas posteriores.</p>
+          <p>Abre RelNet Console en Chrome. La base PWA ya está preparada; el canal APK firmado queda separado para capacidades nativas posteriores.</p>
           <a className={styles.cardButton} href={CONSOLE_URL}>Abrir Console</a>
-          <span className={styles.cardState}>APK: estructura prevista; empaquetado final pendiente del icono oficial.</span>
+          <span className={styles.cardState}>APK: estructura prevista; empaquetado final pendiente.</span>
         </article>
 
         <article className={`${styles.card} ${platform === 'windows' ? styles.detected : ''}`}>
@@ -77,6 +164,40 @@ export function InstallExperience() {
         </article>
       </section>
 
+      <section className={styles.shortcuts} id="ios-shortcuts">
+        <div className={styles.sectionHeading}>
+          <div>
+            <p className={styles.eyebrow}>KIT DE ATAJOS RELNET</p>
+            <h2>Control rápido desde iPhone y Siri.</h2>
+          </div>
+          <span className={styles.shortcutCount}>{SHORTCUTS.length} atajos</span>
+        </div>
+        <p className={styles.shortcutLead}>
+          Los botones cambian automáticamente a “Importar” cuando existe un enlace de iCloud firmado. Mientras tanto, “Preparar” copia la receta exacta y abre el editor de Atajos; así la página funciona como semi instalador sin exponer el token principal de ReLead.
+        </p>
+        <div className={styles.shortcutGrid}>
+          {SHORTCUTS.map((item) => (
+            <article className={styles.shortcutCard} key={item.id}>
+              <div className={styles.shortcutMeta}>
+                <span>{item.transport}</span>
+                <small>“Oye Siri, {item.siri}”</small>
+              </div>
+              <h3>{item.name}</h3>
+              <p>{item.description}</p>
+              {item.importUrl ? (
+                <a className={styles.shortcutButton} href={item.importUrl}>Importar en Atajos</a>
+              ) : (
+                <button className={styles.shortcutButton} type="button" onClick={() => prepareShortcut(item)}>Preparar en Atajos</button>
+              )}
+            </article>
+          ))}
+        </div>
+        {shortcutStatus ? <p className={styles.shortcutStatus} role="status">{shortcutStatus}</p> : null}
+        <p className={styles.shortcutFootnote}>
+          El atajo de ventiladores usa únicamente los perfiles térmicos soportados por Dell Optimizer. No intenta fijar un porcentaje de RPM ni deshabilita las protecciones térmicas del equipo.
+        </p>
+      </section>
+
       <section className={styles.capabilities}>
         <p className={styles.eyebrow}>UNA SOLA EXPERIENCIA</p>
         <h2>Preparado para control móvil.</h2>
@@ -84,13 +205,10 @@ export function InstallExperience() {
           <span>Nodos y estado</span>
           <span>RelNet Console</span>
           <span>Admin</span>
-          <span>Alertas push</span>
-          <span>Autenticación persistente</span>
-          <span>Actualización automática</span>
+          <span>Atajos y Siri</span>
+          <span>RelDrop</span>
+          <span>Control térmico Latitude</span>
         </div>
-        <p className={styles.note}>
-          El logotipo y los iconos de instalación se mantienen fuera de esta etapa. La estructura está preparada para agregarlos después sin cambiar la arquitectura móvil.
-        </p>
       </section>
     </main>
   );
