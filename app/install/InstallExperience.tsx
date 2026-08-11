@@ -19,9 +19,9 @@ type ShortcutItem = {
 const CONSOLE_URL = 'https://api.relead.com.mx/console/';
 
 const shortcutImportUrls: Record<string, string | undefined> = {
+  api: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_API,
   status: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_STATUS,
   actions: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_ACTIONS,
-  send: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_SEND,
   continue: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_CONTINUE,
   terminal: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_TERMINAL,
   control: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_CONTROL,
@@ -29,58 +29,118 @@ const shortcutImportUrls: Record<string, string | undefined> = {
 
 const SHORTCUTS: ShortcutItem[] = [
   {
+    id: 'api',
+    name: 'RelNet · API',
+    description: 'Atajo base que conecta todos los demás con api.relead.com.mx. El API_TOKEN se pega una sola vez aquí.',
+    transport: 'RelNet API',
+    siri: 'API de RelNet',
+    importUrl: shortcutImportUrls.api,
+    recipe: `RelNet · API — CONFIGURACIÓN ÚNICA
+
+Sólo debes editar una cosa: agrega al inicio una acción “Texto” y pega ahí tu API_TOKEN de producción. Renombra su variable mágica como API_TOKEN. No escribas “Bearer” dentro del Texto.
+
+Entrada esperada: un Diccionario con endpoint, operation, parameters y opcionalmente confirmation_token.
+
+1. Acción “Texto”: [PEGA AQUÍ TU API_TOKEN].
+2. “Obtener diccionario de Entrada del atajo”.
+3. Obtén endpoint, operation, parameters y confirmation_token del diccionario.
+4. Si endpoint es query, usa URL https://api.relead.com.mx/v1/relnet/query. Si es execute, usa https://api.relead.com.mx/v1/relnet/execute. Cualquier otro valor: “Detener este atajo”.
+5. “Obtener contenido de URL”: método POST. Encabezado Authorization = Bearer [variable API_TOKEN]. Encabezado Accept = application/json. Cuerpo de solicitud = JSON con operation = [operation] y parameters = [parameters]. Si existe confirmation_token, agrega confirmation_token = [confirmation_token].
+6. Si la respuesta trae status = confirmation_required, muestra summary con “Mostrar alerta”. Si confirmas, toma confirmation_token de esa respuesta y repite exactamente la misma petición incluyendo ese token. Si cancelas, detén el atajo.
+7. Si la respuesta final trae command_id y state es queued, claimed o running: repite hasta 20 veces: “Esperar” 1 segundo; POST a /v1/relnet/query con operation = commands y parameters = {node_id: [node_id original], limit: 50}; busca en items el mismo command_id. Cuando state sea succeeded, failed, expired o cancelled, devuelve ese elemento.
+8. “Detener y producir resultado” con la respuesta final.`,
+  },
+  {
     id: 'status',
     name: 'RelNet · Estado',
-    description: 'Consulta red, relay y nodos disponibles y muestra un resumen en el iPhone.',
+    description: 'Consulta el estado de la red, relay y nodos activos usando el atajo base RelNet · API.',
     transport: 'RelNet API',
     siri: 'Estado de RelNet',
     importUrl: shortcutImportUrls.status,
-    recipe: `RelNet · Estado\n1. Obtener contenido de URL: POST https://api.relead.com.mx/v1/relnet/query\n2. Header Authorization: Bearer [TOKEN DE DISPOSITIVO RELNET]\n3. JSON: {"operation":"status","parameters":{}}\n4. Extraer state, online_nodes y relay_state.\n5. Mostrar resultado.`,
+    recipe: `RelNet · Estado
+
+Requisito: haber creado primero “RelNet · API” y haber pegado ahí el API_TOKEN.
+
+1. Crea un “Diccionario”: endpoint=query; operation=status; parameters=Diccionario vacío.
+2. “Ejecutar atajo” → RelNet · API, pasando ese Diccionario como entrada.
+3. De la respuesta obtén state, relay_state, online_nodes, active_nodes y node_count.
+4. Texto sugerido: “RelNet está [state]. Relay [relay_state]. [online_nodes] nodos en línea de [node_count].”
+5. Usa “Hablar texto” y después “Detener y producir resultado”.`,
   },
   {
     id: 'actions',
     name: 'RelNet · Ejecutar acción',
-    description: 'Elige nodo y acción para servicios, métricas, Chrome, escritorio u operaciones permitidas.',
+    description: 'Selector genérico de nodo y acción para información, métricas, servicios, navegador, escritorio o terminal.',
     transport: 'RelNet API',
     siri: 'Controlar RelNet',
     importUrl: shortcutImportUrls.actions,
-    recipe: `RelNet · Ejecutar acción\n1. Consultar nodos con POST /v1/relnet/query, operation=nodes.\n2. Elegir nodo.\n3. Elegir una acción segura.\n4. POST /v1/relnet/execute con operation=dispatch y los parámetros del nodo.\n5. Si la API responde confirmation_required, pedir confirmación y reenviar con confirmation_token.\n6. Mostrar resultado.`,
-  },
-  {
-    id: 'send',
-    name: 'RelNet · Enviar archivo',
-    description: 'Recibe archivos desde Compartir y los prepara para enviarlos al nodo elegido mediante RelDrop.',
-    transport: 'RelNet API',
-    siri: 'Enviar archivo con RelNet',
-    importUrl: shortcutImportUrls.send,
-    recipe: `RelNet · Enviar archivo\n1. Aceptar Archivos, Imágenes, PDF y URLs desde la hoja Compartir.\n2. Elegir nodo destino.\n3. Preparar RelDrop mediante la API de RelNet.\n4. Confirmar transferencia.\n5. Mostrar destino y estado.`,
+    recipe: `RelNet · Ejecutar acción
+
+1. Ejecuta RelNet · API con {endpoint:query, operation:nodes, parameters:{}}.
+2. Obtén items. Repite cada item cuyo effective_state sea online y crea una lista con su name. “Elegir de la lista”.
+3. Busca en items el elemento cuyo name coincida con la elección y guarda node_id, os_family y capabilities.
+4. “Elegir del menú”: Información; Métricas; Servicios; Navegador; Escritorio; Terminal. Muestra sólo opciones presentes en capabilities.
+5. Información → {endpoint:execute, operation:dispatch, parameters:{node_id:[ID], capability:system.info, command_operation:read, command_parameters:{}, ttl_seconds:60}}.
+6. Métricas → capability=system.metrics y command_operation=read. Producción actual devuelve uptime, disco, memoria libre y datos del entorno; para CPU usa Terminal.
+7. Servicios → services/list. Para Estado/Iniciar/Detener/Reiniciar pide el nombre y usa command_operation=status/start/stop/restart con command_parameters={name:[SERVICIO]}.
+8. Navegador → pide URL y usa capability=browser.chrome, command_operation=launch, command_parameters={url:[URL]}.
+9. Escritorio → elige notepad/calculator/chrome/edge/word/excel/powerpoint y usa capability=desktop.ui_automation, command_operation=launch, command_parameters={app:[APP]}.
+10. Terminal → si os_family=windows usa terminal.powershell; si linux usa terminal.shell. Pide el comando y usa command_operation=execute, command_parameters={command:[COMANDO], timeout_seconds:120, max_output_bytes:262144}.
+11. Todas las llamadas execute se envían mediante RelNet · API, que gestiona confirmación y espera del resultado.`,
   },
   {
     id: 'continue',
     name: 'RelNet · Continuar en dispositivo',
-    description: 'Toma la URL que estás viendo y la abre en un nodo compatible con navegador remoto.',
+    description: 'Recibe una URL desde Compartir o la pantalla actual y la abre en un nodo con browser.chrome.',
     transport: 'RelNet API',
     siri: 'Continuar con RelNet',
     importUrl: shortcutImportUrls.continue,
-    recipe: `RelNet · Continuar en dispositivo\n1. Obtener lo que aparece en pantalla o recibir una URL desde Compartir.\n2. Extraer la primera URL.\n3. Elegir un nodo con capacidad de navegador remoto.\n4. Enviar dispatch por RelNet para abrir la URL.\n5. Mostrar confirmación.`,
+    recipe: `RelNet · Continuar en dispositivo
+
+1. Configura el atajo para recibir URLs desde la hoja Compartir. Si no recibe entrada, usa “Obtener lo que aparece en pantalla” y extrae la primera URL.
+2. Ejecuta RelNet · API con {endpoint:query, operation:nodes, parameters:{}}.
+3. De items conserva únicamente nodos online cuya lista capabilities contenga browser.chrome.
+4. Muestra sus name con “Elegir de la lista” y recupera el node_id correspondiente.
+5. Ejecuta RelNet · API con endpoint=execute, operation=dispatch y parameters={node_id:[ID], capability:browser.chrome, command_operation:launch, command_parameters:{url:[URL]}, ttl_seconds:60}.
+6. RelNet · API solicitará confirmación si producción la exige y esperará el resultado.
+7. Muestra “Página enviada a [name]”.`,
   },
   {
     id: 'terminal',
     name: 'RelNet · Terminal',
-    description: 'Crea una sesión remota, envía una orden breve y devuelve stdout al iPhone.',
+    description: 'Ejecuta un comando puntual en Windows o Linux y devuelve la salida al iPhone.',
     transport: 'RelNet API',
     siri: 'Terminal de RelNet',
     importUrl: shortcutImportUrls.terminal,
-    recipe: `RelNet · Terminal\n1. Elegir nodo.\n2. POST /v1/relnet/execute operation=terminal_create.\n3. Pedir texto al usuario.\n4. Enviar terminal_write.\n5. Consultar terminal_read hasta recibir salida.\n6. Mostrar stdout y ofrecer cerrar sesión.`,
+    recipe: `RelNet · Terminal
+
+1. Consulta nodes mediante RelNet · API y conserva nodos online con terminal.powershell o terminal.shell.
+2. Elige el nodo por name y recupera node_id, os_family y capabilities.
+3. “Pedir entrada” de tipo Texto: “Comando a ejecutar”.
+4. Si capabilities contiene terminal.powershell usa capability=terminal.powershell; de lo contrario terminal.shell.
+5. Ejecuta RelNet · API con endpoint=execute, operation=dispatch, parameters={node_id:[ID], capability:[CAPABILITY], command_operation:execute, command_parameters:{command:[TEXTO], timeout_seconds:120, max_output_bytes:262144}, ttl_seconds:180}.
+6. El helper gestiona confirmation_required y consulta commands hasta finalizar.
+7. Obtén result.stdout, result.stderr y result.exit_code. Muestra stdout; si stderr no está vacío, muéstralo debajo.`,
   },
   {
     id: 'control',
     name: 'RelNet · Control',
-    description: 'Atajo maestro: primero eliges el nodo, después la categoría y finalmente la acción o comando concreto.',
+    description: 'Atajo maestro: nodo → categoría → acción, usando capacidades reales del nodo.',
     transport: 'RelNet API',
     siri: 'Control RelNet',
     importUrl: shortcutImportUrls.control,
-    recipe: `RelNet · Control\n1. POST /v1/relnet/query con operation=nodes.\n2. Filtrar nodos activos y mostrar “Elegir de la lista”.\n3. Según capabilities del nodo, mostrar únicamente categorías compatibles: Sistema, Métricas, Servicios, Navegador, Escritorio, Archivos/RelDrop y Terminal.\n4. Mostrar un segundo menú con acciones concretas de la categoría elegida.\n5. Para Terminal, ofrecer comandos predefinidos genéricos y una opción “Comando personalizado”.\n6. Ejecutar por POST /v1/relnet/execute usando dispatch o terminal_create/terminal_write según corresponda.\n7. Si la API responde confirmation_required, mostrar la acción exacta y pedir confirmación antes de reenviar con confirmation_token.\n8. Mostrar o leer en voz alta el resultado.`,
+    recipe: `RelNet · Control
+
+1. Consulta nodes mediante RelNet · API. Muestra sólo nodos effective_state=online.
+2. Elige name y recupera todo el diccionario del nodo seleccionado.
+3. Construye el menú según capabilities: system.info→Sistema; system.metrics→Métricas; services→Servicios; browser.chrome→Navegador; desktop.ui_automation→Escritorio; terminal.powershell/terminal.shell→Terminal.
+4. Sistema: system.info/read. Métricas: system.metrics/read.
+5. Servicios: services/list; o pide name y ejecuta status/start/stop/restart.
+6. Navegador: pide URL y ejecuta browser.chrome/launch.
+7. Escritorio: elige app permitida y ejecuta desktop.ui_automation/launch.
+8. Terminal: muestra “Comando personalizado”, “CPU” y “Espacio en disco”. Para CPU, si os_family=windows usa: (Get-Counter '\Processor(_Total)\% Processor Time').CounterSamples.CookedValue | ForEach-Object {[math]::Round($_,1)}; si linux usa: top -bn1 | awk '/Cpu\(s\)/ {print 100-$8; exit}'. Ejecuta mediante terminal.powershell o terminal.shell.
+9. Envía siempre la operación elegida a RelNet · API. Éste añade Authorization, gestiona confirmation_required y espera comandos asíncronos.
+10. Muestra o habla el resultado.`,
   },
 ];
 
@@ -106,7 +166,7 @@ export function InstallExperience() {
     } catch {
       setShortcutStatus(`Abriendo Atajos para preparar “${item.name}”.`);
     }
-    window.location.href = 'shortcuts://create-shortcut';
+    window.location.assign('shortcuts://create-shortcut');
   }
 
   return (
@@ -173,8 +233,11 @@ export function InstallExperience() {
           <span className={styles.shortcutCount}>{SHORTCUTS.length} atajos</span>
         </div>
         <p className={styles.shortcutLead}>
-          Los botones cambian automáticamente a “Importar” cuando existe un enlace de iCloud firmado. Mientras tanto, “Preparar” copia la receta exacta y abre el editor de Atajos; así la página funciona como semi instalador sin exponer el token principal de ReLead.
+          Empieza por “RelNet · API”: pega el API_TOKEN de producción una sola vez. Los demás atajos llaman a ese helper y no necesitan guardar el token de nuevo. Los botones cambian a “Importar” cuando exista su enlace firmado de iCloud.
         </p>
+        <div className={styles.actions}>
+          <a className={styles.secondaryButton} href="/shortcuts/RelNet-iOS-Instrucciones-v2.zip">Descargar instrucciones completas</a>
+        </div>
         <div className={styles.shortcutGrid}>
           {SHORTCUTS.map((item) => (
             <article className={styles.shortcutCard} key={item.id}>
@@ -206,8 +269,8 @@ export function InstallExperience() {
           <span>RelNet Console</span>
           <span>Admin</span>
           <span>Atajos y Siri</span>
-          <span>RelDrop</span>
-          <span>Control térmico Latitude</span>
+          <span>Control por API</span>
+          <span>Terminal multiplataforma</span>
         </div>
       </section>
     </main>
