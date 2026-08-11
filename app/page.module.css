@@ -977,7 +977,6 @@
   height: auto;
   object-fit: contain;
   object-position: left center;
-  mix-blend-mode: multiply;
 }
 .navLinks { color: #626d88; }
 .navAdmin { border-left-color: rgba(92, 100, 146, 0.14); }

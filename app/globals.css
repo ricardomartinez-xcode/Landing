@@ -90,3 +90,6 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   }
   .reveal, .revealVisible { opacity: 1; transform: none; }
 }
+
+/* RelNet staging footer contrast correction */
+.siteLegalBrand strong { color: #243559; }
