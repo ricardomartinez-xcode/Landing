@@ -1,0 +1,48 @@
+{
+  "schema": 2,
+  "platform": "ios-shortcuts",
+  "product": "RelNet",
+  "generic_only": true,
+  "api_base": "https://api.relead.com.mx",
+  "authentication": "Authorization: Bearer <API_TOKEN>",
+  "shortcuts": [
+    {
+      "id": "api",
+      "name": "RelNet · API",
+      "transport": "api",
+      "import_env": "NEXT_PUBLIC_SHORTCUT_RELNET_API",
+      "token_entry": true
+    },
+    {
+      "id": "status",
+      "name": "RelNet · Estado",
+      "transport": "api",
+      "import_env": "NEXT_PUBLIC_SHORTCUT_RELNET_STATUS"
+    },
+    {
+      "id": "actions",
+      "name": "RelNet · Ejecutar acción",
+      "transport": "api",
+      "import_env": "NEXT_PUBLIC_SHORTCUT_RELNET_ACTIONS"
+    },
+    {
+      "id": "continue",
+      "name": "RelNet · Continuar en dispositivo",
+      "transport": "api",
+      "import_env": "NEXT_PUBLIC_SHORTCUT_RELNET_CONTINUE"
+    },
+    {
+      "id": "terminal",
+      "name": "RelNet · Terminal",
+      "transport": "api",
+      "import_env": "NEXT_PUBLIC_SHORTCUT_RELNET_TERMINAL"
+    },
+    {
+      "id": "control",
+      "name": "RelNet · Control",
+      "transport": "api",
+      "import_env": "NEXT_PUBLIC_SHORTCUT_RELNET_CONTROL"
+    }
+  ],
+  "note": "El API_TOKEN se configura únicamente en RelNet · API. Enviar archivos desde el iPhone no se publica hasta disponer de un transporte de carga iOS soportado por RelDrop."
+}
