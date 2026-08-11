@@ -875,3 +875,166 @@
   .finalCta { padding-bottom: 74px; }
   .finalCtaCard { min-height: 0; padding: 38px 24px; border-radius: 24px; }
 }
+
+/* RelNet white/purple branding override */
+.page {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(116, 69, 239, 0.12), transparent 30rem),
+    radial-gradient(circle at 7% 22%, rgba(22, 207, 225, 0.08), transparent 27rem),
+    linear-gradient(180deg, #ffffff 0%, #fcfbff 48%, #f7f3ff 100%);
+}
+.nav {
+  border-bottom-color: rgba(72, 82, 133, 0.12);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 38px rgba(49, 38, 102, 0.04);
+}
+.brand { gap: 0; }
+.brandLogo {
+  width: 148px;
+  height: auto;
+  object-fit: contain;
+  object-position: left center;
+}
+.navLinks { color: #626d88; }
+.navAdmin { border-left-color: rgba(92, 100, 146, 0.14); }
+.navCta {
+  border-color: rgba(47, 91, 226, 0.18);
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #1767ee 0%, #5c55ef 62%, #7445ef 100%);
+  box-shadow: 0 10px 26px rgba(82, 68, 219, 0.16);
+}
+.navCta:hover,
+.navCta:focus-visible {
+  border-color: rgba(47, 91, 226, 0.30);
+  background: linear-gradient(135deg, #0e5fe7 0%, #5149ea 62%, #6a39e8 100%);
+}
+.eyebrow { color: #6f43e7; }
+.hero h1 span { color: #2269ec; }
+.buttonPrimary {
+  color: #ffffff;
+  background: linear-gradient(135deg, #1767ee 0%, #5b57f1 58%, #7445ef 100%);
+  box-shadow: 0 16px 36px rgba(71, 78, 212, 0.18);
+}
+.buttonSecondary {
+  border-color: rgba(90, 98, 153, 0.15);
+  color: #20294c;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 28px rgba(51, 43, 101, 0.05);
+}
+.buttonSecondary:hover,
+.buttonSecondary:focus-visible {
+  border-color: rgba(116, 69, 239, 0.26);
+  background: #ffffff;
+}
+.networkWindow {
+  border-color: rgba(99, 96, 158, 0.14);
+  background:
+    linear-gradient(rgba(90, 93, 151, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90, 93, 151, 0.045) 1px, transparent 1px),
+    rgba(255, 255, 255, 0.90);
+  background-size: 28px 28px;
+  box-shadow: 0 32px 86px rgba(57, 43, 126, 0.12);
+}
+.networkWindow::before { background: radial-gradient(circle at 50% 52%, rgba(116, 69, 239, 0.12), transparent 52%); }
+.windowTop { border-bottom-color: rgba(91, 100, 155, 0.11); }
+.windowBrand { color: #3d4666; }
+.liveBadge { color: #167b84; background: rgba(22, 207, 225, 0.08); border-color: rgba(22, 160, 177, 0.18); }
+.coreNode {
+  border-color: rgba(84, 86, 218, 0.22);
+  background: linear-gradient(145deg, #ffffff, #f3efff);
+  box-shadow: 0 0 0 13px rgba(116, 69, 239, 0.045), 0 0 0 29px rgba(23, 103, 238, 0.022), 0 24px 50px rgba(60, 43, 135, 0.13);
+}
+.coreNode strong { color: #20294c; }
+.coreNode small { color: #74809d; }
+.nodeCard {
+  border-color: rgba(91, 100, 155, 0.13);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 15px 36px rgba(54, 43, 111, 0.08);
+}
+.nodeCard span { color: #273153; }
+.nodeCard small { color: #77829d; }
+.networkFooter {
+  border-top-color: rgba(91, 100, 155, 0.11);
+  background: rgba(250, 249, 255, 0.84);
+}
+.networkFooter div { border-right-color: rgba(91, 100, 155, 0.10); }
+.networkFooter span { color: #7b849d; }
+.networkFooter strong { color: #2d3658; }
+.networkFooter .healthy { color: #188f84; }
+.productIntro { border-top-color: rgba(91, 100, 155, 0.10); }
+.capabilitiesSection {
+  border-color: rgba(91, 100, 155, 0.10);
+  background:
+    radial-gradient(circle at 90% 10%, rgba(116, 69, 239, 0.08), transparent 28rem),
+    rgba(249, 247, 255, 0.74);
+}
+.capabilityCard,
+.accessCard,
+.stepCard {
+  border-color: rgba(91, 100, 155, 0.13);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 14px 36px rgba(58, 45, 117, 0.045);
+}
+.capabilityCard:hover,
+.accessCard:hover,
+.accessCard:focus-visible {
+  border-color: rgba(116, 69, 239, 0.22);
+  background: #ffffff;
+  box-shadow: 0 22px 52px rgba(67, 48, 139, 0.09);
+}
+.capabilityTop { color: #5e55de; }
+.capabilityTop small { color: #746f8f; background: rgba(116, 69, 239, 0.04); border-color: rgba(116, 69, 239, 0.12); }
+.capabilityCard h3,
+.accessCard h3,
+.stepCard h3 { color: #20294c; }
+.capabilityCard p,
+.accessCard p,
+.stepCard p,
+.accessCard li { color: #6e7893; }
+.consoleCard {
+  background:
+    radial-gradient(circle at 95% 5%, rgba(23, 103, 238, 0.10), transparent 18rem),
+    rgba(255, 255, 255, 0.92);
+}
+.adminCard {
+  background:
+    radial-gradient(circle at 95% 5%, rgba(116, 69, 239, 0.10), transparent 18rem),
+    rgba(255, 255, 255, 0.92);
+}
+.accessLabel { color: #766f92; }
+.accessCard > strong { color: #4b54a7; }
+.stepsSection {
+  border-color: rgba(91, 100, 155, 0.10);
+  background: rgba(255, 255, 255, 0.50);
+}
+.stepNumber { color: #674bdd; background: rgba(116, 69, 239, 0.06); border-color: rgba(116, 69, 239, 0.16); }
+.securityCard {
+  border-color: rgba(116, 69, 239, 0.12);
+  background:
+    radial-gradient(circle at 90% 15%, rgba(116, 69, 239, 0.10), transparent 22rem),
+    radial-gradient(circle at 5% 90%, rgba(22, 207, 225, 0.07), transparent 20rem),
+    rgba(255, 255, 255, 0.91);
+  box-shadow: 0 22px 60px rgba(56, 41, 123, 0.06);
+}
+.securityList div { border-bottom-color: rgba(91, 100, 155, 0.11); }
+.securityList strong { color: #5e6987; }
+.securityList span { color: #674bdd; border-color: rgba(116, 69, 239, 0.16); background: rgba(116, 69, 239, 0.05); }
+.finalCtaCard {
+  background:
+    radial-gradient(circle at 84% 22%, rgba(116, 69, 239, 0.16), transparent 19rem),
+    linear-gradient(135deg, #ffffff 0%, #f4f0ff 54%, #eaf7ff 100%);
+  border: 1px solid rgba(100, 83, 182, 0.12);
+  box-shadow: 0 28px 70px rgba(65, 47, 140, 0.08);
+}
+.finalCtaCard .eyebrow { color: #6846dd; }
+.finalCtaCard h2 { color: #172044; }
+.finalCtaCard p { color: #606b88; }
+.finalCtaCard .buttonPrimary { background: linear-gradient(135deg, #1767ee, #7445ef); color: #ffffff; }
+.finalCtaCard .buttonSecondary { border-color: rgba(91, 100, 155, 0.16); color: #273153; background: rgba(255, 255, 255, 0.78); }
+.finalMark strong { background: linear-gradient(135deg, #1767ee, #7445ef); color: #ffffff; box-shadow: 0 18px 40px rgba(73, 57, 180, 0.18); }
+.finalMark span { border-color: #6c4ae5; background: #ffffff; }
+.finalMark::before,
+.finalMark::after { background: rgba(76, 84, 200, 0.30); }
+@media (max-width: 640px) {
+  .brandLogo { width: 132px; height: auto; }
+}

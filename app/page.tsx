@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 import styles from './page.module.css';
 import { SectionReveal } from '@/components/SectionReveal';
 
@@ -96,7 +96,7 @@ export default function HomePage() {
       <nav className={styles.nav} aria-label="Navegación principal">
         <div className={`${styles.shell} ${styles.navInner}`}>
           <Link href="#inicio" className={styles.brand} aria-label="Ir al inicio de RelNet">
-            <Image className={styles.brandImage} src="/relnet-brand.webp" alt="RelNet" width={420} height={202} priority />
+            <Image src="/relnet-brand.png" alt="RelNet" width={1951} height={892} priority className={styles.brandLogo} />
           </Link>
 
           <div className={styles.navLinks}>
