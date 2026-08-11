@@ -24,7 +24,6 @@ const shortcutImportUrls: Record<string, string | undefined> = {
   send: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_SEND,
   continue: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_CONTINUE,
   terminal: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_TERMINAL,
-  fans: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_FANS,
   control: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_CONTROL,
 };
 
@@ -49,21 +48,21 @@ const SHORTCUTS: ShortcutItem[] = [
   },
   {
     id: 'send',
-    name: 'RelNet · Enviar a PC',
+    name: 'RelNet · Enviar archivo',
     description: 'Recibe archivos desde Compartir y los prepara para enviarlos al nodo elegido mediante RelDrop.',
     transport: 'RelNet API',
-    siri: 'Enviar a mi PC',
+    siri: 'Enviar archivo con RelNet',
     importUrl: shortcutImportUrls.send,
-    recipe: `RelNet · Enviar a PC\n1. Aceptar Archivos, Imágenes, PDF y URLs desde la hoja Compartir.\n2. Elegir nodo destino.\n3. Preparar RelDrop mediante la API de RelNet.\n4. Confirmar transferencia.\n5. Mostrar destino y estado.`,
+    recipe: `RelNet · Enviar archivo\n1. Aceptar Archivos, Imágenes, PDF y URLs desde la hoja Compartir.\n2. Elegir nodo destino.\n3. Preparar RelDrop mediante la API de RelNet.\n4. Confirmar transferencia.\n5. Mostrar destino y estado.`,
   },
   {
     id: 'continue',
-    name: 'RelNet · Continuar en PC',
-    description: 'Toma la URL que estás viendo y la abre en Chrome del nodo Windows compatible.',
+    name: 'RelNet · Continuar en dispositivo',
+    description: 'Toma la URL que estás viendo y la abre en un nodo compatible con navegador remoto.',
     transport: 'RelNet API',
-    siri: 'Continuar esto en Windows',
+    siri: 'Continuar con RelNet',
     importUrl: shortcutImportUrls.continue,
-    recipe: `RelNet · Continuar en PC\n1. Obtener lo que aparece en pantalla o recibir una URL desde Compartir.\n2. Extraer la primera URL.\n3. Elegir nodo con browser.chrome.\n4. Enviar dispatch por RelNet para abrir la URL.\n5. Mostrar confirmación.`,
+    recipe: `RelNet · Continuar en dispositivo\n1. Obtener lo que aparece en pantalla o recibir una URL desde Compartir.\n2. Extraer la primera URL.\n3. Elegir un nodo con capacidad de navegador remoto.\n4. Enviar dispatch por RelNet para abrir la URL.\n5. Mostrar confirmación.`,
   },
   {
     id: 'terminal',
@@ -75,22 +74,13 @@ const SHORTCUTS: ShortcutItem[] = [
     recipe: `RelNet · Terminal\n1. Elegir nodo.\n2. POST /v1/relnet/execute operation=terminal_create.\n3. Pedir texto al usuario.\n4. Enviar terminal_write.\n5. Consultar terminal_read hasta recibir salida.\n6. Mostrar stdout y ofrecer cerrar sesión.`,
   },
   {
-    id: 'fans',
-    name: 'RelNet · Ventiladores Latitude',
-    description: 'Cambia el perfil térmico de la Dell Latitude entre Silencioso, Equilibrado, Frío y Rendimiento.',
-    transport: 'SSH',
-    siri: 'Cambiar ventiladores de la Latitude',
-    importUrl: shortcutImportUrls.fans,
-    recipe: `RelNet · Ventiladores Latitude\nUsar la acción “Ejecutar script por SSH” contra la Latitude.\nHost actual: 100.102.231.18, puerto 2222.\nMenú:\n• Silencioso -> Quiet\n• Equilibrado -> Optimized\n• Frío -> Cool\n• Rendimiento -> Ultra\nComando: & 'C:\\Program Files\\Dell\\DellOptimizer\\do-cli.exe' /configure -name=SystemPowerConfiguration.ThermalMode -value=[PERFIL]\nDespués consultar: do-cli.exe /get -name=SystemPowerConfiguration.ThermalMode y mostrar el resultado.`,
-  },
-  {
     id: 'control',
     name: 'RelNet · Control',
     description: 'Atajo maestro: primero eliges el nodo, después la categoría y finalmente la acción o comando concreto.',
     transport: 'RelNet API',
     siri: 'Control RelNet',
     importUrl: shortcutImportUrls.control,
-    recipe: `RelNet · Control\n1. POST /v1/relnet/query con operation=nodes.\n2. Filtrar nodos activos y mostrar “Elegir de la lista”.\n3. Según capabilities del nodo, mostrar categorías disponibles: Sistema, Métricas, Servicios, Navegador, Escritorio, Archivos/RelDrop, Terminal y Energía/Térmico.\n4. Mostrar un segundo menú con acciones concretas de la categoría elegida.\n5. Para Terminal, ofrecer comandos predefinidos y una opción “Comando personalizado”.\n6. Ejecutar por POST /v1/relnet/execute usando dispatch o terminal_create/terminal_write según corresponda.\n7. Si la API responde confirmation_required, mostrar la acción exacta y pedir confirmación antes de reenviar con confirmation_token.\n8. Mostrar o leer en voz alta el resultado.\n9. Si el nodo es una Dell Latitude compatible, añadir en Energía/Térmico los perfiles Silencioso, Equilibrado, Frío y Rendimiento.`,
+    recipe: `RelNet · Control\n1. POST /v1/relnet/query con operation=nodes.\n2. Filtrar nodos activos y mostrar “Elegir de la lista”.\n3. Según capabilities del nodo, mostrar únicamente categorías compatibles: Sistema, Métricas, Servicios, Navegador, Escritorio, Archivos/RelDrop y Terminal.\n4. Mostrar un segundo menú con acciones concretas de la categoría elegida.\n5. Para Terminal, ofrecer comandos predefinidos genéricos y una opción “Comando personalizado”.\n6. Ejecutar por POST /v1/relnet/execute usando dispatch o terminal_create/terminal_write según corresponda.\n7. Si la API responde confirmation_required, mostrar la acción exacta y pedir confirmación antes de reenviar con confirmation_token.\n8. Mostrar o leer en voz alta el resultado.`,
   },
 ];
 
@@ -204,7 +194,7 @@ export function InstallExperience() {
         </div>
         {shortcutStatus ? <p className={styles.shortcutStatus} role="status">{shortcutStatus}</p> : null}
         <p className={styles.shortcutFootnote}>
-          El atajo de ventiladores usa únicamente los perfiles térmicos soportados por Dell Optimizer. No intenta fijar un porcentaje de RPM ni deshabilita las protecciones térmicas del equipo.
+          Este kit público contiene únicamente atajos genéricos. Los atajos ligados a equipos, IPs, perfiles térmicos u otras configuraciones personales se distribuyen por separado.
         </p>
       </section>
 
