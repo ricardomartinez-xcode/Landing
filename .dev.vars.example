@@ -1,3 +1,12 @@
 # Este proyecto no requiere secretos para funcionar.
 # Conserva este archivo como referencia si agregas bindings o variables de Cloudflare.
 NEXTJS_ENV=development
+
+# Enlaces públicos de iCloud creados/exportados desde la app Atajos.
+# Cuando exista un enlace, /install cambia automáticamente de “Preparar” a “Importar”.
+NEXT_PUBLIC_SHORTCUT_RELNET_API=
+NEXT_PUBLIC_SHORTCUT_RELNET_STATUS=
+NEXT_PUBLIC_SHORTCUT_RELNET_ACTIONS=
+NEXT_PUBLIC_SHORTCUT_RELNET_CONTINUE=
+NEXT_PUBLIC_SHORTCUT_RELNET_TERMINAL=
+NEXT_PUBLIC_SHORTCUT_RELNET_CONTROL=

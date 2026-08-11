@@ -103,6 +103,7 @@ export default function HomePage() {
             <Link href="#producto">Producto</Link>
             <Link href="#capacidades">Capacidades</Link>
             <Link href="#seguridad">Seguridad</Link>
+            <Link href="/install">Instalar</Link>
             <a href={adminUrl} className={styles.navAdmin}>Admin</a>
             <a href={consoleUrl} className={styles.navCta}>Abrir Console <span aria-hidden="true">↗</span></a>
           </div>
@@ -120,9 +121,10 @@ export default function HomePage() {
             <div className={styles.actions}>
               <a href={consoleUrl} className={styles.buttonPrimary}>Abrir RelNet Console <span aria-hidden="true">↗</span></a>
               <a href={adminUrl} className={styles.buttonSecondary}>Administración</a>
+              <Link href="/install" className={styles.buttonSecondary}>Instalar en móvil</Link>
             </div>
             <div className={styles.heroNotes} aria-label="Características principales de RelNet">
-              <span>Windows + Linux</span>
+              <span>Windows + Linux + Mobile</span>
               <span>Mesh privado</span>
               <span>Control centralizado</span>
             </div>
@@ -338,17 +340,15 @@ export default function HomePage() {
           <SectionReveal>
             <span className={styles.eyebrow}>RelNet by ReLead</span>
             <h2>Una sola red para llegar a todos tus equipos.</h2>
-            <p>Entra a RelNet Console para administrar tu entorno o abre Admin para operar la plataforma.</p>
+            <p>Entra a RelNet Console, abre Admin o instala la experiencia móvil en tu dispositivo.</p>
             <div className={styles.actions}>
               <a href={consoleUrl} className={styles.buttonPrimary}>Abrir RelNet Console <span aria-hidden="true">↗</span></a>
               <a href={adminUrl} className={styles.buttonSecondary}>Abrir Admin</a>
+              <Link href="/install" className={styles.buttonSecondary}>Instalar RelNet</Link>
             </div>
           </SectionReveal>
-          <SectionReveal className={styles.finalMark} delay={100}>
-            <span />
-            <span />
-            <span />
-            <strong>R</strong>
+          <SectionReveal className={styles.finalBrand} delay={100}>
+            <Image src="/relnet-brand.webp" alt="RelNet" width={420} height={202} />
           </SectionReveal>
         </div>
       </section>

@@ -1,0 +1,62 @@
+RELNET + ATAJOS DE iOS — INSTRUCCIONES DE PRODUCCIÓN v2
+
+API BASE
+https://api.relead.com.mx
+
+AUTENTICACIÓN ACTUAL
+Authorization: Bearer <API_TOKEN>
+
+IMPORTANTE
+Producción todavía no dispone de API_TOKEN_DEVICE. Este kit usa el API_TOKEN existente. Pégalo una sola vez en “RelNet · API”. No lo pegues en los demás atajos y no compartas/exportes públicamente un atajo que contenga ese token.
+
+ORDEN DE CREACIÓN
+1. RelNet · API
+2. RelNet · Estado
+3. RelNet · Ejecutar acción
+4. RelNet · Continuar en dispositivo
+5. RelNet · Terminal
+6. RelNet · Control
+
+1) RELNET · API
+- Acción Texto: pega exactamente tu API_TOKEN, sin la palabra Bearer. Renombra la variable mágica como API_TOKEN.
+- Entrada: Diccionario con endpoint=query|execute, operation, parameters y confirmation_token opcional.
+- endpoint=query → https://api.relead.com.mx/v1/relnet/query
+- endpoint=execute → https://api.relead.com.mx/v1/relnet/execute
+- Obtener contenido de URL: POST; Header Authorization = Bearer [API_TOKEN]; Header Accept=application/json; Cuerpo JSON: operation=[operation], parameters=[parameters], confirmation_token sólo si existe.
+- Si status=confirmation_required: muestra summary; si aceptas, repite la misma llamada con confirmation_token.
+- Si hay command_id en queued/claimed/running: espera 1 s y consulta query/commands con parameters={node_id:<node_id original>,limit:50}; busca el mismo command_id; repite máximo 20 veces hasta succeeded/failed/expired/cancelled.
+- Detener y producir resultado con la respuesta final.
+
+PRUEBA DEL HELPER
+Pasa {endpoint:query,operation:status,parameters:{}}. Debes recibir state, relay_state, node_count y online_nodes. Un 401 indica token ausente/incorrecto.
+
+2) RELNET · ESTADO
+Pasa {endpoint:query,operation:status,parameters:{}} a RelNet · API. Obtén state, relay_state, online_nodes, active_nodes y node_count.
+
+3) NODOS — PATRÓN REUTILIZABLE
+Pasa {endpoint:query,operation:nodes,parameters:{}}. La respuesta contiene items con name, node_id, effective_state, os_family y capabilities. Muestra name al usuario y conserva node_id internamente. No codifiques IDs.
+
+4) DISPATCH GENÉRICO
+Todas las siguientes usan endpoint=execute y operation=dispatch.
+Información: {node_id:<ID>,capability:"system.info",command_operation:"read",command_parameters:{},ttl_seconds:60}
+Métricas: {node_id:<ID>,capability:"system.metrics",command_operation:"read",command_parameters:{},ttl_seconds:60}
+Servicios/listar: capability="services", command_operation="list", command_parameters={}
+Servicios/control: capability="services", command_operation="status|start|stop|restart", command_parameters={"name":"<servicio>"}
+Chrome: capability="browser.chrome", command_operation="launch", command_parameters={"url":"https://..."}
+Escritorio: capability="desktop.ui_automation", command_operation="launch", command_parameters={"app":"chrome"}. Apps admitidas: notepad, calculator, chrome, edge, word, excel, powerpoint.
+Terminal Windows: capability="terminal.powershell"; Linux: capability="terminal.shell"; command_operation="execute"; command_parameters={"command":"<comando>","timeout_seconds":120,"max_output_bytes":262144}.
+
+CPU WINDOWS POR TERMINAL
+(Get-Counter '\Processor(_Total)\% Processor Time').CounterSamples.CookedValue | ForEach-Object {[math]::Round($_,1)}
+
+CPU LINUX POR TERMINAL
+top -bn1 | awk '/Cpu\(s\)/ {print 100-$8; exit}'
+
+5) CONTINUAR EN DISPOSITIVO
+Recibe una URL desde Compartir. Consulta nodes. Conserva nodos online cuyas capabilities contienen browser.chrome. Elige name, conserva node_id y ejecuta browser.chrome/launch con esa URL.
+
+6) RELNET · CONTROL
+Flujo: nodes → elegir name → revisar capabilities → elegir categoría → construir dispatch → ejecutar RelNet · API → mostrar/hablar respuesta. El único valor manual es API_TOKEN en RelNet · API.
+
+NOTA SOBRE ARCHIVOS DESDE IPHONE
+No se incluye “Enviar archivo” en el kit público v2: drop_send necesita un nodo fuente y una ruta ya existente en ese nodo; un archivo local del iPhone aún no es un nodo RelNet. Publicarlo como funcional sería incorrecto.
