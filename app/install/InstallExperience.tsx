@@ -25,6 +25,7 @@ const shortcutImportUrls: Record<string, string | undefined> = {
   continue: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_CONTINUE,
   terminal: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_TERMINAL,
   fans: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_FANS,
+  control: process.env.NEXT_PUBLIC_SHORTCUT_RELNET_CONTROL,
 };
 
 const SHORTCUTS: ShortcutItem[] = [
@@ -81,6 +82,15 @@ const SHORTCUTS: ShortcutItem[] = [
     siri: 'Cambiar ventiladores de la Latitude',
     importUrl: shortcutImportUrls.fans,
     recipe: `RelNet · Ventiladores Latitude\nUsar la acción “Ejecutar script por SSH” contra la Latitude.\nHost actual: 100.102.231.18, puerto 2222.\nMenú:\n• Silencioso -> Quiet\n• Equilibrado -> Optimized\n• Frío -> Cool\n• Rendimiento -> Ultra\nComando: & 'C:\\Program Files\\Dell\\DellOptimizer\\do-cli.exe' /configure -name=SystemPowerConfiguration.ThermalMode -value=[PERFIL]\nDespués consultar: do-cli.exe /get -name=SystemPowerConfiguration.ThermalMode y mostrar el resultado.`,
+  },
+  {
+    id: 'control',
+    name: 'RelNet · Control',
+    description: 'Atajo maestro: primero eliges el nodo, después la categoría y finalmente la acción o comando concreto.',
+    transport: 'RelNet API',
+    siri: 'Control RelNet',
+    importUrl: shortcutImportUrls.control,
+    recipe: `RelNet · Control\n1. POST /v1/relnet/query con operation=nodes.\n2. Filtrar nodos activos y mostrar “Elegir de la lista”.\n3. Según capabilities del nodo, mostrar categorías disponibles: Sistema, Métricas, Servicios, Navegador, Escritorio, Archivos/RelDrop, Terminal y Energía/Térmico.\n4. Mostrar un segundo menú con acciones concretas de la categoría elegida.\n5. Para Terminal, ofrecer comandos predefinidos y una opción “Comando personalizado”.\n6. Ejecutar por POST /v1/relnet/execute usando dispatch o terminal_create/terminal_write según corresponda.\n7. Si la API responde confirmation_required, mostrar la acción exacta y pedir confirmación antes de reenviar con confirmation_token.\n8. Mostrar o leer en voz alta el resultado.\n9. Si el nodo es una Dell Latitude compatible, añadir en Energía/Térmico los perfiles Silencioso, Equilibrado, Frío y Rendimiento.`,
   },
 ];
 

@@ -8,6 +8,7 @@
     {"id":"send","name":"RelNet · Enviar a PC","transport":"api","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_SEND"},
     {"id":"continue","name":"RelNet · Continuar en PC","transport":"api","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_CONTINUE"},
     {"id":"terminal","name":"RelNet · Terminal","transport":"api","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_TERMINAL"},
-    {"id":"fans","name":"RelNet · Ventiladores Latitude","transport":"ssh","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_FANS","profiles":["Quiet","Optimized","Cool","Ultra"]}
+    {"id":"fans","name":"RelNet · Ventiladores Latitude","transport":"ssh","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_FANS","profiles":["Quiet","Optimized","Cool","Ultra"]},
+    {"id":"control","name":"RelNet · Control","transport":"api","import_env":"NEXT_PUBLIC_SHORTCUT_RELNET_CONTROL","flow":["node","category","action"]}
   ]
 }
