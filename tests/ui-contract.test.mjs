@@ -5,17 +5,22 @@ import { join } from 'node:path';
 
 const root = process.cwd();
 const read = (path) => readFileSync(join(root, path), 'utf8');
-
 const primaryRoutes = ['/', '/install', '/FAQs', '/privacy', '/terms'];
 
 test('exposes the canonical FAQs page', () => {
   assert.equal(existsSync(join(root, 'app/FAQs/page.tsx')), true, 'app/FAQs/page.tsx must exist');
 });
 
-test('redirects lowercase /faqs to canonical /FAQs', () => {
+test('redirects exact lowercase /faqs with an App Router compatibility route', () => {
   const config = read('next.config.ts');
-  assert.match(config, /source:\s*["']\/faqs["']/);
-  assert.match(config, /destination:\s*["']\/FAQs["']/);
+  assert.doesNotMatch(config, /source:\s*["']\/faqs["']/);
+  assert.equal(existsSync(join(root, 'app/[slug]/page.tsx')), true, 'app/[slug]/page.tsx must exist');
+  const compat = read('app/[slug]/page.tsx');
+  assert.match(compat, /from\s+["']next\/navigation["']/);
+  assert.match(compat, /slug\s*===\s*["']faqs["']/);
+  assert.match(compat, /redirect\(["']\/FAQs["']\)/);
+  assert.match(compat, /notFound\(\)/);
+  assert.equal(existsSync(join(root, 'proxy.ts')), false, 'FAQ compatibility must not rely on Node proxy');
 });
 
 test('global app shell includes every primary route and accessible active navigation', () => {
@@ -25,9 +30,7 @@ test('global app shell includes every primary route and accessible active naviga
   assert.equal(existsSync(navPath), true, 'primary navigation config must exist');
   const shell = read('components/shell/AppShell.tsx');
   const navigation = read('components/shell/nav.ts');
-  for (const route of primaryRoutes) {
-    assert.ok(navigation.includes(`'${route}'`) || navigation.includes(`"${route}"`), `primary navigation must reference ${route}`);
-  }
+  for (const route of primaryRoutes) assert.ok(navigation.includes(`'${route}'`) || navigation.includes(`"${route}"`), `primary navigation must reference ${route}`);
   assert.match(shell, /primaryNav/);
   assert.match(shell, /aria-current/);
   assert.match(shell, /relnet-brand\.(?:webp|png)/);
@@ -37,17 +40,12 @@ test('theme control supports system, light and dark modes', () => {
   const themePath = join(root, 'components/theme/ThemeControl.tsx');
   assert.equal(existsSync(themePath), true, 'ThemeControl must exist');
   const theme = read('components/theme/ThemeControl.tsx');
-  for (const mode of ['system', 'light', 'dark']) {
-    assert.ok(theme.includes(`'${mode}'`) || theme.includes(`\"${mode}\"`), `ThemeControl must support ${mode}`);
-  }
+  for (const mode of ['system', 'light', 'dark']) assert.ok(theme.includes(`'${mode}'`) || theme.includes(`\"${mode}\"`), `ThemeControl must support ${mode}`);
   assert.match(theme, /localStorage/);
 });
 
 test('FAQs use native accessible disclosure semantics', () => {
-  const candidates = ['app/FAQs/page.tsx', 'components/ui/FAQGroup.tsx']
-    .filter((path) => existsSync(join(root, path)))
-    .map(read)
-    .join('\n');
+  const candidates = ['app/FAQs/page.tsx', 'components/ui/FAQGroup.tsx'].filter((path) => existsSync(join(root, path))).map(read).join('\n');
   assert.match(candidates, /<details/);
   assert.match(candidates, /<summary/);
 });

@@ -3,16 +3,6 @@ import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare';
 
 initOpenNextCloudflareForDev();
 
-const nextConfig: NextConfig = {
-  async redirects() {
-    return [
-      {
-        source: '/faqs',
-        destination: '/FAQs',
-        permanent: true,
-      },
-    ];
-  },
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;
