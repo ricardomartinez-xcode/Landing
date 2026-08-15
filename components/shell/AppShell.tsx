@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ThemeControl } from '@/components/theme/ThemeControl';
+import { NavIcon } from './NavIcon';
 import { primaryNav, routeLabel } from './nav';
 import styles from './AppShell.module.css';
 
@@ -42,7 +43,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               aria-current={isActive(item.href) ? 'page' : undefined}
               onClick={() => setMobileOpen(false)}
             >
-              <span className={styles.navGlyph} aria-hidden="true">{item.short}</span>
+              <span className={styles.navGlyph} aria-hidden="true">
+                <NavIcon name={item.icon} />
+              </span>
               <span>{item.label}</span>
             </Link>
           ))}

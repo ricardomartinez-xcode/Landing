@@ -52,6 +52,20 @@ test('global app shell includes every primary route and accessible active naviga
   assert.match(shell, /relnet-brand(?:-transparent)?\.(?:webp|png)/);
 });
 
+test('primary navigation uses semantic SVG icons instead of text abbreviations', () => {
+  const shell = read('components/shell/AppShell.tsx');
+  const navigation = read('components/shell/nav.ts');
+  assert.equal(existsSync(join(root, 'components/shell/NavIcon.tsx')), true, 'NavIcon must exist');
+  const icons = read('components/shell/NavIcon.tsx');
+  for (const icon of ['home', 'install', 'help', 'privacy', 'terms']) {
+    assert.ok(navigation.includes(`icon: '${icon}'`) || navigation.includes(`icon: \"${icon}\"`), `navigation must map ${icon}`);
+  }
+  assert.doesNotMatch(navigation, /short:\s*['"]/);
+  assert.match(shell, /<NavIcon/);
+  assert.match(icons, /<svg/);
+  assert.match(icons, /aria-hidden/);
+});
+
 test('theme control supports system, light and dark modes', () => {
   const themePath = join(root, 'components/theme/ThemeControl.tsx');
   assert.equal(existsSync(themePath), true, 'ThemeControl must exist');
