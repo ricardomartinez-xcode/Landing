@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useSyncExternalStore } from 'react';
-import Image from 'next/image';
 import styles from './install.module.css';
 
 type Platform = 'ios' | 'android' | 'windows' | 'other';
@@ -158,6 +157,8 @@ const subscribeStatic = () => () => {};
 export function InstallExperience() {
   const platform = useSyncExternalStore(subscribeStatic, detectPlatform, () => 'other' as Platform);
   const [shortcutStatus, setShortcutStatus] = useState('');
+  const [selectedPlatform, setSelectedPlatform] = useState<Platform | 'auto'>('auto');
+  const activePlatform = selectedPlatform === 'auto' ? platform : selectedPlatform;
 
   async function prepareShortcut(item: ShortcutItem) {
     try {
@@ -171,107 +172,50 @@ export function InstallExperience() {
 
   return (
     <main className={styles.page}>
-      <section className={styles.hero}>
-        <Image className={styles.brandLogo} src="/relnet-brand.webp" alt="RelNet" width={420} height={202} priority />
-        <p className={styles.eyebrow}>RELNET MOBILE</p>
-        <h1>Tu red privada, también desde el teléfono.</h1>
-        <p className={styles.lead}>
-          Instala RelNet Console en iPhone, iPad o Android y añade el kit de Atajos para controlar la red desde Siri, Compartir y automatizaciones de iOS.
-        </p>
-
-        <div className={styles.actions}>
-          <a className={styles.primaryButton} href={CONSOLE_URL}>Abrir RelNet Console</a>
-          <a className={styles.secondaryButton} href="https://api.relead.com.mx/admin/">Abrir Admin</a>
+      <header className={styles.header}>
+        <div>
+          <p className={styles.eyebrow}>Instalación</p>
+          <h1>Prepara RelNet para cada dispositivo.</h1>
+          <p className={styles.lead}>Selecciona una plataforma para ver la ruta recomendada. La detección automática se conserva, pero puedes cambiarla manualmente.</p>
         </div>
+        <div className={styles.headerActions}>
+          <a className={styles.primaryButton} href={CONSOLE_URL}>Abrir Console ↗</a>
+          <a className={styles.secondaryButton} href="https://api.relead.com.mx/admin/">Abrir Admin ↗</a>
+        </div>
+      </header>
+
+      <section className={styles.selectorPanel} aria-label="Selector de plataforma">
+        <div><span>Plataforma detectada</span><strong>{platform === 'ios' ? 'iPhone / iPad' : platform === 'android' ? 'Android' : platform === 'windows' ? 'Windows' : 'Otro dispositivo'}</strong></div>
+        <label><span>Mostrar instrucciones para</span><select value={selectedPlatform} onChange={(event) => setSelectedPlatform(event.target.value as Platform | 'auto')}><option value="auto">Automático</option><option value="ios">iPhone / iPad</option><option value="android">Android</option><option value="windows">Windows</option><option value="other">Otro</option></select></label>
       </section>
 
-      <section className={styles.grid} aria-label="Opciones de instalación">
-        <article className={`${styles.card} ${platform === 'ios' ? styles.detected : ''}`} id="ios-instructions">
-          <div className={styles.cardHeader}>
-            <span>iPhone / iPad</span>
-            {platform === 'ios' ? <small>Este dispositivo</small> : null}
-          </div>
-          <h2>Web App + Atajos</h2>
-          <p>Instala RelNet Console y después añade los Atajos de control desde el kit que aparece más abajo.</p>
-          <ol className={styles.steps}>
-            <li>Abre RelNet Console en Safari e inicia sesión.</li>
-            <li>Toca Compartir → “Agregar a Inicio”.</li>
-            <li>Vuelve a esta página y abre “Kit de Atajos RelNet”.</li>
-            <li>Importa cada atajo disponible.</li>
-          </ol>
-          <a className={styles.cardButton} href={CONSOLE_URL}>Abrir Console</a>
+      <section className={styles.installGrid}>
+        <article className={styles.installPanel}>
+          <div className={styles.panelMeta}><span>Ruta recomendada</span><small>{activePlatform === platform ? 'Según este dispositivo' : 'Selección manual'}</small></div>
+          <h2>{activePlatform === 'ios' ? 'Web App + Atajos' : activePlatform === 'android' ? 'PWA / Console' : activePlatform === 'windows' ? 'Nodo + superficies web' : 'Acceso web'}</h2>
+          {activePlatform === 'ios' ? <ol><li>Abre RelNet Console en Safari e inicia sesión.</li><li>Usa Compartir → “Agregar a Inicio”.</li><li>Descarga las instrucciones del kit de Atajos.</li><li>Configura primero “RelNet · API”.</li></ol> : null}
+          {activePlatform === 'android' ? <><p>Abre RelNet Console en Chrome y utiliza la experiencia PWA. El APK nativo sigue como canal previsto y no se presenta aquí como descarga final.</p><ol><li>Abre Console.</li><li>Inicia sesión.</li><li>Instala la experiencia web desde Chrome si está disponible.</li></ol></> : null}
+          {activePlatform === 'windows' ? <><p>Windows puede operar como nodo RelNet y acceder a Console y Admin desde la web.</p><ol><li>Abre Admin para las opciones administrativas disponibles.</li><li>Instala o administra el nodo con el flujo correspondiente de tu entorno.</li><li>Vuelve a Console para operación cotidiana.</li></ol></> : null}
+          {activePlatform === 'other' ? <p>Usa RelNet Console desde un navegador compatible. Las funciones nativas dependen de que exista un cliente o integración específica para esa plataforma.</p> : null}
+          <div className={styles.panelActions}><a className={styles.primaryButton} href={CONSOLE_URL}>Abrir Console</a>{activePlatform === 'ios' ? <a className={styles.secondaryButton} href="/shortcuts/RelNet-iOS-Instrucciones-v2.zip">Instrucciones iOS</a> : null}</div>
         </article>
 
-        <article className={`${styles.card} ${platform === 'android' ? styles.detected : ''}`}>
-          <div className={styles.cardHeader}>
-            <span>Android</span>
-            {platform === 'android' ? <small>Este dispositivo</small> : null}
-          </div>
-          <h2>PWA ahora, APK después</h2>
-          <p>Abre RelNet Console en Chrome. La base PWA ya está preparada; el canal APK firmado queda separado para capacidades nativas posteriores.</p>
-          <a className={styles.cardButton} href={CONSOLE_URL}>Abrir Console</a>
-          <span className={styles.cardState}>APK: estructura prevista; empaquetado final pendiente.</span>
-        </article>
-
-        <article className={`${styles.card} ${platform === 'windows' ? styles.detected : ''}`}>
-          <div className={styles.cardHeader}>
-            <span>Windows</span>
-            {platform === 'windows' ? <small>Este dispositivo</small> : null}
-          </div>
-          <h2>Cliente y consola</h2>
-          <p>Windows conserva el instalador completo de nodo y también puede abrir la consola web.</p>
-          <a className={styles.cardButton} href="https://api.relead.com.mx/admin/">Ir a Admin</a>
-        </article>
+        <aside className={styles.helpPanel}>
+          <span className={styles.eyebrow}>Antes de empezar</span>
+          <h2>La capacidad manda.</h2>
+          <p>Una acción sólo aparece cuando el nodo está disponible, declara la capacidad necesaria y tu sesión tiene permiso para utilizarla.</p>
+          <dl><div><dt>Console</dt><dd>Operación de nodos</dd></div><div><dt>Admin</dt><dd>Plataforma y observabilidad</dd></div><div><dt>Mobile</dt><dd>Web App + flujos compatibles</dd></div></dl>
+        </aside>
       </section>
 
       <section className={styles.shortcuts} id="ios-shortcuts">
-        <div className={styles.sectionHeading}>
-          <div>
-            <p className={styles.eyebrow}>KIT DE ATAJOS RELNET</p>
-            <h2>Control rápido desde iPhone y Siri.</h2>
-          </div>
-          <span className={styles.shortcutCount}>{SHORTCUTS.length} atajos</span>
-        </div>
-        <p className={styles.shortcutLead}>
-          Empieza por “RelNet · API”: pega el API_TOKEN de producción una sola vez. Los demás atajos llaman a ese helper y no necesitan guardar el token de nuevo. Los botones cambian a “Importar” cuando exista su enlace firmado de iCloud.
-        </p>
-        <div className={styles.actions}>
-          <a className={styles.secondaryButton} href="/shortcuts/RelNet-iOS-Instrucciones-v2.zip">Descargar instrucciones completas</a>
-        </div>
-        <div className={styles.shortcutGrid}>
-          {SHORTCUTS.map((item) => (
-            <article className={styles.shortcutCard} key={item.id}>
-              <div className={styles.shortcutMeta}>
-                <span>{item.transport}</span>
-                <small>“Oye Siri, {item.siri}”</small>
-              </div>
-              <h3>{item.name}</h3>
-              <p>{item.description}</p>
-              {item.importUrl ? (
-                <a className={styles.shortcutButton} href={item.importUrl}>Importar en Atajos</a>
-              ) : (
-                <button className={styles.shortcutButton} type="button" onClick={() => prepareShortcut(item)}>Preparar en Atajos</button>
-              )}
-            </article>
-          ))}
+        <div className={styles.sectionHeading}><div><p className={styles.eyebrow}>Kit de Atajos RelNet</p><h2>Control rápido desde iPhone y Siri.</h2></div><span className={styles.shortcutCount}>{SHORTCUTS.length} atajos</span></div>
+        <div className={styles.shortcutNotice}><p>Empieza por <strong>RelNet · API</strong>: el token se configura una sola vez en ese helper. Los demás atajos llaman a esa base.</p><a href="/shortcuts/RelNet-iOS-Instrucciones-v2.zip">Descargar instrucciones →</a></div>
+        <div className={styles.shortcutList}>
+          {SHORTCUTS.map((item) => <details className={styles.shortcutItem} key={item.id}><summary><div><span>{item.transport}</span><strong>{item.name}</strong><small>“Oye Siri, {item.siri}”</small></div><i>+</i></summary><div className={styles.shortcutBody}><p>{item.description}</p>{item.importUrl ? <a className={styles.shortcutButton} href={item.importUrl}>Importar en Atajos</a> : <button className={styles.shortcutButton} type="button" onClick={() => prepareShortcut(item)}>Preparar en Atajos</button>}</div></details>)}
         </div>
         {shortcutStatus ? <p className={styles.shortcutStatus} role="status">{shortcutStatus}</p> : null}
-        <p className={styles.shortcutFootnote}>
-          Este kit público contiene únicamente atajos genéricos. Los atajos ligados a equipos, IPs, perfiles térmicos u otras configuraciones personales se distribuyen por separado.
-        </p>
-      </section>
-
-      <section className={styles.capabilities}>
-        <p className={styles.eyebrow}>UNA SOLA EXPERIENCIA</p>
-        <h2>Preparado para control móvil.</h2>
-        <div className={styles.capabilityGrid}>
-          <span>Nodos y estado</span>
-          <span>RelNet Console</span>
-          <span>Admin</span>
-          <span>Atajos y Siri</span>
-          <span>Control por API</span>
-          <span>Terminal multiplataforma</span>
-        </div>
+        <p className={styles.shortcutFootnote}>El kit público contiene atajos genéricos. Configuraciones ligadas a equipos, IPs u otros datos personales se distribuyen por separado.</p>
       </section>
     </main>
   );

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
+import { AppShell } from '@/components/shell/AppShell';
 import './globals.css';
 
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-sans' });
@@ -24,26 +25,31 @@ export const metadata: Metadata = {
   }
 };
 
-export const viewport: Viewport = { themeColor: '#175CFF' };
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f5f7fb' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b1020' }
+  ]
+};
+
+const themeBootstrap = `(() => {
+  try {
+    const stored = localStorage.getItem('relnet-theme');
+    const mode = stored === 'light' || stored === 'dark' ? stored : 'system';
+    const resolved = mode === 'system'
+      ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : mode;
+    document.documentElement.dataset.theme = resolved;
+    document.documentElement.dataset.themeMode = mode;
+  } catch (_) {}
+})();`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{ __html: themeBootstrap }} /></head>
       <body className={manrope.variable}>
-        {children}
-        <footer className="siteLegalFooter">
-          <div className="siteLegalFooterInner">
-            <div className="siteLegalBrand">
-              <strong>RelNet</strong>
-              <span>by ReLead</span>
-            </div>
-            <span>© {new Date().getFullYear()} ReLead</span>
-            <nav aria-label="Enlaces legales">
-              <a href="/privacy">Privacidad</a>
-              <a href="/terms">Términos</a>
-            </nav>
-          </div>
-        </footer>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );

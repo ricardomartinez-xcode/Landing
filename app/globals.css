@@ -1,84 +1,76 @@
-:root {
-  --bg: #fbfbff;
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  --app-bg: #f5f7fb;
+  --sidebar-bg: #ffffff;
   --surface: #ffffff;
-  --ink: #101939;
-  --muted: #65708c;
-  --line: rgba(91, 100, 155, 0.15);
-  --brand: #1767ee;
-  --purple: #7445ef;
-  --aqua: #16cfe1;
+  --surface-raised: #ffffff;
+  --surface-subtle: #f0f3f8;
+  --surface-strong: #e8edf5;
+  --text: #172033;
+  --text-muted: #5e6a7e;
+  --text-faint: #8994a7;
+  --border: #dce2eb;
+  --border-strong: #c4ccd9;
+  --accent: #6256e8;
+  --accent-strong: #4f46d2;
+  --accent-soft: #eceafd;
+  --accent-border: #c9c4f7;
+  --cyan: #0d91a7;
+  --success: #15845d;
+  --success-soft: #def4ea;
+  --warning: #aa6f09;
+  --danger: #b8424c;
+  --focus: rgba(98, 86, 232, .2);
+  --shadow: 0 12px 30px rgba(27, 39, 68, .08);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --app-bg: #0b1020;
+  --sidebar-bg: #0d1426;
+  --surface: #11192b;
+  --surface-raised: #151f33;
+  --surface-subtle: #10182a;
+  --surface-strong: #1b263b;
+  --text: #e8edf7;
+  --text-muted: #a0abc0;
+  --text-faint: #6f7c93;
+  --border: #26334a;
+  --border-strong: #35445e;
+  --accent: #8b82ff;
+  --accent-strong: #a79fff;
+  --accent-soft: #201f42;
+  --accent-border: #46417e;
+  --cyan: #54cada;
+  --success: #45c99a;
+  --success-soft: rgba(69, 201, 154, .12);
+  --warning: #e1ad4a;
+  --danger: #ef7f87;
+  --focus: rgba(139, 130, 255, .24);
+  --shadow: 0 16px 40px rgba(0, 0, 0, .24);
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; background: var(--bg); }
+html { min-width: 320px; scroll-behavior: smooth; background: var(--app-bg); }
 body {
   margin: 0;
   min-width: 320px;
-  background:
-    radial-gradient(circle at 92% 8%, rgba(116, 69, 239, 0.10), transparent 27rem),
-    radial-gradient(circle at 8% 4%, rgba(22, 207, 225, 0.08), transparent 24rem),
-    linear-gradient(180deg, #ffffff 0%, #fbfaff 58%, #f6f2ff 100%);
-  color: var(--ink);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  background: var(--app-bg);
+  color: var(--text);
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 a { color: inherit; text-decoration: none; }
-button, a { -webkit-tap-highlight-color: transparent; }
+button, input, select, textarea { font: inherit; }
+button, a, select { -webkit-tap-highlight-color: transparent; }
 img, picture, video, canvas, svg { display: block; max-width: 100%; }
-::selection { color: #101939; background: rgba(116, 69, 239, 0.18); }
+::selection { color: var(--text); background: var(--accent-soft); }
+:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus); }
 
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 650ms ease, transform 650ms ease; }
+.reveal { opacity: 0; transform: translateY(12px); transition: opacity 420ms ease, transform 420ms ease; }
 .revealVisible { opacity: 1; transform: translateY(0); }
-
-.siteLegalFooter {
-  border-top: 1px solid rgba(91, 100, 155, 0.12);
-  background: rgba(255, 255, 255, 0.88);
-}
-
-.siteLegalFooterInner {
-  width: min(1180px, calc(100% - 40px));
-  min-height: 82px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  align-items: center;
-  gap: 28px;
-  color: #78819a;
-  font-size: 0.76rem;
-}
-
-.siteLegalBrand {
-  display: flex;
-  align-items: baseline;
-  gap: 7px;
-}
-
-.siteLegalBrand strong {
-  color: #dce7f4;
-  font-size: 0.88rem;
-  letter-spacing: -0.035em;
-}
-
-.siteLegalBrand span {
-  color: #7a7397;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.siteLegalFooter nav { display: flex; flex-wrap: wrap; gap: 18px; }
-.siteLegalFooter a { color: #65708c; transition: color 180ms ease; }
-.siteLegalFooter a:hover, .siteLegalFooter a:focus-visible { color: #7445ef; }
-
-@media (max-width: 640px) {
-  .siteLegalFooterInner {
-    min-height: auto;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 24px 0;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -90,6 +82,3 @@ img, picture, video, canvas, svg { display: block; max-width: 100%; }
   }
   .reveal, .revealVisible { opacity: 1; transform: none; }
 }
-
-/* RelNet staging footer contrast correction */
-.siteLegalBrand strong { color: #243559; }
