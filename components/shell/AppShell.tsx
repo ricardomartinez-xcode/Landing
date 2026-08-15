@@ -22,7 +22,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <aside className={`${styles.sidebar} ${mobileOpen ? styles.sidebarOpen : ''}`} aria-label="Navegación de RelNet">
         <div className={styles.brandRow}>
           <Link href="/" className={styles.brand} onClick={() => setMobileOpen(false)} aria-label="RelNet, inicio">
-            <Image src="/relnet-brand.webp" alt="RelNet" width={168} height={81} priority />
+            <Image className={styles.brandWordmark} src="/relnet-brand-transparent.png" alt="RelNet" width={420} height={185} priority />
+            <Image className={styles.brandMark} src="/relnet-mark-transparent.png" alt="" aria-hidden="true" width={192} height={212} priority />
           </Link>
           <button className={styles.mobileClose} type="button" onClick={() => setMobileOpen(false)} aria-label="Cerrar navegación">×</button>
         </div>
