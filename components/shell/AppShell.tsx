@@ -53,8 +53,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         <div className={styles.sidebarFooter}>
           <span className={styles.sidebarCaption}>Superficies operativas</span>
-          <a href={consoleUrl} className={styles.externalLink}>Console <span aria-hidden="true">↗</span></a>
-          <a href={adminUrl} className={styles.externalLink}>Admin <span aria-hidden="true">↗</span></a>
+          <a href={consoleUrl} className={styles.externalLink} aria-label="Abrir Console">
+            <span className={styles.externalLabel}>Console</span><span className={styles.externalGlyph} aria-hidden="true">↗</span>
+          </a>
+          <a href={adminUrl} className={styles.externalLink} aria-label="Abrir Admin">
+            <span className={styles.externalLabel}>Admin</span><span className={styles.externalGlyph} aria-hidden="true">↗</span>
+          </a>
         </div>
       </aside>
 

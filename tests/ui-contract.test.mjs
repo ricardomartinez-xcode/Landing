@@ -66,6 +66,21 @@ test('primary navigation uses semantic SVG icons instead of text abbreviations',
   assert.match(icons, /aria-hidden/);
 });
 
+test('sidebar CSS defines compact desktop, tablet rail and keyboard focus contracts', () => {
+  const css = read('components/shell/AppShell.module.css');
+  const shell = read('components/shell/AppShell.tsx');
+  assert.match(css, /\.sidebar\s*\{[^}]*width:\s*232px/s);
+  assert.match(css, /\.workspace\s*\{[^}]*margin-left:\s*232px/s);
+  assert.match(css, /max-width:\s*1080px[^}]*min-width:\s*841px/s);
+  assert.match(css, /width:\s*76px/);
+  assert.match(css, /margin-left:\s*76px/);
+  assert.match(css, /\.brandMark\s*\{[^}]*display:\s*none/s);
+  assert.match(css, /focus-visible/);
+  assert.match(css, /prefers-reduced-motion/);
+  assert.match(shell, /aria-label=\"Abrir Console\"/);
+  assert.match(shell, /aria-label=\"Abrir Admin\"/);
+});
+
 test('theme control supports system, light and dark modes', () => {
   const themePath = join(root, 'components/theme/ThemeControl.tsx');
   assert.equal(existsSync(themePath), true, 'ThemeControl must exist');
