@@ -28,10 +28,10 @@ export default function HomePage() {
           <h1>Un plano de control para todos tus equipos.</h1>
           <p>RelNet conecta nodos dentro de una red privada y concentra operación, políticas, telemetría y acceso remoto sin mezclar la operación diaria con la administración del sistema.</p>
           <div className={styles.actions}>
-            <a href={consoleUrl} className={styles.primaryAction}>Abrir Console ↗</a>
-            <a href={adminUrl} className={styles.secondaryAction}>Abrir Admin ↗</a>
-            <Link href="/install" className={styles.secondaryAction}>Instalación</Link>
-            <Link href="/FAQs" className={styles.ghostAction}>FAQs</Link>
+            <a href={consoleUrl} className={`${styles.primaryAction} ${styles.heroConsoleAction}`}>Abrir Console ↗</a>
+            <a href={adminUrl} className={`${styles.secondaryAction} ${styles.heroAdminAction}`}>Abrir Admin ↗</a>
+            <Link href="/install" className={`${styles.secondaryAction} ${styles.heroInstallAction}`}>Instalación</Link>
+            <Link href="/FAQs" className={`${styles.ghostAction} ${styles.heroFaqAction}`}>FAQs</Link>
           </div>
         </div>
         <aside className={styles.systemPanel} aria-label="Resumen de arquitectura RelNet">
@@ -80,7 +80,7 @@ export default function HomePage() {
         <div className={styles.securityList}>{security.map(item => <div key={item}><span>✓</span><strong>{item}</strong></div>)}</div>
       </section>
 
-      <section className={styles.getStarted}><div><span className={styles.kicker}>Primeros pasos</span><h2>Instala, vincula y después opera.</h2><p>Elige la experiencia correcta para tu dispositivo desde el workspace de instalación.</p></div><div className={styles.actions}><Link href="/install" className={styles.primaryAction}>Abrir instalación</Link><Link href="/FAQs" className={styles.secondaryAction}>Resolver una duda</Link></div></section>
+      <section className={styles.getStarted}><div><span className={styles.kicker}>Primeros pasos</span><h2>Instala, vincula y después opera.</h2><p>Elige la experiencia correcta para tu dispositivo desde el workspace de instalación.</p></div><div className={styles.actions}><Link href="/install" className={`${styles.primaryAction} ${styles.installAction}`}>Abrir instalación</Link><Link href="/FAQs" className={styles.secondaryAction}>Resolver una duda</Link></div></section>
     </main>
   );
 }
