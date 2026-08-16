@@ -3,8 +3,8 @@ import Link from 'next/link';
 import styles from './page.module.css';
 import { SectionReveal } from '@/components/SectionReveal';
 
-const consoleUrl = 'https://api.relead.com.mx/console';
-const adminUrl = 'https://api.relead.com.mx/admin';
+const consoleUrl = 'https://control.relead.com.mx/console';
+const adminUrl = 'https://control.relead.com.mx/admin';
 
 const capabilities = [
   {
