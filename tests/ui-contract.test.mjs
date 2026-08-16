@@ -5,7 +5,23 @@ import { join } from 'node:path';
 
 const root = process.cwd();
 const read = (path) => readFileSync(join(root, path), 'utf8');
+const pngHasDirectAlpha = (path) => {
+  const bytes = readFileSync(join(root, path));
+  assert.equal(bytes.subarray(1, 4).toString(), 'PNG');
+  return bytes[25] === 4 || bytes[25] === 6;
+};
 const primaryRoutes = ['/', '/install', '/FAQs', '/privacy', '/terms'];
+
+test('sidebar uses optimized RelNet brand assets with real alpha transparency', () => {
+  const shell = read('components/shell/AppShell.tsx');
+  for (const asset of ['public/relnet-brand-transparent.png', 'public/relnet-mark-transparent.png']) {
+    assert.equal(existsSync(join(root, asset)), true, `${asset} must exist`);
+    assert.equal(pngHasDirectAlpha(asset), true, `${asset} must preserve alpha`);
+  }
+  assert.match(shell, /\/relnet-brand-transparent\.png/);
+  assert.match(shell, /\/relnet-mark-transparent\.png/);
+  assert.doesNotMatch(shell, /\/relnet-brand\.webp/);
+});
 
 test('exposes the canonical FAQs page', () => {
   assert.equal(existsSync(join(root, 'app/FAQs/page.tsx')), true, 'app/FAQs/page.tsx must exist');
@@ -33,7 +49,36 @@ test('global app shell includes every primary route and accessible active naviga
   for (const route of primaryRoutes) assert.ok(navigation.includes(`'${route}'`) || navigation.includes(`"${route}"`), `primary navigation must reference ${route}`);
   assert.match(shell, /primaryNav/);
   assert.match(shell, /aria-current/);
-  assert.match(shell, /relnet-brand\.(?:webp|png)/);
+  assert.match(shell, /relnet-brand(?:-transparent)?\.(?:webp|png)/);
+});
+
+test('primary navigation uses semantic SVG icons instead of text abbreviations', () => {
+  const shell = read('components/shell/AppShell.tsx');
+  const navigation = read('components/shell/nav.ts');
+  assert.equal(existsSync(join(root, 'components/shell/NavIcon.tsx')), true, 'NavIcon must exist');
+  const icons = read('components/shell/NavIcon.tsx');
+  for (const icon of ['home', 'install', 'help', 'privacy', 'terms']) {
+    assert.ok(navigation.includes(`icon: '${icon}'`) || navigation.includes(`icon: \"${icon}\"`), `navigation must map ${icon}`);
+  }
+  assert.doesNotMatch(navigation, /short:\s*['"]/);
+  assert.match(shell, /<NavIcon/);
+  assert.match(icons, /<svg/);
+  assert.match(icons, /aria-hidden/);
+});
+
+test('sidebar CSS defines compact desktop, tablet rail and keyboard focus contracts', () => {
+  const css = read('components/shell/AppShell.module.css');
+  const shell = read('components/shell/AppShell.tsx');
+  assert.match(css, /\.sidebar\s*\{[^}]*width:\s*232px/s);
+  assert.match(css, /\.workspace\s*\{[^}]*margin-left:\s*232px/s);
+  assert.match(css, /max-width:\s*1080px[^}]*min-width:\s*841px/s);
+  assert.match(css, /width:\s*76px/);
+  assert.match(css, /margin-left:\s*76px/);
+  assert.match(css, /\.brandMark\s*\{[^}]*display:\s*none/s);
+  assert.match(css, /focus-visible/);
+  assert.match(css, /prefers-reduced-motion/);
+  assert.match(shell, /aria-label=\"Abrir Console\"/);
+  assert.match(shell, /aria-label=\"Abrir Admin\"/);
 });
 
 test('theme control supports system, light and dark modes', () => {

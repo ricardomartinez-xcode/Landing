@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ThemeControl } from '@/components/theme/ThemeControl';
+import { NavIcon } from './NavIcon';
 import { primaryNav, routeLabel } from './nav';
 import styles from './AppShell.module.css';
 
@@ -22,7 +23,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <aside className={`${styles.sidebar} ${mobileOpen ? styles.sidebarOpen : ''}`} aria-label="Navegación de RelNet">
         <div className={styles.brandRow}>
           <Link href="/" className={styles.brand} onClick={() => setMobileOpen(false)} aria-label="RelNet, inicio">
-            <Image src="/relnet-brand.webp" alt="RelNet" width={168} height={81} priority />
+            <Image className={styles.brandWordmark} src="/relnet-brand-transparent.png" alt="RelNet" width={420} height={185} priority />
+            <Image className={styles.brandMark} src="/relnet-mark-transparent.png" alt="" aria-hidden="true" width={192} height={212} priority />
           </Link>
           <button className={styles.mobileClose} type="button" onClick={() => setMobileOpen(false)} aria-label="Cerrar navegación">×</button>
         </div>
@@ -41,7 +43,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               aria-current={isActive(item.href) ? 'page' : undefined}
               onClick={() => setMobileOpen(false)}
             >
-              <span className={styles.navGlyph} aria-hidden="true">{item.short}</span>
+              <span className={styles.navGlyph} aria-hidden="true">
+                <NavIcon name={item.icon} />
+              </span>
               <span>{item.label}</span>
             </Link>
           ))}
@@ -49,8 +53,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         <div className={styles.sidebarFooter}>
           <span className={styles.sidebarCaption}>Superficies operativas</span>
-          <a href={consoleUrl} className={styles.externalLink}>Console <span aria-hidden="true">↗</span></a>
-          <a href={adminUrl} className={styles.externalLink}>Admin <span aria-hidden="true">↗</span></a>
+          <a href={consoleUrl} className={styles.externalLink} aria-label="Abrir Console">
+            <span className={styles.externalLabel}>Console</span><span className={styles.externalGlyph} aria-hidden="true">↗</span>
+          </a>
+          <a href={adminUrl} className={styles.externalLink} aria-label="Abrir Admin">
+            <span className={styles.externalLabel}>Admin</span><span className={styles.externalGlyph} aria-hidden="true">↗</span>
+          </a>
         </div>
       </aside>
 
