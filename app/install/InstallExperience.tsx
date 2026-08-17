@@ -65,7 +65,7 @@ const instructions: Record<Platform, { title: string; body: string[] }> = {
 };
 
 export function InstallExperience() {
-  const automatic = useMemo(detectedPlatform, []);
+  const automatic = useMemo(() => detectedPlatform(), []);
   const [selected, setSelected] = useState<Platform | 'auto'>('auto');
   const platform = selected === 'auto' ? automatic : selected;
   const current = instructions[platform];
