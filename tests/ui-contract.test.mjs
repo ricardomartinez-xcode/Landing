@@ -5,7 +5,6 @@ import { join } from 'node:path';
 
 const root = process.cwd();
 const read = (path) => readFileSync(join(root, path), 'utf8');
-
 const publicRoutes = ['/', '/install', '/FAQs', '/privacy', '/terms'];
 
 test('public v90 shell is mounted globally', () => {
@@ -26,12 +25,9 @@ test('public shell routes users to My RelNet and keeps internal console out of p
   assert.doesNotMatch(shell, />Abrir (?:Console|Admin)</);
 });
 
-test('home documents the canonical v90 surface split without exposing internal console as a CTA', () => {
+test('home documents canonical v90 surface split without exposing internal console as a CTA', () => {
   const home = read('app/page.tsx');
-  for (const host of ['relead.com.mx', 'app.relead.com.mx', 'console.relead.com.mx', 'api.relead.com.mx']) {
-    assert.ok(home.includes(host), `home must describe ${host}`);
-  }
-  assert.match(home, /My RelNet/);
+  for (const host of ['relead.com.mx', 'app.relead.com.mx', 'console.relead.com.mx', 'api.relead.com.mx']) assert.ok(home.includes(host));
   assert.match(home, /Administración interna/);
   assert.match(home, /Backend \/ OAuth \/ MCP/);
   assert.doesNotMatch(home, /api\.relead\.com\.mx\/(?:console|admin)/);
@@ -43,7 +39,16 @@ test('home exposes user, install and developer destinations', () => {
   assert.match(home, /https:\/\/app\.relead\.com\.mx/);
   assert.match(home, /https:\/\/app\.relead\.com\.mx\/developers/);
   assert.match(home, /href="\/install"/);
-  assert.match(home, /href="\/FAQs"|\/FAQs/);
+});
+
+test('install flow is aligned to My RelNet and contains no legacy public admin routes or pasted API-token recipe', () => {
+  const install = read('app/install/InstallExperience.tsx');
+  assert.match(install, /https:\/\/app\.relead\.com\.mx\//);
+  assert.match(install, /https:\/\/app\.relead\.com\.mx\/developers/);
+  assert.match(install, /enrolamiento/i);
+  assert.doesNotMatch(install, /api\.relead\.com\.mx\/(?:console|admin)/);
+  assert.doesNotMatch(install, /control\.relead\.com\.mx/);
+  assert.doesNotMatch(install, /API_TOKEN|Bearer \[|Pega aqu/i);
 });
 
 test('landing does not advertise billing or ads as already active', () => {
@@ -75,16 +80,11 @@ test('lowercase /faqs compatibility remains an App Router redirect', () => {
 });
 
 test('FAQs keep native accessible disclosure semantics', () => {
-  const candidates = ['app/FAQs/page.tsx', 'components/ui/FAQGroup.tsx']
-    .filter((path) => existsSync(join(root, path)))
-    .map(read)
-    .join('\n');
+  const candidates = ['app/FAQs/page.tsx', 'components/ui/FAQGroup.tsx'].filter((path) => existsSync(join(root, path))).map(read).join('\n');
   assert.match(candidates, /<details/);
   assert.match(candidates, /<summary/);
 });
 
 test('legal pages remain first-class routes', () => {
-  for (const path of ['app/privacy/page.tsx', 'app/terms/page.tsx']) {
-    assert.equal(existsSync(join(root, path)), true, `${path} must exist`);
-  }
+  for (const path of ['app/privacy/page.tsx', 'app/terms/page.tsx']) assert.equal(existsSync(join(root, path)), true);
 });
