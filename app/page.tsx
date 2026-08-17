@@ -1,357 +1,228 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import styles from './page.module.css';
-import { SectionReveal } from '@/components/SectionReveal';
 
-const consoleUrl = 'https://control.relead.com.mx/console';
-const adminUrl = 'https://control.relead.com.mx/admin';
+const consoleUrl = 'https://console.relead.com.mx/console/';
+const adminUrl = 'https://console.relead.com.mx/admin/';
+const registerUrl = 'https://console.relead.com.mx/register';
+const docsUrl = 'https://api.relead.com.mx/docs';
 
-const capabilities = [
-  {
-    number: '01',
-    title: 'Control remoto centralizado',
-    body: 'Administra tus equipos desde un solo lugar, con comandos remotos, terminal interactiva persistente y acciones operativas por nodo.',
-    tag: 'Control'
-  },
-  {
-    number: '02',
-    title: 'Red privada RelNet Mesh',
-    body: 'Conecta Windows, Linux y otros equipos dentro de una red privada propia de RelNet para comunicar nodos sin exponer la operación directamente a Internet.',
-    tag: 'Mesh'
-  },
-  {
-    number: '03',
-    title: 'Archivos y recursos compartidos',
-    body: 'Transfiere archivos entre nodos y habilita carpetas o recursos compartidos para trabajar como si los equipos estuvieran en la misma LAN.',
-    tag: 'Files'
-  },
-  {
-    number: '04',
-    title: 'Nodos de salida',
-    body: 'Enruta tráfico a Internet a través de un nodo autorizado cuando necesitas una salida remota controlada desde otra ubicación.',
-    tag: 'Exit'
-  },
-  {
-    number: '05',
-    title: 'Telemetría y servicios',
-    body: 'Consulta estado, memoria, almacenamiento, uptime y servicios del sistema para detectar y resolver incidencias desde el plano central.',
-    tag: 'Health'
-  },
-  {
-    number: '06',
-    title: 'Automatización remota',
-    body: 'Los nodos compatibles pueden exponer automatización de escritorio, Chrome remoto y flujos web para tareas que van más allá de una terminal.',
-    tag: 'Automation'
-  },
-  {
-    number: '07',
-    title: 'Políticas y acceso',
-    body: 'Define quién puede enlazar, operar o utilizar cada recurso. RelNet separa vinculación, aprobación, reautenticación y permisos.',
-    tag: 'Policy'
-  },
-  {
-    number: '08',
-    title: 'Identidad por nodo',
-    body: 'Cada equipo se incorpora con identidad Ed25519, aprobación explícita y capacidades declaradas para mantener control sobre lo que puede operar.',
-    tag: 'Identity'
-  },
-  {
-    number: '09',
-    title: 'Operación protegida',
-    body: 'RelNet incorpora rotación de credenciales, actualizaciones firmadas y leases de comandos para reducir el riesgo de acciones remotas no autorizadas.',
-    tag: 'Security'
-  }
+const features = [
+  ['Mesh privado', 'Conecta nodos Windows, Linux y servicios sin publicar la red interna.'],
+  ['SSH con identidad', 'Sesiones remotas ligadas a identidad, políticas, reautenticación y auditoría.'],
+  ['Exit nodes', 'Salida a Internet controlada por política, con diagnóstico de rutas y salud.'],
+  ['MCP + API', 'Cada usuario puede operar capacidades autorizadas mediante API y MCP.'],
+  ['RelDrop + RelShare', 'Transferencia y recursos compartidos dentro del mismo plano privado.'],
+  ['Rescue', 'Recuperación mediante staging, promoción controlada y registro de cada operación.'],
 ];
 
-const steps = [
+const plans = [
   {
-    number: '01',
-    title: 'Instala el nodo',
-    body: 'Añade RelNet al equipo que quieras incorporar a tu red privada.'
+    name: 'Personal',
+    price: '$0',
+    cadence: 'para empezar',
+    description: 'Para una red privada personal y pocos nodos.',
+    items: ['RelNet Console', 'Nodos personales', 'SSH seguro', 'Métricas esenciales'],
+    cta: 'Crear cuenta',
+    href: registerUrl,
   },
   {
-    number: '02',
-    title: 'Vincula y aprueba',
-    body: 'El nodo obtiene una identidad propia y entra a tu entorno únicamente después de ser autorizado.'
+    name: 'Pro',
+    price: process.env.NEXT_PUBLIC_PLAN_PRO_PRICE || 'Ver precio',
+    cadence: 'facturación mensual',
+    description: 'Para operar infraestructura, automatización y acceso remoto.',
+    items: ['Todo en Personal', 'MCP y API', 'Exit nodes', 'RelDrop / RelShare', 'Terminal remota'],
+    cta: 'Elegir Pro',
+    href: 'https://console.relead.com.mx/billing/checkout?plan=pro',
+    featured: true,
   },
   {
-    number: '03',
-    title: 'Opera desde Console',
-    body: 'Administra conectividad, políticas, sesiones, recursos y telemetría desde una interfaz central.'
-  }
+    name: 'Business',
+    price: process.env.NEXT_PUBLIC_PLAN_BUSINESS_PRICE || 'Cotizar',
+    cadence: 'por organización �
+    description: 'Control, recuperación, políticas y operación multiusuario.',
+    items: ['Todo en Pro', 'Roles y políticas', 'Rescue + staging', 'Auditoría', 'Controllers HA'],
+    cta: 'Abrir facturación',
+    href: 'https://console.relead.com.mx/billing?plan=business',
+  },
 ];
 
-const securityPoints = [
-  'Identidad Ed25519 por nodo',
-  'Aprobación explícita de dispositivos',
-  'Capacidades y políticas por nodo',
-  'Actualizaciones firmadas',
-  'Rotación de credenciales',
-  'Leases para comandos remotos'
+const ads = [
+  {
+    eyebrow: 'Patrocinado',
+    title: process.env.NEXT_PUBLIC_AD_1_TITLE || 'Infraestructura que viaja contigo',
+    body: process.env.NEXT_PUBLIC_AD_1_BODY || 'Espacio publicitario integrado con etiqueta visible y sin confundirse con navegación del producto.',
+    href: process.env.NEXT_PUBLIC_AD_1_URL || '#planes',
+  },
+  {
+    eyebrow: 'Patrocinado',
+    title: process.env.NEXT_PUBLIC_AD_2_TITLE || 'Acceso remoto, sin abrir tu LAN',
+    body: process.env.NEXT_PUBLIC_AD_2_BODY || 'Ubicación reservada para campañas compatibles con el contexto público de ReLead.',
+    href: process.env.NEXT_PUBLIC_AD_2_URL || '#producto',
+  },
 ];
 
 export default function HomePage() {
   return (
     <main className={styles.page}>
       <nav className={styles.nav} aria-label="Navegación principal">
-        <div className={`${styles.shell} ${styles.navInner}`}>
-          <Link href="#inicio" className={styles.brand} aria-label="Ir al inicio de RelNet">
-            <Image src="/relnet-brand.png" alt="RelNet" width={1951} height={892} priority className={styles.brandLogo} />
-          </Link>
-
-          <div className={styles.navLinks}>
-            <Link href="#producto">Producto</Link>
-            <Link href="#capacidades">Capacidades</Link>
-            <Link href="#seguridad">Seguridad</Link>
-            <a href={adminUrl} className={styles.navAdmin}>Admin</a>
-            <a href={consoleUrl} className={styles.navCta}>Abrir Console <span aria-hidden="true">↗</span></a>
+        <div className={styles.shell}>
+          <div className={styles.navInner}>
+            <a className={styles.brand} href="#inicio" aria-label="ReLead RelNet">
+              <Image src="/relnet-brand.png" alt="ReLead RelNet" width={1951} height={892} priority />
+            </a>
+            <div className={styles.navLinks}>
+              <a href="#producto">Producto</a>
+              <a href="#capacidades">Capacidades</a>
+              <a href="#planes">Planes</a>
+              <a href="#seguridad">Seguridad</a>
+              <a href={adminUrl} className={styles.navAdmin}>Admin</a>
+              <a href={consoleUrl} className={styles.navCta}>RelNet Console <span>↗</span></a>
+            </div>
           </div>
         </div>
       </nav>
 
       <section className={styles.hero} id="inicio">
         <div className={`${styles.shell} ${styles.heroGrid}`}>
-          <SectionReveal className={styles.heroCopy}>
-            <span className={styles.eyebrow}>Red privada · control remoto · infraestructura</span>
-            <h1>Tu red privada.<br /><span>Tus equipos bajo control.</span></h1>
+          <div className={styles.heroCopy}>
+            <span className={styles.eyebrow}>ReLead » RelNet v90</span>
+            <h1>Tu red privada.<br /><span>Una consola para operarla.</span></h1>
             <p>
-              RelNet conecta tus equipos en una red privada y te da un punto central para administrarlos, mover archivos, aplicar políticas y operar infraestructura remota con menos fricción.
+              Conecta equipos, identidades y servicios en un plano privado; abre terminales,
+              SSH, archivos, automatización y salida a Internet sin mezclar la operación diaria
+              con la administración de la plataforma.
             </p>
             <div className={styles.actions}>
-              <a href={consoleUrl} className={styles.buttonPrimary}>Abrir RelNet Console <span aria-hidden="true">↗</span></a>
-              <a href={adminUrl} className={styles.buttonSecondary}>Administración</a>
+              <a className={styles.buttonPrimary} href={registerUrl}>Crear cuenta <span>→</span></a>
+              <a className={styles.buttonSecondary} href={consoleUrl}>Abrir RelNet Console</a>
             </div>
-            <div className={styles.heroNotes} aria-label="Características principales de RelNet">
-              <span>Windows + Linux</span>
-              <span>Mesh privado</span>
-              <span>Control centralizado</span>
+            <div className={styles.heroMeta}>
+              <span>OAuth / OTP</span><span>SSH identity</span><span>IKEv2 + mesh</span><span>MCP + API</span>
             </div>
-          </SectionReveal>
+          </div>
 
-          <SectionReveal className={styles.heroVisual} delay={100}>
-            <div className={styles.networkWindow} aria-label="Representación de una red privada RelNet">
-              <div className={styles.windowTop}>
-                <div className={styles.windowBrand}>
-                  <span className={styles.windowDot} /> RelNet Console
+          <div className={styles.controlVisual} aria-label="Vista conceptual de RelNet Console">
+            <div className={styles.windowChrome}>
+              <div className={styles.windowDots}><i/><i/><i/></div>
+              <span>console.relead.com.mx</span>
+              <b>Connected</b>
+            </div>
+            <div className={styles.mockApp}>
+              <aside className={styles.mockSidebar}>
+                <strong>R</strong>
+                {['b��','⇈','☗",'₱','⁁','☹'].map((icon) => <span key={icon}>{icon}</span>)}
+              </aside>
+              <div className={styles.mockMain}>
+                <div className={styles.mockHeader}>
+                  <div><small>RELNET CONSOLE</small><h3>Control plane</h3></div>
+                  <span className={styles.livePill}>● Network healthy</span>
                 </div>
-                <span className={styles.liveBadge}>Private network</span>
-              </div>
-
-              <div className={styles.networkCanvas}>
-                <div className={`${styles.nodeCard} ${styles.nodeOne}`}>
-                  <div className={styles.nodeIcon}>W</div>
-                  <div>
-                    <span>Latitude</span>
-                    <small>Windows node</small>
-                  </div>
-                  <i className={styles.onlineDot} aria-label="Disponible" />
+                <div className={styles.statGrid}>
+                  <div><small>Nodos</small><strong>04</strong><span>3 online · 1 attention</span></div>
+                  <div><small>Rutas</small><strong>12</strong><span>mesh + exit</span></div>
+                  <div><small>Sesiones</small><strong>03</strong><span>identity bound</span></div>
                 </div>
-
-                <div className={`${styles.nodeCard} ${styles.nodeTwo}`}>
-                  <div className={`${styles.nodeIcon} ${styles.nodeIconDark}`}>L</div>
-                  <div>
-                    <span>Server</span>
-                    <small>Linux node</small>
-                  </div>
-                  <i className={styles.onlineDot} aria-label="Disponible" />
-                </div>
-
-                <div className={styles.coreNode}>
-                  <span className={styles.corePulse} />
-                  <strong>RelNet</strong>
-                  <small>Private mesh</small>
-                </div>
-
-                <div className={`${styles.nodeCard} ${styles.nodeThree}`}>
-                  <div className={`${styles.nodeIcon} ${styles.nodeIconRelay}`}>R</div>
-                  <div>
-                    <span>Relay</span>
-                    <small>Secure route</small>
-                  </div>
-                  <i className={styles.onlineDot} aria-label="Disponible" />
-                </div>
-
-                <span className={`${styles.linkLine} ${styles.lineOne}`} />
-                <span className={`${styles.linkLine} ${styles.lineTwo}`} />
-                <span className={`${styles.linkLine} ${styles.lineThree}`} />
-              </div>
-
-              <div className={styles.networkFooter}>
-                <div>
-                  <span>Acceso</span>
-                  <strong>Por políticas</strong>
-                </div>
-                <div>
-                  <span>Operación</span>
-                  <strong>Centralizada</strong>
-                </div>
-                <div>
-                  <span>Estado</span>
-                  <strong className={styles.healthy}>Protegido</strong>
+                <div className={styles.terminal}>
+                  <div><span>relead</span><b>terminal</b><em>ssh » elevated</em></div>
+                  <pre>{`$ relnet status\nmesh      connected\nidentity  verified\nroute     exit-node\n$ _`}</pre>
                 </div>
               </div>
             </div>
-          </SectionReveal>
+          </div>
         </div>
       </section>
 
-      <section className={styles.productIntro} id="producto">
-        <div className={`${styles.shell} ${styles.productIntroGrid}`}>
-          <SectionReveal>
-            <span className={styles.eyebrow}>Qué es RelNet</span>
-            <h2>Una capa privada entre tú y todos tus equipos.</h2>
-          </SectionReveal>
-          <SectionReveal delay={90}>
-            <p>
-              En lugar de administrar cada equipo de forma aislada, RelNet los reúne dentro de un mismo plano de control. Desde ahí puedes decidir qué se conecta, qué puede hacer cada nodo y cómo circulan los recursos entre ellos.
-            </p>
-          </SectionReveal>
+      <section className={styles.adStrip} aria-label="Anuncios">
+        <div className={`${styles.shell} ${styles.adGrid}`}>
+          {ads.map((ad) => (
+            <a key={ad.title} className={styles.adCard} href={ad.href} rel="sponsored">
+              <span>{ad.eyebrow}</span>
+              <strong>{ad.title}</strong>
+              <p>{ad.body}</p>
+              <b>Conocer más ↗</b>
+            </a>
+          ))}
         </div>
       </section>
 
-      <section className={styles.capabilitiesSection} id="capacidades">
+      <section className={styles.product} id="producto">
+        <div className={`${styles.shell} ${styles.sectionGrid}`}>
+          <div>
+            <span className={styles.eyebrow}>Un solo sistema</span>
+            <h2>RelNet Console para usuarios.<br/>Admin para la plataforma.</h2>
+          </div>
+          <p>
+            <strong>Console</strong> es la superficie diaria para nodos, red, terminal, SSH,
+            archivos, MCP y API. <strong>Admin</strong> queda reservado para salud, releases,
+            staging, Rescue, controllers y recuperación. La API no necesita rutas gráficas.
+          </p>
+        </div>
+      </section>
+
+      <section className={styles.capabilities} id="capacidades">
         <div className={styles.shell}>
-          <SectionReveal className={styles.sectionHeader}>
-            <div>
-              <span className={styles.eyebrow}>Capacidades</span>
-              <h2>Una red que también sabe operar.</h2>
-            </div>
-            <p>Conectividad privada, administración remota, recursos compartidos y salida a Internet dentro de una misma experiencia.</p>
-          </SectionReveal>
-
-          <div className={styles.capabilityGrid}>
-            {capabilities.map((capability, index) => (
-              <SectionReveal key={capability.title} delay={(index % 3) * 70}>
-                <article className={styles.capabilityCard}>
-                  <div className={styles.capabilityTop}>
-                    <span>{capability.number}</span>
-                    <small>{capability.tag}</small>
-                  </div>
-                  <h3>{capability.title}</h3>
-                  <p>{capability.body}</p>
-                </article>
-              </SectionReveal>
+          <div className={styles.sectionHeader}>
+            <div><span className={styles.eyebrow}>Capacidades</span><h2>Una red que también sabe operar.</h2></div>
+            <p>Diseñada alrededor de identidad, políticas y conectividad verificable.</p>
+          </div>
+          <div className={styles.featureGrid}>
+            {features.map(([title, body], index) => (
+              <article className={styles.featureCard} key={title}>
+                <span>0{index + 1}</span><h3>{title}</h3><p>{body}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className={styles.controlSection}>
-        <div className={`${styles.shell} ${styles.controlGrid}`}>
-          <SectionReveal className={styles.controlCopy}>
-            <span className={styles.eyebrow}>Dos superficies, una sola plataforma</span>
-            <h2>Opera la red sin mezclarla con la administración del sistema.</h2>
-            <p>
-              RelNet separa el trabajo cotidiano sobre nodos del mantenimiento de la plataforma. Así cada interfaz mantiene un propósito claro y un nivel de acceso distinto.
-            </p>
-          </SectionReveal>
-
-          <div className={styles.accessGrid}>
-            <SectionReveal delay={80}>
-              <a href={consoleUrl} className={`${styles.accessCard} ${styles.consoleCard}`}>
-                <div className={styles.accessCardTop}>
-                  <span className={styles.accessLabel}>Operación diaria</span>
-                  <span aria-hidden="true">↗</span>
-                </div>
-                <h3>RelNet Console</h3>
-                <p>El centro para vincular, aprobar, reautenticar, pausar y operar nodos; crear políticas y revisar la telemetría de tu LAN privada.</p>
-                <ul>
-                  <li>Nodos y vinculaciones</li>
-                  <li>Políticas RelNet</li>
-                  <li>Sesiones y acciones remotas</li>
-                  <li>Telemetría de red</li>
-                </ul>
-                <strong>Ir a Console <span aria-hidden="true">→</span></strong>
-              </a>
-            </SectionReveal>
-
-            <SectionReveal delay={150}>
-              <a href={adminUrl} className={`${styles.accessCard} ${styles.adminCard}`}>
-                <div className={styles.accessCardTop}>
-                  <span className={styles.accessLabel}>Plataforma</span>
-                  <span aria-hidden="true">↗</span>
-                </div>
-                <h3>Admin</h3>
-                <p>El espacio reservado para recuperación del sistema, observabilidad, diagnóstico operativo y promoción controlada de versiones.</p>
-                <ul>
-                  <li>Salud y observabilidad</li>
-                  <li>Recuperación del sistema</li>
-                  <li>Releases y promociones</li>
-                  <li>Operación administrativa</li>
-                </ul>
-                <strong>Ir a Admin <span aria-hidden="true">→</span></strong>
-              </a>
-            </SectionReveal>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.stepsSection} id="como-funciona">
+      <section className={styles.pricing} id="planes">
         <div className={styles.shell}>
-          <SectionReveal className={styles.sectionHeader}>
-            <div>
-              <span className={styles.eyebrow}>Cómo funciona</span>
-              <h2>De equipo aislado a nodo administrado.</h2>
-            </div>
-            <p>La incorporación es intencional: instalar, autorizar y después operar.</p>
-          </SectionReveal>
-
-          <div className={styles.stepsGrid}>
-            {steps.map((step, index) => (
-              <SectionReveal key={step.title} delay={index * 90}>
-                <article className={styles.stepCard}>
-                  <span className={styles.stepNumber}>{step.number}</span>
-                  <div>
-                    <h3>{step.title}</h3>
-                    <p>{step.body}</p>
-                  </div>
-                </article>
-              </SectionReveal>
+          <div className={styles.sectionHeader}>
+            <div><span className={styles.eyebrow}>Planes y facturación</span><h2>Empieza pequeño. Escala sin cambiar de red.</h2></div>
+            <p>Checkout y portal de cliente viven detrás de Console; la facturación se desacopla del landing público.</p>
+          </div>
+          <div className={styles.planGrid}>
+            {plans.map((plan) => (
+              <article className={`${styles.planCard} ${plan.featured ? styles.planFeatured : ''}`} key={plan.name}>
+                {plan.featured && <span className={styles.recommended}>Recomendado</span>}
+                <div className={styles.planHead}><h3>{plan.name}</h3><p>{plan.description}</p></div>
+                <div className={styles.price}><strong>{plan.price}</strong><span>{plan.cadence}</span></div>
+                <ul>{plan.items.map((item) => <li key={item}>{item}</li>)}</ul>
+                <a href={plan.href} className={plan.featured ? styles.buttonPrimary : styles.buttonSecondary}>{plan.cta} <span>→</span></a>
+              </article>
             ))}
           </div>
+          <p className={styles.billingNote}>Pagos procesados por el proveedor de facturación configurado en ReLead. Los importes finales se confirman antes del cobro.</p>
         </div>
       </section>
 
-      <section className={styles.securitySection} id="seguridad">
+      <section className={styles.security} id="seguridad">
         <div className={`${styles.shell} ${styles.securityCard}`}>
-          <SectionReveal className={styles.securityCopy}>
-            <span className={styles.eyebrow}>Seguridad por diseño</span>
-            <h2>El acceso remoto empieza por saber qué nodo es cuál.</h2>
-            <p>
-              RelNet trata cada equipo como una identidad independiente y conserva la aprobación, las políticas y la operación como pasos separados. Con identidad Ed25519, actualizaciones firmadas y leases de comandos, conectar un nodo no equivale a darle acceso irrestricto.
-            </p>
-          </SectionReveal>
-
-          <SectionReveal className={styles.securityList} delay={100}>
-            {securityPoints.map((point) => (
-              <div key={point}>
-                <span aria-hidden="true">✓</span>
-                <strong>{point}</strong>
-              </div>
-            ))}
-          </SectionReveal>
+          <div>
+            <span className={styles.eyebrow}>Identidad antes que contraseña</span>
+            <h2>Registro, OTP, OAuth y acceso elevado como flujos explícitos.</h2>
+            <p>La consola debe explicar cuándo una operación requiere reautenticación y mantener separado el acceso ordinario de una identidad elevada.</p>
+          </div>
+          <div className={styles.securityList}>
+            {['Registro y onboarding', 'Configuración OTP', 'OAuth por usuario', 'SSH ligado a identidad', 'Reautenticación para privilegios', 'Auditoría de sesiones'].map((x) => <span key={x}>✓ {x}</span>)}
+          </div>
         </div>
       </section>
 
-      <section className={styles.finalCta}>
-        <div className={`${styles.shell} ${styles.finalCtaCard}`}>
-          <SectionReveal>
-            <span className={styles.eyebrow}>RelNet by ReLead</span>
-            <h2>Una sola red para llegar a todos tus equipos.</h2>
-            <p>Entra a RelNet Console para administrar tu entorno o abre Admin para operar la plataforma.</p>
-            <div className={styles.actions}>
-              <a href={consoleUrl} className={styles.buttonPrimary}>Abrir RelNet Console <span aria-hidden="true">↗</span></a>
-              <a href={adminUrl} className={styles.buttonSecondary}>Abrir Admin</a>
-            </div>
-          </SectionReveal>
-          <SectionReveal className={styles.finalMark} delay={100}>
-            <span />
-            <span />
-            <span />
-            <strong>R</strong>
-          </SectionReveal>
+      <footer className={styles.footer}>
+        <div className={`${styles.shell} ${styles.footerInner}`}>
+          <div className={styles.footerBrand}>
+            <Image src="/relnet-brand.png" alt="ReLead RelNet" width={1951} height={892} />
+            <span>Private network · control plane · remote operations</span>
+          </div>
+          <div className={styles.footerLinks}>
+            <a href={consoleUrl}>RelNet Console</a>
+            <a href={adminUrl}>Admin</a>
+            <a href={registerUrl}>Registro</a>
+            <a href={docsUrl}>API</a>
+          </div>
         </div>
-      </section>
+      </footer>
     </main>
   );
 }
