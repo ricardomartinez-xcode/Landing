@@ -1,260 +1,142 @@
-import Link from 'next/link';
+import Image from 'next/image';
 import styles from './page.module.css';
 
-const consoleUrl = 'https://console.relead.com.mx';
-const registerUrl = `${consoleUrl}/register`;
-const loginUrl = `${consoleUrl}/login`;
-const billingUrl = `${consoleUrl}/billing`;
-const developersUrl = `${consoleUrl}/developers`;
+const consoleUrl = 'https://console.relead.com.mx/console/';
+const adminUrl = 'https://console.relead.com.mx/admin/';
+const registerUrl = 'https://console.relead.com.mx/register';
+const billingUrl = 'https://console.relead.com.mx/billing';
+const apiUrl = 'https://console.relead.com.mx/console/?section=api';
 
-const capabilities = [
-  ['RelNet', 'Red privada con identidad, políticas, nodos, rutas y salida a Internet administrada.'],
-  ['Terminal + SSH', 'Sesiones remotas con identidad, autorización elevada y auditoría por actor y dispositivo.'],
-  ['RelDrop + RelShare', 'Archivos y recursos compartidos entre nodos compatibles sin mezclar superficies administrativas.'],
-  ['MCP + API', 'Cada cuenta dispone de superficies de integración controladas desde RelNet Console.'],
-  ['VPN', 'Acceso por RelNet e IKEv2 con rutas, políticas y gateway de salida configurables.'],
-  ['Rescue', 'Recuperación operativa con staging, validación y promoción controlada hacia producción.'],
-];
-
-const surfaces = [
-  { host: 'relead.com.mx', title: 'ReLead', note: 'Sitio público, producto, planes, anuncios, documentación e instalación.', state: 'Público' },
-  { host: 'console.relead.com.mx', title: 'RelNet Console', note: 'Registro, acceso, dispositivos, red, terminal, billing, developers y administración autorizada.', state: 'Usuarios' },
-  { host: 'api.relead.com.mx', title: 'API', note: 'Backend, OAuth, MCP y APIs. Sin rutas gráficas de administración.', state: 'Backend' },
-];
-
-const announcements = [
-  {
-    tag: 'Anuncio',
-    title: 'RelNet Console unifica acceso, red y operación.',
-    copy: 'La nueva superficie concentra registro, dispositivos, terminal, identidad, facturación y herramientas de desarrollo.',
-    href: registerUrl,
-    cta: 'Crear cuenta',
-  },
-  {
-    tag: 'Novedad',
-    title: 'RelNet para Windows y Linux.',
-    copy: 'Incorpora nodos compatibles y administra conectividad, recursos y políticas desde una sola consola.',
-    href: '/install',
-    cta: 'Instalar RelNet',
-  },
+const features = [
+  ['Mesh privado', 'Conecta nodos Windows, Linux y servicios sin publicar la red interna.'],
+  ['SSH con identidad', 'Sesiones remotas ligadas a identidad, políticas, reautenticación y auditoría.'],
+  ['Exit nodes', 'Salida a Internet controlada por política, con diagnóstico de rutas y salud.'],
+  ['MCP + API', 'Cada usuario opera capacidades autorizadas mediante API y MCP.'],
+  ['RelDrop + RelShare', 'Transferencia y recursos compartidos dentro del mismo plano privado.'],
+  ['Rescue', 'Recuperación mediante staging, promoción controlada y registro de cada operación.'],
 ];
 
 const plans = [
   {
-    name: 'Free',
-    price: '$0',
-    suffix: '/ mes',
-    description: 'Para empezar con una cuenta y probar RelNet.',
-    features: ['RelNet Console', '1 usuario', 'Nodos básicos', 'MCP/API con límites', 'Soporte comunitario'],
-    href: `${registerUrl}?plan=free`,
-    cta: 'Empezar gratis',
+    name: 'Personal', price: '$0', cadence: 'para empezar',
+    description: 'Para una red privada personal y pocos nodos.',
+    items: ['RelNet Console', 'Nodos personales', 'SSH seguro', 'Métricas esenciales'],
+    cta: 'Crear cuenta', href: registerUrl,
   },
   {
-    name: 'Pro',
-    price: 'Stripe',
-    suffix: ' / suscripción',
-    description: 'Para operación personal o equipos pequeños con funciones avanzadas.',
-    features: ['Más nodos y sesiones', 'Terminal + SSH', 'RelDrop + RelShare', 'VPN e IKEv2', 'Billing y portal de cliente'],
-    href: `${billingUrl}?plan=pro`,
-    cta: 'Configurar Pro',
-    featured: true,
+    name: 'Pro', price: process.env.NEXT_PUBLIC_PLAN_PRO_PRICE || 'Ver precio', cadence: 'facturación mensual',
+    description: 'Para operar infraestructura, automatización y acceso remoto.',
+    items: ['Todo en Personal', 'MCP y API', 'Exit nodes', 'RelDrop / RelShare', 'Terminal remota'],
+    cta: 'Elegir Pro', href: `${billingUrl}?plan=pro`, featured: true,
   },
   {
-    name: 'Business',
-    price: 'A medida',
-    suffix: '',
-    description: 'Para equipos que requieren administración, políticas, HA y soporte operativo.',
-    features: ['Multiusuario y roles', 'Controllers redundantes', 'Rescue y staging', 'Políticas avanzadas', 'Soporte prioritario'],
-    href: `${billingUrl}?plan=business`,
-    cta: 'Hablar de Business',
+    name: 'Business', price: process.env.NEXT_PUBLIC_PLAN_BUSINESS_PRICE || 'Cotizar', cadence: 'por organización',
+    description: 'Control, recuperación, políticas y operación multiusuario.',
+    items: ['Todo en Pro', 'Roles y políticas', 'Rescue + staging', 'Auditoría', 'Controllers HA'],
+    cta: 'Abrir facturación', href: `${billingUrl}?plan=business`,
+  },
+];
+
+const ads = [
+  {
+    eyebrow: 'Patrocinado',
+    title: process.env.NEXT_PUBLIC_AD_1_TITLE || 'Infraestructura que viaja contigo',
+    body: process.env.NEXT_PUBLIC_AD_1_BODY || 'Espacio publicitario integrado con etiqueta visible y separado de la navegación de ReLead.',
+    href: process.env.NEXT_PUBLIC_AD_1_URL || '#planes',
+  },
+  {
+    eyebrow: 'Patrocinado',
+    title: process.env.NEXT_PUBLIC_AD_2_TITLE || 'Acceso remoto, sin abrir tu LAN',
+    body: process.env.NEXT_PUBLIC_AD_2_BODY || 'Ubicación reservada para campañas compatibles con el contexto público de ReLead.',
+    href: process.env.NEXT_PUBLIC_AD_2_URL || '#producto',
   },
 ];
 
 export default function HomePage() {
   return (
     <main className={styles.page}>
-      <header className={styles.nav}>
+      <nav className={styles.nav} aria-label="Navegación principal">
         <div className={styles.shell}>
-          <div className={styles.navRow}>
-            <Link className={styles.brand} href="/" aria-label="ReLead">
-              <span className={styles.brandMark}>R</span>
-              <span>ReLead</span>
-            </Link>
-            <nav className={styles.navLinks} aria-label="Navegación principal">
-              <a href="#producto">Producto</a>
-              <a href="#planes">Planes</a>
-              <a href="#accesos">Accesos</a>
-              <Link href="/install">Instalar</Link>
-            </nav>
-            <div className={styles.navActions}>
-              <a className={styles.textLink} href={loginUrl}>Entrar</a>
-              <a className={styles.primarySmall} href={registerUrl}>Crear cuenta</a>
+          <div className={styles.navInner}>
+            <a className={styles.brand} href="#inicio" aria-label="ReLead RelNet">
+              <Image src="/relnet-brand.png" alt="ReLead RelNet" width={1951} height={892} priority />
+            </a>
+            <div className={styles.navLinks}>
+              <a href="#producto">Producto</a><a href="#capacidades">Capacidades</a><a href="#planes">Planes</a><a href="#seguridad">Seguridad</a>
+              <a href={adminUrl} className={styles.navAdmin}>Admin</a>
+              <a href={consoleUrl} className={styles.navCta}>RelNet Console <span>↗</span></a>
             </div>
           </div>
         </div>
       </header>
 
-      <section className={styles.hero}>
-        <div className={styles.shell}>
-          <div className={styles.heroGrid}>
-            <div>
-              <span className={styles.eyebrow}>ReLead · RelNet</span>
-              <h1>Tu red privada, tu identidad y tu operación en una sola consola.</h1>
-              <p className={styles.lead}>
-                RelNet conecta equipos, usuarios y servicios con políticas claras. RelNet Console concentra
-                registro, red, terminal, identidad, facturación y herramientas para desarrolladores sin mezclar
-                la experiencia de usuario con la administración interna de la API.
-              </p>
-              <div className={styles.actions}>
-                <a className={styles.primary} href={registerUrl}>Crear cuenta <span aria-hidden="true">↗</span></a>
-                <a className={styles.secondary} href={loginUrl}>Abrir RelNet Console</a>
-                <Link className={styles.textLink} href="/install">Instalar RelNet</Link>
-              </div>
-              <div className={styles.heroMeta}>
-                <span>Windows + Linux</span>
-                <span>Web + PWA</span>
-                <span>SSH + Terminal</span>
-                <span>OAuth + MCP + API</span>
-              </div>
-            </div>
-
-            <aside className={styles.consoleCard} aria-label="RelNet Console">
-              <div className={styles.consoleTop}>
-                <div>
-                  <span className={styles.statusDot} />
-                  <strong>RelNet Console</strong>
-                </div>
-                <code>v90</code>
-              </div>
-              <div className={styles.consoleBody}>
-                <div className={styles.metric}><span>Identidad</span><strong>Activa</strong></div>
-                <div className={styles.metric}><span>RelNet</span><strong>Conectado</strong></div>
-                <div className={styles.metric}><span>Terminal</span><strong>Autorizada</strong></div>
-                <div className={styles.metric}><span>Gateway</span><strong>Gestionado</strong></div>
-              </div>
-              <div className={styles.consoleFooter}>
-                <span>Cuenta → red → nodo → sesión → recurso</span>
-              </div>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.announcementSection} aria-label="Anuncios">
-        <div className={styles.shell}>
-          <div className={styles.announcementGrid}>
-            {announcements.map((item) => (
-              <article className={styles.announcement} key={item.title}>
-                <span className={styles.adBadge}>{item.tag}</span>
-                <h2>{item.title}</h2>
-                <p>{item.copy}</p>
-                <a href={item.href}>{item.cta} →</a>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.section} id="producto">
-        <div className={styles.shell}>
-          <div className={styles.sectionHead}>
-            <div>
-              <span className={styles.eyebrow}>Producto</span>
-              <h2>Una experiencia coherente desde el alta hasta la operación.</h2>
-            </div>
-            <p>
-              La interfaz pública, RelNet Console y el panel administrativo comparten lenguaje visual, pero cada
-              dominio conserva una responsabilidad concreta.
-            </p>
-          </div>
-          <div className={styles.capabilityGrid}>
-            {capabilities.map(([title, body], index) => (
-              <article className={styles.card} key={title}>
-                <span className={styles.cardIndex}>{String(index + 1).padStart(2, '0')}</span>
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.sectionAlt} id="planes">
-        <div className={styles.shell}>
-          <div className={styles.sectionHead}>
-            <div>
-              <span className={styles.eyebrow}>Planes</span>
-              <h2>Empieza simple. Escala cuando la red lo necesite.</h2>
-            </div>
-            <p>
-              El cobro de planes de pago se realiza mediante Stripe desde RelNet Console. Los importes comerciales
-              de Pro y Business se publican desde la configuración de Billing para mantener una sola fuente de verdad.
-            </p>
-          </div>
-          <div className={styles.pricingGrid}>
-            {plans.map((plan) => (
-              <article className={`${styles.planCard} ${plan.featured ? styles.featured : ''}`} key={plan.name}>
-                <div className={styles.planTop}>
-                  <span>{plan.name}</span>
-                  {plan.featured ? <strong>Recomendado</strong> : null}
-                </div>
-                <div className={styles.price}><strong>{plan.price}</strong><span>{plan.suffix}</span></div>
-                <p>{plan.description}</p>
-                <ul>
-                  {plan.features.map((feature) => <li key={feature}>{feature}</li>)}
-                </ul>
-                <a className={plan.featured ? styles.primary : styles.secondary} href={plan.href}>{plan.cta}</a>
-              </article>
-            ))}
-          </div>
-          <p className={styles.billingNote}>
-            Las suscripciones de pago requieren Checkout, Customer Portal y webhooks de Stripe habilitados en producción.
-          </p>
-        </div>
-      </section>
-
-      <section className={styles.section} id="accesos">
-        <div className={styles.shell}>
-          <div className={styles.sectionHead}>
-            <div>
-              <span className={styles.eyebrow}>Accesos</span>
-              <h2>Cada dominio tiene una responsabilidad.</h2>
-            </div>
-            <p>Sin UI administrativa bajo la API. El acceso gráfico vive en RelNet Console.</p>
-          </div>
-          <div className={styles.surfaceGrid}>
-            {surfaces.map((surface) => (
-              <article className={styles.surface} key={surface.host}>
-                <div className={styles.surfaceTop}>
-                  <span>{surface.state}</span>
-                  <code>{surface.host}</code>
-                </div>
-                <h3>{surface.title}</h3>
-                <p>{surface.note}</p>
-                {surface.host === 'console.relead.com.mx' ? <a href={consoleUrl}>Abrir RelNet Console →</a> : null}
-                {surface.host === 'relead.com.mx' ? <Link href="/install">Ver instalación →</Link> : null}
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.cta}>
-        <div className={styles.shell}>
-          <div className={styles.ctaCard}>
-            <div>
-              <span className={styles.eyebrow}>RelNet Console</span>
-              <h2>Una cuenta. Una red. Una consola.</h2>
-              <p>Regístrate, configura tu identidad y administra nodos, sesiones, billing y herramientas de desarrollo.</p>
-            </div>
+      <section className={styles.hero} id="inicio">
+        <div className={`${styles.shell} ${styles.heroGrid}`}>
+          <div className={styles.heroCopy}>
+            <span className={styles.eyebrow}>ReLead · RelNet v90</span>
+            <h1>Tu red privada.<br /><span>Una consola para operarla.</span></h1>
+            <p>Conecta equipos, identidades y servicios en un plano privado; abre terminales, SSH, archivos, automatización y salida a Internet sin mezclar la operación diaria con la administración de plataforma.</p>
             <div className={styles.actions}>
-              <a className={styles.primary} href={registerUrl}>Crear cuenta</a>
-              <a className={styles.secondaryDark} href={consoleUrl}>Abrir Console</a>
-              <a className={styles.textLinkDark} href={developersUrl}>Developers ↗</a>
+              <a className={styles.buttonPrimary} href={registerUrl}>Crear cuenta <span>→</span></a>
+              <a className={styles.buttonSecondary} href={consoleUrl}>Abrir RelNet Console</a>
+            </div>
+            <div className={styles.heroMeta}><span>OAuth / OTP</span><span>SSH identity</span><span>IKEv2 + mesh</span><span>MCP + API</span></div>
+          </div>
+
+          <div className={styles.controlVisual} aria-label="Vista conceptual de RelNet Console">
+            <div className={styles.windowChrome}><div className={styles.windowDots}><i/><i/><i/></div><span>console.relead.com.mx</span><b>Connected</b></div>
+            <div className={styles.mockApp}>
+              <aside className={styles.mockSidebar}><strong>R</strong>{['⌁','⇧','◈','₿','◉','⌘'].map((icon)=><span key={icon}>{icon}</span>)}</aside>
+              <div className={styles.mockMain}>
+                <div className={styles.mockHeader}><div><small>RELNET CONSOLE</small><h3>Control plane</h3></div><span className={styles.livePill}>● Network healthy</span></div>
+                <div className={styles.statGrid}>
+                  <div><small>Nodos</small><strong>04</strong><span>3 online · 1 attention</span></div>
+                  <div><small>Rutas</small><strong>12</strong><span>mesh + exit</span></div>
+                  <div><small>Sesiones</small><strong>03</strong><span>identity bound</span></div>
+                </div>
+                <div className={styles.terminal}><div><span>relead</span><b>terminal</b><em>ssh · elevated</em></div><pre>{`$ relnet status\nmesh      connected\nidentity  verified\nroute     exit-node\n$ _`}</pre></div>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      <section className={styles.adStrip} aria-label="Anuncios">
+        <div className={`${styles.shell} ${styles.adGrid}`}>
+          {ads.map((ad)=><a key={ad.title} className={styles.adCard} href={ad.href} rel="sponsored"><span>{ad.eyebrow}</span><strong>{ad.title}</strong><p>{ad.body}</p><b>Conocer más ↗</b></a>)}
+        </div>
+      </section>
+
+      <section className={styles.product} id="producto">
+        <div className={`${styles.shell} ${styles.sectionGrid}`}>
+          <div><span className={styles.eyebrow}>Un solo sistema</span><h2>RelNet Console para usuarios.<br/>Admin para la plataforma.</h2></div>
+          <p><strong>Console</strong> es la superficie diaria para nodos, red, terminal, SSH, archivos, MCP, API y facturación. <strong>Admin</strong> queda reservado para salud, releases, staging, Rescue, controllers y recuperación. La API no necesita rutas gráficas.</p>
+        </div>
+      </section>
+
+      <section className={styles.capabilities} id="capacidades">
+        <div className={styles.shell}>
+          <div className={styles.sectionHeader}><div><span className={styles.eyebrow}>Capacidades</span><h2>Una red que también sabe operar.</h2></div><p>Diseñada alrededor de identidad, políticas y conectividad verificable.</p></div>
+          <div className={styles.featureGrid}>{features.map(([title,body],index)=><article className={styles.featureCard} key={title}><span>0{index+1}</span><h3>{title}</h3><p>{body}</p></article>)}</div>
+        </div>
+      </section>
+
+      <section className={styles.pricing} id="planes">
+        <div className={styles.shell}>
+          <div className={styles.sectionHeader}><div><span className={styles.eyebrow}>Planes y facturación</span><h2>Empieza pequeño. Escala sin cambiar de red.</h2></div><p>Checkout y portal de cliente viven detrás de RelNet Console; la facturación se desacopla del landing público.</p></div>
+          <div className={styles.planGrid}>{plans.map((plan)=><article className={`${styles.planCard} ${plan.featured?styles.planFeatured:''}`} key={plan.name}>{plan.featured&&<span className={styles.recommended}>Recomendado</span>}<div className={styles.planHead}><h3>{plan.name}</h3><p>{plan.description}</p></div><div className={styles.price}><strong>{plan.price}</strong><span>{plan.cadence}</span></div><ul>{plan.items.map((item)=><li key={item}>{item}</li>)}</ul><a href={plan.href} className={plan.featured?styles.buttonPrimary:styles.buttonSecondary}>{plan.cta} <span>→</span></a></article>)}</div>
+          <p className={styles.billingNote}>Los importes finales y condiciones se confirman en la superficie segura de facturación antes del cobro.</p>
+        </div>
+      </section>
+
+      <section className={styles.security} id="seguridad">
+        <div className={`${styles.shell} ${styles.securityCard}`}>
+          <div><span className={styles.eyebrow}>Identidad antes que contraseña</span><h2>Registro, OTP, OAuth y acceso elevado como flujos explícitos.</h2><p>RelNet Console debe mostrar cuándo una operación requiere reautenticación y mantener separado el acceso ordinario de una identidad elevada.</p></div>
+          <div className={styles.securityList}>{['Registro y onboarding','Configuración OTP','OAuth por usuario','SSH ligado a identidad','Reautenticación para privilegios','Auditoría de sesiones'].map((x)=><span key={x}>✓ {x}</span>)}</div>
+        </div>
+      </section>
+
+      <footer className={styles.footer}><div className={`${styles.shell} ${styles.footerInner}`}><div className={styles.footerBrand}><Image src="/relnet-brand.png" alt="ReLead RelNet" width={1951} height={892}/><span>Private network · control plane · remote operations</span></div><div className={styles.footerLinks}><a href={consoleUrl}>RelNet Console</a><a href={adminUrl}>Admin</a><a href={registerUrl}>Registro</a><a href={billingUrl}>Planes</a><a href={apiUrl}>API</a></div></div></footer>
     </main>
   );
 }
