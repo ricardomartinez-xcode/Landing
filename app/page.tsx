@@ -68,7 +68,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </header>
+      </nav>
 
       <section className={styles.hero} id="inicio">
         <div className={`${styles.shell} ${styles.heroGrid}`}>
