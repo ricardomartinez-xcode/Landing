@@ -1,86 +1,112 @@
 import Link from 'next/link';
 import styles from './page.module.css';
 
-const consoleUrl = 'https://api.relead.com.mx/console';
-const adminUrl = 'https://api.relead.com.mx/admin';
+const appUrl = 'https://app.relead.com.mx';
+const developersUrl = 'https://app.relead.com.mx/developers';
 
 const capabilities = [
-  ['Red', 'Conectividad privada', 'RelNet Mesh', 'Nodos de salida autorizados', 'Recursos compartidos entre nodos'],
-  ['Operación', 'Control remoto', 'Comandos y terminal según capacidades', 'Telemetría y servicios', 'Automatización compatible'],
-  ['Acceso', 'Identidad y políticas', 'Identidad Ed25519 por nodo', 'Aprobación y reautenticación separadas', 'Políticas por nodo'],
+  ['Red privada', 'Conecta equipos dentro de RelNet con identidad y políticas por nodo.'],
+  ['My RelNet', 'Tu espacio para cuenta, red, dispositivos, recursos y herramientas de acceso.'],
+  ['RelDrop y RelShare', 'Flujos de archivos y recursos compartidos entre equipos compatibles.'],
+  ['Terminal y SSH', 'Acceso remoto sujeto a identidad, políticas y capacidades del nodo.'],
+  ['Mobile', 'Experiencia web/PWA y enrolamiento móvil desde My RelNet.'],
+  ['Developers', 'OAuth, MCP y superficies de integración desde un área dedicada para desarrolladores.']
 ];
 
-const platforms = [
-  ['Windows', 'Nodo + Console / Admin', 'Cliente de nodo y web', 'Operaciones remotas según capacidades declaradas.'],
-  ['Linux', 'Nodo + Console / Admin', 'Cliente de nodo y web', 'Terminal, servicios y telemetría dependen del runtime y permisos.'],
-  ['iPhone / iPad', 'Web App + Atajos', 'Safari, inicio y Siri', 'El kit público usa RelNet · API como helper.'],
-  ['Android', 'PWA / Console', 'Chrome y web', 'El APK nativo sigue previsto, no como descarga final publicada.'],
+const surfaces = [
+  { host: 'relead.com.mx', title: 'ReLead', note: 'Información pública, producto, instalación y documentación.', state: 'Público' },
+  { host: 'app.relead.com.mx', title: 'My RelNet', note: 'Cuenta, red, dispositivos, RelDrop, RelShare, terminal, mobile y developers.', state: 'Usuarios' },
+  { host: 'console.relead.com.mx', title: 'Console', note: 'Administración interna de la plataforma. No forma parte de la experiencia pública de usuario.', state: 'Interno' },
+  { host: 'api.relead.com.mx', title: 'API', note: 'Backend, OAuth, MCP y APIs de ReLead. Consumido por las superficies autorizadas.', state: 'Backend' }
 ];
-
-const security = ['Identidad Ed25519 por nodo', 'Aprobación explícita', 'Capacidades y políticas', 'Actualizaciones firmadas', 'Rotación de credenciales', 'Leases de comandos'];
 
 export default function HomePage() {
   return (
     <main className={styles.page}>
-      <header className={styles.hero}>
-        <div className={styles.heroCopy}>
-          <span className={styles.kicker}>Red privada · control remoto · infraestructura</span>
-          <h1>Un plano de control para todos tus equipos.</h1>
-          <p>RelNet conecta nodos dentro de una red privada y concentra operación, políticas, telemetría y acceso remoto sin mezclar la operación diaria con la administración del sistema.</p>
-          <div className={styles.actions}>
-            <a href={consoleUrl} className={`${styles.primaryAction} ${styles.heroConsoleAction}`}>Abrir Console ↗</a>
-            <a href={adminUrl} className={`${styles.secondaryAction} ${styles.heroAdminAction}`}>Abrir Admin ↗</a>
-            <Link href="/install" className={`${styles.secondaryAction} ${styles.heroInstallAction}`}>Instalación</Link>
-            <Link href="/FAQs" className={`${styles.ghostAction} ${styles.heroFaqAction}`}>FAQs</Link>
+      <section className={styles.hero}>
+        <div className={styles.shell}>
+          <div className={styles.heroGrid}>
+            <div>
+              <span className={styles.eyebrow}>ReLead · RelNet</span>
+              <h1>Tu red privada.<br/><span>Tu experiencia, en My RelNet.</span></h1>
+              <p className={styles.lead}>RelNet conecta tus equipos. My RelNet concentra la experiencia para administrar tu cuenta, revisar tu red y trabajar con los recursos habilitados para tus dispositivos, sin mezclar la operación del usuario con la administración interna de la plataforma.</p>
+              <div className={styles.actions}>
+                <a className={styles.primary} href={appUrl}>Abrir My RelNet <span aria-hidden="true">↗</span></a>
+                <Link className={styles.secondary} href="/install">Instalar RelNet</Link>
+              </div>
+              <div className={styles.heroMeta}>
+                <span>Windows + Linux</span><span>Web + PWA</span><span>Red privada</span><span>Acceso por políticas</span>
+              </div>
+            </div>
+            <aside className={styles.architecture} aria-label="Arquitectura de superficies ReLead">
+              <div className={styles.architectureHeader}><span>ReLead v90</span><strong>Superficies separadas</strong></div>
+              <div className={styles.architectureBody}>
+                <div><span className={styles.dot}/><strong>relead.com.mx</strong><small>Información pública</small></div>
+                <div><span className={styles.dot}/><strong>app.relead.com.mx</strong><small>My RelNet</small></div>
+                <div><span className={styles.dotMuted}/><strong>console.relead.com.mx</strong><small>Administración interna</small></div>
+                <div><span className={styles.dotMuted}/><strong>api.relead.com.mx</strong><small>Backend / OAuth / MCP</small></div>
+              </div>
+              <p>La experiencia pública y de usuario ya no redirige a rutas administrativas bajo la API.</p>
+            </aside>
           </div>
         </div>
-        <aside className={styles.systemPanel} aria-label="Resumen de arquitectura RelNet">
-          <div className={styles.panelHeader}><span>RelNet Control Plane</span><span className={styles.liveState}><i /> Private network</span></div>
-          <div className={styles.topology}>
-            <div className={styles.topologyCore}><strong>RelNet</strong><span>Mesh privado</span></div>
-            {[
-              ['W', 'Windows', 'Nodo administrado'], ['L', 'Linux', 'Nodo administrado'], ['M', 'Mobile', 'Console + Atajos']
-            ].map(([code, title, note]) => (
-              <div className={styles.topologyNode} key={title}><span className={styles.nodeCode}>{code}</span><div><strong>{title}</strong><small>{note}</small></div><i /></div>
+      </section>
+
+      <section className={styles.section} id="producto">
+        <div className={styles.shell}>
+          <div className={styles.sectionHead}>
+            <div><span className={styles.eyebrow}>Producto</span><h2>RelNet conecta. My RelNet organiza.</h2></div>
+            <p>Una arquitectura más clara: la red hace el trabajo de conectividad; la aplicación del usuario concentra cuenta, dispositivos y recursos.</p>
+          </div>
+          <div className={styles.capabilityGrid}>
+            {capabilities.map(([title, body], index) => (
+              <article className={styles.card} key={title}>
+                <span className={styles.cardIndex}>{String(index + 1).padStart(2, '0')}</span>
+                <h3>{title}</h3><p>{body}</p>
+              </article>
             ))}
           </div>
-          <div className={styles.panelMetrics}><div><span>Identidad</span><strong>Por nodo</strong></div><div><span>Acceso</span><strong>Por políticas</strong></div><div><span>Operación</span><strong>Centralizada</strong></div></div>
-        </aside>
-      </header>
-
-      <section className={styles.statusStrip} aria-label="Características principales">
-        {[
-          ['01', 'Mesh privado', 'Conectividad entre nodos'], ['02', 'Identidad propia', 'Aprobación explícita'],
-          ['03', 'Control remoto', 'Capacidades por nodo'], ['04', 'Mobile', 'Web App y Atajos']
-        ].map(([n, title, note]) => <div key={n}><span>{n}</span><strong>{title}</strong><small>{note}</small></div>)}
+        </div>
       </section>
 
-      <section className={styles.section}>
-        <div className={styles.sectionHeading}><div><span className={styles.kicker}>Plataforma</span><h2>Dos superficies con responsabilidades distintas.</h2></div><p>La operación diaria de la red se mantiene separada de las tareas administrativas de la plataforma.</p></div>
-        <div className={styles.surfaceGrid}>
-          <a href={consoleUrl} className={styles.surfacePanel}><div className={styles.surfaceTop}><span>Operación diaria</span><span>↗</span></div><h3>RelNet Console</h3><p>Vinculación, aprobación, políticas, sesiones, acciones remotas y telemetría.</p><ul><li>Nodos y estado efectivo</li><li>Políticas y capacidades</li><li>Acciones y sesiones</li></ul></a>
-          <a href={adminUrl} className={styles.surfacePanel}><div className={styles.surfaceTop}><span>Administración</span><span>↗</span></div><h3>Admin</h3><p>Observabilidad, recuperación, diagnóstico y mantenimiento controlado.</p><ul><li>Salud y observabilidad</li><li>Recuperación</li><li>Releases y operación administrativa</li></ul></a>
+      <section className={styles.sectionAlt} id="accesos">
+        <div className={styles.shell}>
+          <div className={styles.sectionHead}>
+            <div><span className={styles.eyebrow}>Accesos</span><h2>Cada dominio tiene una responsabilidad.</h2></div>
+            <p>Los enlaces públicos llevan a la superficie correcta. Console permanece reservada para administración interna.</p>
+          </div>
+          <div className={styles.surfaceGrid}>
+            {surfaces.map((surface) => (
+              <article className={styles.surface} key={surface.host}>
+                <div className={styles.surfaceTop}><span>{surface.state}</span><code>{surface.host}</code></div>
+                <h3>{surface.title}</h3><p>{surface.note}</p>
+                {surface.host === 'app.relead.com.mx' ? <a href={appUrl}>Abrir My RelNet →</a> : null}
+                {surface.host === 'relead.com.mx' ? <Link href="/install">Ver instalación →</Link> : null}
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className={styles.section}>
-        <div className={styles.sectionHeading}><div><span className={styles.kicker}>Capacidades</span><h2>Conectividad y operación con jerarquía clara.</h2></div><Link href="/FAQs" className={styles.inlineLink}>Consultar FAQs →</Link></div>
-        <div className={styles.capabilityList}>{capabilities.map(([label, title, ...items], index) => <article key={title} className={styles.capabilityRow}><div className={styles.capabilityNumber}>{String(index + 1).padStart(2, '0')}</div><div className={styles.capabilityTitle}><span>{label}</span><h3>{title}</h3></div><ul>{items.map(item => <li key={item}>{item}</li>)}</ul></article>)}</div>
-      </section>
-
-      <section className={styles.section}>
-        <div className={styles.sectionHeading}><div><span className={styles.kicker}>Compatibilidad</span><h2>Tabla legible en escritorio y móvil.</h2></div><p>Las columnas conservan un ancho útil; en móvil se desplazan horizontalmente sin romper texto carácter por carácter.</p></div>
-        <div className={styles.tableWrap} role="region" aria-label="Compatibilidad de plataformas" tabIndex={0}>
-          <table className={styles.platformTable}><thead><tr><th>Plataforma</th><th>Experiencia</th><th>Acceso</th><th>Notas</th></tr></thead><tbody>{platforms.map(([platform, experience, access, notes]) => <tr key={platform}><th scope="row">{platform}</th><td>{experience}</td><td>{access}</td><td>{notes}</td></tr>)}</tbody></table>
+        <div className={styles.shell}>
+          <div className={styles.split}>
+            <div><span className={styles.eyebrow}>Seguridad</span><h2>Identidad y permisos antes que acceso.</h2><p>RelNet separa identidad, vinculación, aprobación y operación. Las acciones dependen de la capacidad del nodo y de la autorización efectiva de la sesión.</p></div>
+            <ul className={styles.checks}>
+              <li>Identidad por nodo</li><li>Aprobación explícita</li><li>Políticas y capacidades</li><li>Credenciales rotables</li><li>Superficies administrativas aisladas</li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      <section className={`${styles.section} ${styles.securitySection}`}>
-        <div className={styles.securityCopy}><span className={styles.kicker}>Seguridad por diseño</span><h2>Conectar un nodo no significa darle acceso irrestricto.</h2><p>RelNet separa identidad, vinculación, aprobación, reautenticación y permisos. Las acciones dependen de las capacidades del nodo y sus políticas.</p><Link href="/FAQs" className={styles.inlineLink}>Cómo funciona el acceso →</Link></div>
-        <div className={styles.securityList}>{security.map(item => <div key={item}><span>✓</span><strong>{item}</strong></div>)}</div>
+      <section className={styles.cta}>
+        <div className={styles.shell}>
+          <div className={styles.ctaCard}>
+            <div><span className={styles.eyebrow}>Empezar</span><h2>Entra a My RelNet o incorpora un nuevo nodo.</h2><p>My RelNet es el punto de entrada para usuarios. La instalación de RelNet sigue disponible desde la documentación pública.</p></div>
+            <div className={styles.actions}><a className={styles.primary} href={appUrl}>Abrir My RelNet</a><Link className={styles.secondary} href="/install">Instalar RelNet</Link><a className={styles.textLink} href={developersUrl}>Developers ↗</a></div>
+          </div>
+        </div>
       </section>
-
-      <section className={styles.getStarted}><div><span className={styles.kicker}>Primeros pasos</span><h2>Instala, vincula y después opera.</h2><p>Elige la experiencia correcta para tu dispositivo desde el workspace de instalación.</p></div><div className={styles.actions}><Link href="/install" className={`${styles.primaryAction} ${styles.installAction}`}>Abrir instalación</Link><Link href="/FAQs" className={styles.secondaryAction}>Resolver una duda</Link></div></section>
     </main>
   );
 }

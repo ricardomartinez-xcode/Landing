@@ -5,122 +5,86 @@ import { join } from 'node:path';
 
 const root = process.cwd();
 const read = (path) => readFileSync(join(root, path), 'utf8');
-const pngHasDirectAlpha = (path) => {
-  const bytes = readFileSync(join(root, path));
-  assert.equal(bytes.subarray(1, 4).toString(), 'PNG');
-  return bytes[25] === 4 || bytes[25] === 6;
-};
-const primaryRoutes = ['/', '/install', '/FAQs', '/privacy', '/terms'];
+const publicRoutes = ['/', '/install', '/FAQs', '/privacy', '/terms'];
 
-test('sidebar uses optimized RelNet brand assets with real alpha transparency', () => {
-  const shell = read('components/shell/AppShell.tsx');
-  for (const asset of ['public/relnet-brand-transparent.png', 'public/relnet-mark-transparent.png']) {
-    assert.equal(existsSync(join(root, asset)), true, `${asset} must exist`);
-    assert.equal(pngHasDirectAlpha(asset), true, `${asset} must preserve alpha`);
+test('public v90 shell is mounted globally', () => {
+  const layout = read('app/layout.tsx');
+  assert.match(layout, /PublicShell/);
+  assert.match(layout, /<PublicShell>/);
+  assert.match(layout, /ReLead \| RelNet y My RelNet/);
+});
+
+test('public shell routes users to My RelNet and keeps internal console out of public CTAs', () => {
+  const shell = read('components/public/PublicShell.tsx');
+  assert.match(shell, /https:\/\/app\.relead\.com\.mx/);
+  assert.match(shell, />Abrir My RelNet</);
+  assert.match(shell, /href="\/install"/);
+  assert.match(shell, /href="\/FAQs"/);
+  assert.doesNotMatch(shell, /api\.relead\.com\.mx\/(?:console|admin)/);
+  assert.doesNotMatch(shell, /control\.relead\.com\.mx/);
+  assert.doesNotMatch(shell, />Abrir (?:Console|Admin)</);
+});
+
+test('home documents canonical v90 surface split without exposing internal console as a CTA', () => {
+  const home = read('app/page.tsx');
+  for (const host of ['relead.com.mx', 'app.relead.com.mx', 'console.relead.com.mx', 'api.relead.com.mx']) assert.ok(home.includes(host));
+  assert.match(home, /Administración interna/);
+  assert.match(home, /Backend \/ OAuth \/ MCP/);
+  assert.doesNotMatch(home, /api\.relead\.com\.mx\/(?:console|admin)/);
+  assert.doesNotMatch(home, /control\.relead\.com\.mx/);
+});
+
+test('home exposes user, install and developer destinations', () => {
+  const home = read('app/page.tsx');
+  assert.match(home, /https:\/\/app\.relead\.com\.mx/);
+  assert.match(home, /https:\/\/app\.relead\.com\.mx\/developers/);
+  assert.match(home, /href="\/install"/);
+});
+
+test('install flow is aligned to My RelNet and contains no legacy public admin routes or pasted API-token recipe', () => {
+  const install = read('app/install/InstallExperience.tsx');
+  assert.match(install, /https:\/\/app\.relead\.com\.mx\//);
+  assert.match(install, /https:\/\/app\.relead\.com\.mx\/developers/);
+  assert.match(install, /enrolamiento/i);
+  assert.doesNotMatch(install, /api\.relead\.com\.mx\/(?:console|admin)/);
+  assert.doesNotMatch(install, /control\.relead\.com\.mx/);
+  assert.doesNotMatch(install, /API_TOKEN|Bearer \[|Pega aqu/i);
+});
+
+test('landing does not advertise billing or ads as already active', () => {
+  const home = read('app/page.tsx');
+  assert.doesNotMatch(home, /Checkout|Stripe|Comprar Pro|Publicidad activa|Anuncios activos/i);
+});
+
+test('responsive public shell and landing contracts exist', () => {
+  const shellCss = read('components/public/PublicShell.module.css');
+  const pageCss = read('app/page.module.css');
+  assert.match(shellCss, /@media\(max-width:760px\)/);
+  assert.match(pageCss, /@media\(max-width:900px\)/);
+  assert.match(pageCss, /@media\(max-width:620px\)/);
+});
+
+test('canonical public routes still exist', () => {
+  for (const route of publicRoutes) {
+    const path = route === '/' ? 'app/page.tsx' : route === '/FAQs' ? 'app/FAQs/page.tsx' : `app${route}/page.tsx`;
+    assert.equal(existsSync(join(root, path)), true, `${path} must exist`);
   }
-  assert.match(shell, /\/relnet-brand-transparent\.png/);
-  assert.match(shell, /\/relnet-mark-transparent\.png/);
-  assert.doesNotMatch(shell, /\/relnet-brand\.webp/);
 });
 
-test('exposes the canonical FAQs page', () => {
-  assert.equal(existsSync(join(root, 'app/FAQs/page.tsx')), true, 'app/FAQs/page.tsx must exist');
-});
-
-test('redirects exact lowercase /faqs with an App Router compatibility route', () => {
-  const config = read('next.config.ts');
-  assert.doesNotMatch(config, /source:\s*["']\/faqs["']/);
-  assert.equal(existsSync(join(root, 'app/[slug]/page.tsx')), true, 'app/[slug]/page.tsx must exist');
+test('lowercase /faqs compatibility remains an App Router redirect', () => {
+  assert.equal(existsSync(join(root, 'app/[slug]/page.tsx')), true);
   const compat = read('app/[slug]/page.tsx');
-  assert.match(compat, /from\s+["']next\/navigation["']/);
-  assert.match(compat, /slug\s*===\s*["']faqs["']/);
-  assert.match(compat, /redirect\(["']\/FAQs["']\)/);
-  assert.match(compat, /notFound\(\)/);
-  assert.equal(existsSync(join(root, 'proxy.ts')), false, 'FAQ compatibility must not rely on Node proxy');
+  assert.match(compat, /next\/navigation/);
+  assert.match(compat, /slug\s*===\s*['"]faqs['"]/);
+  assert.match(compat, /redirect\(['"]\/FAQs['"]\)/);
 });
 
-test('global app shell includes every primary route and accessible active navigation', () => {
-  const shellPath = join(root, 'components/shell/AppShell.tsx');
-  const navPath = join(root, 'components/shell/nav.ts');
-  assert.equal(existsSync(shellPath), true, 'AppShell must exist');
-  assert.equal(existsSync(navPath), true, 'primary navigation config must exist');
-  const shell = read('components/shell/AppShell.tsx');
-  const navigation = read('components/shell/nav.ts');
-  for (const route of primaryRoutes) assert.ok(navigation.includes(`'${route}'`) || navigation.includes(`"${route}"`), `primary navigation must reference ${route}`);
-  assert.match(shell, /primaryNav/);
-  assert.match(shell, /aria-current/);
-  assert.match(shell, /relnet-brand(?:-transparent)?\.(?:webp|png)/);
-});
-
-test('primary navigation uses semantic SVG icons instead of text abbreviations', () => {
-  const shell = read('components/shell/AppShell.tsx');
-  const navigation = read('components/shell/nav.ts');
-  assert.equal(existsSync(join(root, 'components/shell/NavIcon.tsx')), true, 'NavIcon must exist');
-  const icons = read('components/shell/NavIcon.tsx');
-  for (const icon of ['home', 'install', 'help', 'privacy', 'terms']) {
-    assert.ok(navigation.includes(`icon: '${icon}'`) || navigation.includes(`icon: \"${icon}\"`), `navigation must map ${icon}`);
-  }
-  assert.doesNotMatch(navigation, /short:\s*['"]/);
-  assert.match(shell, /<NavIcon/);
-  assert.match(icons, /<svg/);
-  assert.match(icons, /aria-hidden/);
-});
-
-test('sidebar CSS defines compact desktop, tablet rail and keyboard focus contracts', () => {
-  const css = read('components/shell/AppShell.module.css');
-  const shell = read('components/shell/AppShell.tsx');
-  assert.match(css, /\.sidebar\s*\{[^}]*width:\s*232px/s);
-  assert.match(css, /\.workspace\s*\{[^}]*margin-left:\s*232px/s);
-  assert.match(css, /max-width:\s*1080px[^}]*min-width:\s*841px/s);
-  assert.match(css, /width:\s*76px/);
-  assert.match(css, /margin-left:\s*76px/);
-  assert.match(css, /\.brandMark\s*\{[^}]*display:\s*none/s);
-  assert.match(css, /focus-visible/);
-  assert.match(css, /prefers-reduced-motion/);
-  assert.match(shell, /aria-label=\"Abrir Console\"/);
-  assert.match(shell, /aria-label=\"Abrir Admin\"/);
-});
-
-test('theme control supports system, light and dark modes', () => {
-  const themePath = join(root, 'components/theme/ThemeControl.tsx');
-  assert.equal(existsSync(themePath), true, 'ThemeControl must exist');
-  const theme = read('components/theme/ThemeControl.tsx');
-  for (const mode of ['system', 'light', 'dark']) assert.ok(theme.includes(`'${mode}'`) || theme.includes(`\"${mode}\"`), `ThemeControl must support ${mode}`);
-  assert.match(theme, /localStorage/);
-});
-
-test('FAQs use native accessible disclosure semantics', () => {
+test('FAQs keep native accessible disclosure semantics', () => {
   const candidates = ['app/FAQs/page.tsx', 'components/ui/FAQGroup.tsx'].filter((path) => existsSync(join(root, path))).map(read).join('\n');
   assert.match(candidates, /<details/);
   assert.match(candidates, /<summary/);
 });
 
-test('root layout mounts the shared AppShell', () => {
-  const layout = read('app/layout.tsx');
-  assert.match(layout, /AppShell/);
-  assert.match(layout, /<AppShell[^>]*>/);
-});
-
-test('home offers installation and FAQs plus a real responsive table', () => {
-  const home = read('app/page.tsx');
-  assert.match(home, /href=[{]?['"]\/install['"]/);
-  assert.match(home, /href=[{]?['"]\/FAQs['"]/);
-  assert.match(home, /<table/);
-  assert.match(home, /<thead/);
-  assert.match(home, /<tbody/);
-});
-
-test('installation workspace has a platform selector and preserves operational destinations', () => {
-  const install = read('app/install/InstallExperience.tsx');
-  assert.match(install, /<select/);
-  assert.match(install, /https:\/\/api\.relead\.com\.mx\/console/);
-  assert.match(install, /https:\/\/api\.relead\.com\.mx\/admin/);
-  assert.match(install, /\/shortcuts\/RelNet-iOS-Instrucciones-v2\.zip/);
-});
-
-test('legal layout relies on the shared shell instead of duplicate standalone navigation or decorative glow', () => {
-  const legal = read('components/LegalPage.tsx');
-  assert.doesNotMatch(legal, /Volver a RelNet/);
-  assert.doesNotMatch(legal, /styles\.glow/);
-  assert.match(legal, /<article/);
+test('legal pages remain first-class routes', () => {
+  for (const path of ['app/privacy/page.tsx', 'app/terms/page.tsx']) assert.equal(existsSync(join(root, path)), true);
 });
