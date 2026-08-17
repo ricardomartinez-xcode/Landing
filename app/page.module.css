@@ -109,3 +109,5 @@
   .adGrid,.featureGrid,.planGrid{grid-template-columns:1fr}.product,.capabilities,.pricing,.security{padding:72px 0}.featureCard{min-height:210px}.featureCard h3{margin-top:48px}
   .securityCard{padding:30px 24px}.footerInner,.footerBrand{align-items:flex-start;flex-direction:column}.footerLinks{flex-wrap:wrap}.heroMeta{gap:8px 12px}
 }
+
+@media (max-width: 1080px) { .planGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

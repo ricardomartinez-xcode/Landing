@@ -2,10 +2,11 @@ import Image from 'next/image';
 import styles from './page.module.css';
 
 const consoleUrl = 'https://console.relead.com.mx/console/';
-const adminUrl = 'https://console.relead.com.mx/admin/';
+const adminUrl = 'https://admin.relead.com.mx/admin/';
 const registerUrl = 'https://console.relead.com.mx/register';
+const loginUrl = 'https://console.relead.com.mx/console/login';
 const billingUrl = 'https://console.relead.com.mx/billing';
-const apiUrl = 'https://console.relead.com.mx/console/?section=api';
+const apiUrl = 'https://console.relead.com.mx/developers';
 
 const features = [
   ['Mesh privado', 'Conecta nodos Windows, Linux y servicios sin publicar la red interna.'],
@@ -18,22 +19,28 @@ const features = [
 
 const plans = [
   {
-    name: 'Personal', price: '$0', cadence: 'para empezar',
-    description: 'Para una red privada personal y pocos nodos.',
-    items: ['RelNet Console', 'Nodos personales', 'SSH seguro', 'Métricas esenciales'],
+    name: 'Free', price: '$0 MXN', cadence: 'sin tarjeta',
+    description: 'Para probar RelNet con una red personal real.',
+    items: ['1 usuario', 'Hasta 10 nodos', '2 GB de RelDrop al mes', 'Console y métricas esenciales', 'Puede incluir patrocinio público'],
     cta: 'Crear cuenta', href: registerUrl,
   },
   {
-    name: 'Pro', price: process.env.NEXT_PUBLIC_PLAN_PRO_PRICE || 'Ver precio', cadence: 'facturación mensual',
-    description: 'Para operar infraestructura, automatización y acceso remoto.',
-    items: ['Todo en Personal', 'MCP y API', 'Exit nodes', 'RelDrop / RelShare', 'Terminal remota'],
+    name: 'Pro', price: '$149 MXN', cadence: '/mes · $1,490/año',
+    description: 'Para operar infraestructura personal y automatizaciones sin cambiar de red.',
+    items: ['Hasta 50 nodos', 'API externa y MCP', 'Remote Chrome', 'Automatización', 'Sin anuncios del plan'],
     cta: 'Elegir Pro', href: `${billingUrl}?plan=pro`, featured: true,
   },
   {
-    name: 'Business', price: process.env.NEXT_PUBLIC_PLAN_BUSINESS_PRICE || 'Cotizar', cadence: 'por organización',
-    description: 'Control, recuperación, políticas y operación multiusuario.',
-    items: ['Todo en Pro', 'Roles y políticas', 'Rescue + staging', 'Auditoría', 'Controllers HA'],
-    cta: 'Abrir facturación', href: `${billingUrl}?plan=business`,
+    name: 'Team', price: '$399 MXN', cadence: '/mes · $3,990/año',
+    description: 'Para equipos pequeños que necesitan una red compartida y más capacidad.',
+    items: ['Hasta 5 usuarios', 'Hasta 250 nodos', 'Entitlements por plan', 'API y automatización', 'Venta asistida mientras madura multiusuario'],
+    cta: 'Ver Team', href: `${billingUrl}?plan=team`,
+  },
+  {
+    name: 'Business', price: 'Cotizar', cadence: 'por organización',
+    description: 'Para operación de plataforma, mayor escala y necesidades empresariales.',
+    items: ['Hasta 25 usuarios', 'Hasta 1,000 nodos', 'Mayor capacidad RelDrop', 'Operación empresarial', 'Venta asistida'],
+    cta: 'Hablar con ReLead', href: `${billingUrl}?plan=business`,
   },
 ];
 
@@ -63,7 +70,7 @@ export default function HomePage() {
             </a>
             <div className={styles.navLinks}>
               <a href="#producto">Producto</a><a href="#capacidades">Capacidades</a><a href="#planes">Planes</a><a href="#seguridad">Seguridad</a>
-              <a href={adminUrl} className={styles.navAdmin}>Admin</a>
+              <a href={loginUrl} className={styles.navAdmin}>Iniciar sesión</a>
               <a href={consoleUrl} className={styles.navCta}>RelNet Console <span>↗</span></a>
             </div>
           </div>
@@ -136,7 +143,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className={styles.footer}><div className={`${styles.shell} ${styles.footerInner}`}><div className={styles.footerBrand}><Image src="/relnet-brand.png" alt="ReLead RelNet" width={1951} height={892}/><span>Private network · control plane · remote operations</span></div><div className={styles.footerLinks}><a href={consoleUrl}>RelNet Console</a><a href={adminUrl}>Admin</a><a href={registerUrl}>Registro</a><a href={billingUrl}>Planes</a><a href={apiUrl}>API</a></div></div></footer>
+      <footer className={styles.footer}><div className={`${styles.shell} ${styles.footerInner}`}><div className={styles.footerBrand}><Image src="/relnet-brand.png" alt="ReLead RelNet" width={1951} height={892}/><span>Private network · control plane · remote operations</span></div><div className={styles.footerLinks}><a href={consoleUrl}>RelNet Console</a><a href={adminUrl}>Admin</a><a href={registerUrl}>Registro</a><a href={billingUrl}>Planes</a><a href={apiUrl}>API / MCP</a></div></div></footer>
     </main>
   );
 }
