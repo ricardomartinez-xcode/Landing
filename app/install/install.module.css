@@ -1,0 +1,48 @@
+.page { width: min(1160px, calc(100% - 48px)); margin: 0 auto; padding: 38px 0 72px; }
+.header { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; padding-bottom: 30px; border-bottom: 1px solid var(--border); }
+.header > div:first-child { max-width: 720px; }
+.eyebrow { margin: 0; color: var(--accent-strong); font-size: .68rem; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+.header h1 { margin: 11px 0 0; font-size: clamp(2.6rem, 5vw, 4.7rem); line-height: .98; letter-spacing: -.06em; }
+.lead { max-width: 690px; margin: 17px 0 0; color: var(--text-muted); font-size: .94rem; line-height: 1.65; }
+.headerActions, .panelActions { display: flex; flex-wrap: wrap; gap: 9px; }
+.primaryButton, .secondaryButton, .shortcutButton { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; padding: 0 14px; border-radius: 8px; font-size: .76rem; font-weight: 760; cursor: pointer; }
+.primaryButton { border: 1px solid var(--accent); background: var(--accent); color: #fff; }
+.secondaryButton, .shortcutButton { border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+.secondaryButton:hover, .shortcutButton:hover { border-color: var(--border-strong); color: var(--accent-strong); }
+.selectorPanel { display: grid; grid-template-columns: 1fr minmax(260px, .8fr); gap: 18px; align-items: end; margin: 22px 0; padding: 16px 18px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-subtle); }
+.selectorPanel > div, .selectorPanel label { display: grid; gap: 5px; }
+.selectorPanel span { color: var(--text-faint); font-size: .64rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.selectorPanel strong { font-size: .84rem; }
+.selectorPanel select { width: 100%; height: 39px; padding: 0 34px 0 11px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-raised); color: var(--text); font-size: .8rem; outline: none; }
+.selectorPanel select:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 3px var(--focus); }
+.installGrid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(290px, .8fr); gap: 14px; margin-bottom: 58px; }
+.installPanel, .helpPanel { border: 1px solid var(--border); border-radius: 11px; background: var(--surface); }
+.installPanel { min-height: 350px; padding: 22px; }
+.panelMeta { display: flex; align-items: center; justify-content: space-between; gap: 16px; color: var(--text-faint); font-size: .63rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.panelMeta small { padding: 4px 7px; border: 1px solid var(--accent-border); border-radius: 999px; background: var(--accent-soft); color: var(--accent-strong); font-size: .58rem; letter-spacing: 0; text-transform: none; }
+.installPanel h2, .helpPanel h2, .sectionHeading h2 { margin: 27px 0 12px; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1; letter-spacing: -.045em; }
+.installPanel > p, .installPanel li, .helpPanel p { color: var(--text-muted); font-size: .82rem; line-height: 1.65; }
+.installPanel ol { display: grid; gap: 8px; margin: 18px 0 26px; padding-left: 22px; }
+.panelActions { margin-top: 26px; }
+.helpPanel { padding: 22px; background: var(--surface-subtle); }
+.helpPanel h2 { margin-top: 10px; }
+.helpPanel dl { display: grid; margin: 26px 0 0; border-top: 1px solid var(--border); }
+.helpPanel dl div { min-height: 48px; display: grid; grid-template-columns: 86px 1fr; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+.helpPanel dt { color: var(--text); font-size: .73rem; font-weight: 780; }.helpPanel dd { margin: 0; color: var(--text-muted); font-size: .7rem; }
+.shortcuts { padding-top: 52px; border-top: 1px solid var(--border); }
+.sectionHeading { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; margin-bottom: 22px; }
+.sectionHeading h2 { margin-top: 9px; }
+.shortcutCount { padding: 5px 8px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); color: var(--text-muted); font-size: .64rem; font-weight: 800; }
+.shortcutNotice { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 18px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface-subtle); }
+.shortcutNotice p { margin: 0; color: var(--text-muted); font-size: .76rem; line-height: 1.5; }.shortcutNotice a { flex: 0 0 auto; color: var(--accent-strong); font-size: .72rem; font-weight: 760; }
+.shortcutList { border: 1px solid var(--border); border-radius: 11px; overflow: hidden; background: var(--surface); }
+.shortcutItem + .shortcutItem { border-top: 1px solid var(--border); }
+.shortcutItem summary { min-height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 12px 15px; cursor: pointer; list-style: none; }.shortcutItem summary::-webkit-details-marker { display: none; }.shortcutItem summary:hover { background: var(--surface-subtle); }
+.shortcutItem summary > div { display: grid; grid-template-columns: 105px minmax(170px, 1fr) minmax(180px, .8fr); gap: 15px; align-items: center; width: 100%; min-width: 0; }.shortcutItem summary span { color: var(--accent-strong); font-size: .62rem; font-weight: 820; text-transform: uppercase; letter-spacing: .05em; }.shortcutItem summary strong { font-size: .8rem; }.shortcutItem summary small { overflow: hidden; color: var(--text-faint); font-size: .68rem; white-space: nowrap; text-overflow: ellipsis; }
+.shortcutItem summary > i { width: 25px; height: 25px; flex: 0 0 auto; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted); font-style: normal; transition: transform 160ms ease; }.shortcutItem[open] summary > i { transform: rotate(45deg); }
+.shortcutBody { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 15px 15px 135px; }.shortcutBody p { max-width: 690px; margin: 0; color: var(--text-muted); font-size: .75rem; line-height: 1.6; }.shortcutButton { flex: 0 0 auto; }
+.shortcutStatus { margin: 14px 0 0; padding: 12px 14px; border: 1px solid var(--accent-border); border-radius: 8px; background: var(--accent-soft); color: var(--accent-strong); font-size: .75rem; line-height: 1.55; }
+.shortcutFootnote { margin: 16px 0 0; color: var(--text-faint); font-size: .68rem; line-height: 1.55; }
+
+@media (max-width: 900px) { .header { align-items: flex-start; flex-direction: column; }.selectorPanel, .installGrid { grid-template-columns: 1fr; }.shortcutItem summary > div { grid-template-columns: 90px 1fr; }.shortcutItem summary small { grid-column: 2; }.shortcutBody { padding-left: 120px; } }
+@media (max-width: 640px) { .page { width: min(100% - 30px, 1160px); padding-top: 25px; }.header h1 { font-size: clamp(2.5rem, 12vw, 4rem); }.selectorPanel { padding: 14px; }.sectionHeading, .shortcutNotice, .shortcutBody { align-items: flex-start; flex-direction: column; }.shortcutItem summary > div { grid-template-columns: 1fr; gap: 3px; }.shortcutItem summary small { grid-column: auto; }.shortcutBody { padding: 0 15px 15px; }.shortcutButton { width: 100%; }.installPanel, .helpPanel { padding: 18px; } }
