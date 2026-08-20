@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { PublicAdSlot } from '@/components/monetization/PublicAdSlot';
 import styles from './page.module.css';
 
 const consoleUrl = 'https://console.relead.com.mx/console/';
@@ -41,21 +42,6 @@ const plans = [
     description: 'Para operación de plataforma, mayor escala y necesidades empresariales.',
     items: ['Hasta 25 usuarios', 'Hasta 1,000 nodos', 'Mayor capacidad RelDrop', 'Operación empresarial', 'Venta asistida'],
     cta: 'Hablar con ReLead', href: `${billingUrl}?plan=business`,
-  },
-];
-
-const ads = [
-  {
-    eyebrow: 'Patrocinado',
-    title: process.env.NEXT_PUBLIC_AD_1_TITLE || 'Infraestructura que viaja contigo',
-    body: process.env.NEXT_PUBLIC_AD_1_BODY || 'Espacio publicitario integrado con etiqueta visible y separado de la navegación de ReLead.',
-    href: process.env.NEXT_PUBLIC_AD_1_URL || '#planes',
-  },
-  {
-    eyebrow: 'Patrocinado',
-    title: process.env.NEXT_PUBLIC_AD_2_TITLE || 'Acceso remoto, sin abrir tu LAN',
-    body: process.env.NEXT_PUBLIC_AD_2_BODY || 'Ubicación reservada para campañas compatibles con el contexto público de ReLead.',
-    href: process.env.NEXT_PUBLIC_AD_2_URL || '#producto',
   },
 ];
 
@@ -107,12 +93,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      <section className={styles.adStrip} aria-label="Anuncios">
-        <div className={`${styles.shell} ${styles.adGrid}`}>
-          {ads.map((ad)=><a key={ad.title} className={styles.adCard} href={ad.href} rel="sponsored"><span>{ad.eyebrow}</span><strong>{ad.title}</strong><p>{ad.body}</p><b>Conocer más ↗</b></a>)}
-        </div>
-      </section>
+      <PublicAdSlot surface="public_landing" format="direct_sponsor" placement="home_midpage" />
 
       <section className={styles.product} id="producto">
         <div className={`${styles.shell} ${styles.sectionGrid}`}>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { FAQGroup } from '@/components/ui/FAQGroup';
+import { PublicAdSlot } from '@/components/monetization/PublicAdSlot';
 import styles from './faqs.module.css';
 
 const adminUrl = 'https://api.relead.com.mx/admin/';
@@ -29,6 +30,8 @@ export default function FAQsPage() {
         <span>Documentación de producto</span>
         <p>Estas respuestas describen capacidades publicadas por RelNet. Las opciones disponibles para un nodo dependen de su sistema operativo, capacidades declaradas y permisos.</p>
       </div>
+
+      <PublicAdSlot surface="public_docs" format="contextual_ad" placement="faqs_after_intro" />
 
       <div className={styles.groups}>
         <FAQGroup

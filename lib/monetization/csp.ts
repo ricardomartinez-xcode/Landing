@@ -1,0 +1,1 @@
+export const PUBLIC_MONETIZATION_CSP=Object.freeze({scriptSrc:["'self'"],connectSrc:["'self'"],frameSrc:["'none'"],imgSrc:["'self'",'data:']}); export function providerOriginsApproved(origins:readonly string[]){return origins.every((origin)=>/^https:\/\/[a-z0-9.-]+$/i.test(origin)&&origin!=='https://*')}

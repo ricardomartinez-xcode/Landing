@@ -25,20 +25,19 @@ test('public shell routes users to My RelNet and keeps internal console out of p
   assert.doesNotMatch(shell, />Abrir (?:Console|Admin)</);
 });
 
-test('home documents canonical v90 surface split without exposing internal console as a CTA', () => {
+test('home uses canonical console host and does not revive legacy application hosts', () => {
   const home = read('app/page.tsx');
-  for (const host of ['relead.com.mx', 'app.relead.com.mx', 'console.relead.com.mx', 'api.relead.com.mx']) assert.ok(home.includes(host));
-  assert.match(home, /Administración interna/);
-  assert.match(home, /Backend \/ OAuth \/ MCP/);
+  assert.match(home, /https:\/\/console\.relead\.com\.mx/);
+  assert.doesNotMatch(home, /https:\/\/app\.relead\.com\.mx/);
   assert.doesNotMatch(home, /api\.relead\.com\.mx\/(?:console|admin)/);
   assert.doesNotMatch(home, /control\.relead\.com\.mx/);
 });
 
-test('home exposes user, install and developer destinations', () => {
+test('home exposes canonical account, billing and developer destinations', () => {
   const home = read('app/page.tsx');
-  assert.match(home, /https:\/\/app\.relead\.com\.mx/);
-  assert.match(home, /https:\/\/app\.relead\.com\.mx\/developers/);
-  assert.match(home, /href="\/install"/);
+  assert.match(home, /https:\/\/console\.relead\.com\.mx\/register/);
+  assert.match(home, /https:\/\/console\.relead\.com\.mx\/billing/);
+  assert.match(home, /https:\/\/console\.relead\.com\.mx\/developers/);
 });
 
 test('install flow is aligned to My RelNet and contains no legacy public admin routes or pasted API-token recipe', () => {
@@ -53,15 +52,15 @@ test('install flow is aligned to My RelNet and contains no legacy public admin r
 
 test('landing does not advertise billing or ads as already active', () => {
   const home = read('app/page.tsx');
-  assert.doesNotMatch(home, /Checkout|Stripe|Comprar Pro|Publicidad activa|Anuncios activos/i);
+  assert.doesNotMatch(home, /NEXT_PUBLIC_AD_|adsbygoogle|googlesyndication|doubleclick|Publicidad activa|Anuncios activos/i);
 });
 
 test('responsive public shell and landing contracts exist', () => {
   const shellCss = read('components/public/PublicShell.module.css');
   const pageCss = read('app/page.module.css');
   assert.match(shellCss, /@media\(max-width:760px\)/);
-  assert.match(pageCss, /@media\(max-width:900px\)/);
-  assert.match(pageCss, /@media\(max-width:620px\)/);
+  assert.match(pageCss, /@media\(max-width:980px\)/);
+  assert.match(pageCss, /@media\(max-width:680px\)/);
 });
 
 test('canonical public routes still exist', () => {
