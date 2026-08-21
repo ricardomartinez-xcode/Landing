@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { aiLabel, formatMxn, monthlyCadence, planCta, publicPlans, yearlyLabel } from '@/lib/public-commercial';
 import styles from './page.module.css';
@@ -25,9 +24,15 @@ const ads = [
 export default function HomePage() {
   return (
     <main className={styles.page}>
-      <nav className={styles.nav} aria-label="Navegación principal"><div className={styles.shell}><div className={styles.navInner}><a className={styles.brand} href="#inicio" aria-label="ReLead RelNet"><Image src="/relnет-brand.png" alt="ReLead RelNet" width={1951} height={892} priority /></a><div className={styles.navLinks}><a href="#producto">Producto</a><a href="#capacidades">Capacidades</a><Link href="/pricing">Pricing</Link><a href="#seguridad">Seguridad</a><a href={loginUrl} className={styles.navAdmin}>Iniciar sesión</a><a href={consoleUrl} className={styles.navCta}>RelNet Console <span>↗</span></a></div></div></div></nav>
+      <nav className={styles.nav} aria-label="Navegación principal">
+        <div className={styles.shell}><div className={styles.navInner}>
+          <a className={styles.brand} href="#inicio" aria-label="ReLead RelNet"><strong>ReLead · RelNet</strong></a>
+          <div className={styles.navLinks}><a href="#producto">Producto</a><a href="#capacidades">Capacidades</a><Link href="/pricing">Pricing</Link><a href="#seguridad">Seguridad</a><a href={loginUrl} className={styles.navAdmin}>Iniciar sesión</a><a href={consoleUrl} className={styles.navCta}>RelNet Console <span>↗</span></a></div>
+        </div></div>
+      </nav>
 
-      <section className={styles.hero} id="inicio"><div className={`${styles.shell} ${styles.heroGrid}`}><div className={styles.heroCopy}><span className={styles.eyebrow}>ReLead · RelNet Next</span><h1>Tu mesh privado.<br /><span>Acceso remoto + IA.</span></h1><p>Conecta nodos y servicios en una red privada, prioriza direct P2P con Relay fallback y opera SSH, RDP, RelDrop, RelShare, Exit Node y Subnet Router sin convertir la API en el camino normal de tus datos.</p><div className={styles.actions}><a className={styles.buttonPrimary} href={registerUrl}>Crear cuenta <span>→</span></a><Link className={styles.buttonSecondary} href="/pricing">Ver pricing</Link><Link className={styles.buttonSecondary} href="/install">Instalar</Link></div><div className={styles.heroMeta}><span>direct P2P</span><span>Relay fallback</span><span>SSH / RDP</span><span>RelNet AI</span></div></div>
+      <section className={styles.hero} id="inicio"><div className={`${styles.shell} ${styles.heroGrid}`}>
+        <div className={styles.heroCopy}><span className={styles.eyebrow}>ReLead · RelNet Next</span><h1>Tu mesh privado.<br /><span>Acceso remoto + IA.</span></h1><p>Conecta nodos y servicios en una red privada, prioriza direct P2P con Relay fallback y opera SSH, RDP, RelDrop, RelShare, Exit Node y Subnet Router sin convertir la API en el camino normal de tus datos.</p><div className={styles.actions}><a className={styles.buttonPrimary} href={registerUrl}>Crear cuenta <span>→</span></a><Link className={styles.buttonSecondary} href="/pricing">Ver pricing</Link><Link className={styles.buttonSecondary} href="/install">Instalar</Link></div><div className={styles.heroMeta}><span>direct P2P</span><span>Relay fallback</span><span>SSH / RDP</span><span>RelNet AI</span></div></div>
         <div className={styles.controlVisual} aria-label="Vista conceptual de RelNet"><div className={styles.windowChrome}><div className={styles.windowDots}><i/><i/><i/></div><span>console.relead.com.mx</span><b>Connected</b></div><div className={styles.mockApp}><aside className={styles.mockSidebar}><strong>R</strong>{['⌁','⇧','◈','◎'].map((icon)=><span key={icon}>{icon}</span>)}</aside><div className={styles.mockMain}><div className={styles.mockHeader}><div><small>RELNET NEXT</small><h3>Private mesh</h3></div><span className={styles.livePill}>● Path healthy</span></div><div className={styles.statGrid}><div><small>Camino</small><strong>P2P</strong><span>direct preferred</span></div><div><small>Fallback</small><strong>Relay</strong><span>authorized</span></div><div><small>Acceso</small><strong>SSH</strong><span>RDP + files</span></div></div><div className={styles.terminal}><div><span>data path</span><b>peer service</b><em>authorized</em></div><pre>{`direct P2P   preferred\nRelay        fallback\nSSH / RDP    service\nRelDrop      peer data`}</pre></div></div></div></div>
       </div></section>
 
@@ -41,7 +46,7 @@ export default function HomePage() {
 
       <section className={styles.security} id="seguridad"><div className={`${styles.shell} ${styles.securityCard}`}><div><span className={styles.eyebrow}>Identidad antes que contraseña</span><h2>Registro, OTP, OAuth y acceso elevado como flujos explícitos.</h2><p>RelNet distingue control, autorización y data path; las capacidades se habilitan sólo cuando el plan, el nodo y la política aplicable lo permiten.</p></div><div className={styles.securityList}>{['Registro y onboarding','Configuración OTP','OAuth por usuario','SSH ligado a identidad','Autorización de capacidades','Auditoría de sesiones'].map((x)=><span key={x}>✓ {x}</span>)}</div></div></section>
 
-      <footer className={styles.footer}><div className={`${styles.shell} ${styles.footerInner}`}><div className={styles.footerBrand}><Image src="/relnet-brand.png" alt="ReLead RelNet" width={1951} height={892}/><span>Private network · remote access · RelNet AI</span></div><div className={styles.footerLinks}><a href={consoleUrl}>RelNet Console</a><Link href="/pricing">Pricing</Link><a href={registerUrl}>Registro</a><a href={apiUrl}>API / MCP</a></div></div></footer>
+      <footer className={styles.footer}><div className={`${styles.shell} ${styles.footerInner}`}><div className={styles.footerBrand}><strong>ReLead · RelNet</strong><span>Private network · remote access · RelNet AI</span></div><div className={styles.footerLinks}><a href={consoleUrl}>RelNet Console</a><Link href="/pricing">Pricing</Link><a href={registerUrl}>Registro</a><a href={apiUrl}>API / MCP</a></div></div></footer>
     </main>
   );
 }
