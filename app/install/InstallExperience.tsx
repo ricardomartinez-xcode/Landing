@@ -1,117 +1,89 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import styles from './install.module.css';
 
-type Platform = 'ios' | 'android' | 'windows' | 'linux' | 'other';
+type Platform = 'windows' | 'linux' | 'other';
+const CONSOLE_URL = 'https://console.relead.com.mx/';
 
-const MY_RELNET_URL = 'https://app.relead.com.mx/';
-const DEVELOPERS_URL = 'https://app.relead.com.mx/developers';
-const IOS_GUIDE_URL = '/shortcuts/RelNet-iOS-Instrucciones-v2.zip';
-
-function detectedPlatform(): Platform {
+function detectPlatform(): Platform {
   if (typeof navigator === 'undefined') return 'other';
   const ua = navigator.userAgent.toLowerCase();
-  const touchMac = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
-  if (/iphone|ipad|ipod/.test(ua) || touchMac) return 'ios';
-  if (/android/.test(ua)) return 'android';
   if (/windows/.test(ua)) return 'windows';
-  if (/linux/.test(ua)) return 'linux';
+  if (/linux/.test(ua) && !/android/.test(ua)) return 'linux';
   return 'other';
 }
 
-const instructions: Record<Platform, { title: string; body: string[] }> = {
-  ios: {
-    title: 'My RelNet + enrolamiento móvil',
-    body: [
-      'Abre My RelNet en Safari e inicia sesión.',
-      'Desde Mobile inicia el enrolamiento y sigue el flujo generado para tu dispositivo.',
-      'Puedes agregar My RelNet a Inicio para usarlo como app web.',
-      'El kit público de Atajos queda disponible como complemento; no pegues tokens de API manualmente en la landing.'
-    ]
-  },
-  android: {
-    title: 'My RelNet como PWA',
-    body: [
-      'Abre My RelNet en Chrome e inicia sesión.',
-      'Usa la sección Mobile para enrolar el dispositivo cuando esté habilitada para tu cuenta.',
-      'Instala la experiencia web desde Chrome si tu dispositivo ofrece la opción.'
-    ]
-  },
+const guides = {
   windows: {
-    title: 'Nodo RelNet + My RelNet',
+    title: 'RelNet Next para Windows',
+    status: 'BLOCKER · paquete final pendiente',
     body: [
-      'Instala el Runtime/Node RelNet mediante el paquete correspondiente a tu canal.',
-      'Vincula y aprueba el nodo con el flujo autorizado de tu cuenta.',
-      'Usa My RelNet para revisar red, dispositivos y recursos disponibles para el nodo.'
+      'La superficie pública está preparada para el instalador firmado de RelNet Next.',
+      'El nombre, URL y comando final del paquete todavía no están congelados; no publicamos una receta provisional.',
+      'Cuando el paquete de release sea aceptado, esta página podrá enlazar únicamente el artefacto e instrucciones verificadas.'
     ]
   },
   linux: {
-    title: 'Nodo RelNet para Linux',
+    title: 'RelNet Next para Linux',
+    status: 'BLOCKER · canal final pendiente',
     body: [
-      'Instala el Runtime/Node RelNet del canal correspondiente.',
-      'Completa la vinculación y aprobación del nodo.',
-      'Opera los recursos expuestos por ese nodo desde My RelNet según sus capacidades.'
+      'La superficie pública está preparada para el canal Linux aceptado de RelNet Next.',
+      'El bootstrap, repositorio, firma y URL finales todavía no están congelados; no publicamos comandos internos como instrucciones públicas.',
+      'Cuando el canal sea aceptado, esta página publicará únicamente el flujo y verificación aprobados.'
     ]
   },
   other: {
-    title: 'Acceso desde navegador',
+    title: 'Selecciona Windows o Linux',
+    status: 'Sin instalador público adicional congelado',
     body: [
-      'Abre My RelNet con un navegador moderno.',
-      'La disponibilidad de funciones nativas depende del Runtime/Node compatible para tu plataforma.',
-      'Consulta Developers para OAuth, MCP y superficies de integración.'
+      'La documentación pública de instalación se prepara para Windows y Linux.',
+      'No publicamos una descarga o comando hasta que el artefacto y su ciclo de vida estén aceptados.'
     ]
   }
-};
+} as const;
 
 export function InstallExperience() {
-  const automatic = useMemo(() => detectedPlatform(), []);
+  const automatic = useMemo(() => detectPlatform(), []);
   const [selected, setSelected] = useState<Platform | 'auto'>('auto');
   const platform = selected === 'auto' ? automatic : selected;
-  const current = instructions[platform];
+  const current = guides[platform];
 
   return (
     <main className={styles.page}>
       <header className={styles.header}>
         <div>
-          <p className={styles.eyebrow}>Instalación v90</p>
-          <h1>Conecta un dispositivo a RelNet.</h1>
-          <p className={styles.lead}>La experiencia de usuario parte de My RelNet. La instalación del Runtime/Node y el enrolamiento móvil se mantienen separados de la consola administrativa interna.</p>
+          <p className={styles.eyebrow}>RelNet Next · instalación</p>
+          <h1>Instala sólo desde un canal aceptado.</h1>
+          <p className={styles.lead}>Windows y Linux están preparados como superficies públicas, pero no publicamos comandos ni artefactos antes de que el release correspondiente quede congelado.</p>
         </div>
         <div className={styles.headerActions}>
-          <a className={styles.primaryButton} href={MY_RELNET_URL}>Abrir My RelNet ↗</a>
-          <a className={styles.secondaryButton} href={DEVELOPERS_URL}>Developers ↗</a>
+          <a className={styles.primaryButton} href={CONSOLE_URL}>Abrir Console ↗</a>
+          <Link className={styles.secondaryButton} href="/pricing">Ver Pricing</Link>
         </div>
       </header>
 
       <section className={styles.selectorPanel} aria-label="Selector de plataforma">
-        <div><span>Plataforma detectada</span><strong>{automatic === 'ios' ? 'iPhone / iPad' : automatic === 'android' ? 'Android' : automatic === 'windows' ? 'Windows' : automatic === 'linux' ? 'Linux' : 'Otro dispositivo'}</strong></div>
-        <label><span>Mostrar instrucciones para</span>
-          <select value={selected} onChange={(event) => setSelected(event.target.value as Platform | 'auto')}>
-            <option value="auto">Automático</option><option value="ios">iPhone / iPad</option><option value="android">Android</option><option value="windows">Windows</option><option value="linux">Linux</option><option value="other">Otro</option>
-          </select>
-        </label>
+        <div><span>Plataforma detectada</span><strong>{automatic === 'windows' ? 'Windows' : automatic === 'linux' ? 'Linux' : 'Otra plataforma'}</strong></div>
+        <label><span>Mostrar documentación para</span><select value={selected} onChange={(event) => setSelected(event.target.value as Platform | 'auto')}><option value="auto">Automático</option><option value="windows">Windows</option><option value="linux">Linux</option><option value="other">Otra plataforma</option></select></label>
       </section>
 
       <section className={styles.installGrid}>
         <article className={styles.installPanel}>
-          <div className={styles.panelMeta}><span>Ruta recomendada</span><small>{selected === 'auto' ? 'Según este dispositivo' : 'Selección manual'}</small></div>
+          <div className={styles.panelMeta}><span>Canal público</span><small>{selected === 'auto' ? 'Según este dispositivo' : 'Selección manual'}</small></div>
           <h2>{current.title}</h2>
+          <p>{current.status}</p>
           <ol>{current.body.map((step) => <li key={step}>{step}</li>)}</ol>
-          <div className={styles.panelActions}>
-            <a className={styles.primaryButton} href={MY_RELNET_URL}>Continuar en My RelNet</a>
-            {platform === 'ios' ? <a className={styles.secondaryButton} href={IOS_GUIDE_URL}>Kit iOS</a> : null}
-          </div>
+          <div className={styles.panelActions}><Link className={styles.secondaryButton} href="/FAQs">FAQs</Link><Link className={styles.secondaryButton} href="/pricing">Planes</Link></div>
         </article>
-
         <aside className={styles.helpPanel}>
-          <span className={styles.eyebrow}>Arquitectura actual</span>
-          <h2>Cada superficie tiene una función.</h2>
-          <p>La landing ya no redirige usuarios hacia rutas administrativas bajo la API.</p>
+          <span className={styles.eyebrow}>Dominios canónicos</span>
+          <h2>Web pública, Console y API permanecen separadas.</h2>
           <dl>
-            <div><dt>ReLead</dt><dd>Información pública e instalación</dd></div>
-            <div><dt>My RelNet</dt><dd>Cuenta, red, dispositivos y recursos</dd></div>
-            <div><dt>Developers</dt><dd>OAuth, MCP e integraciones</dd></div>
+            <div><dt>Web</dt><dd>relead.com.mx · producto, Pricing, instalación y FAQs</dd></div>
+            <div><dt>Console</dt><dd>console.relead.com.mx · experiencia autenticada</dd></div>
+            <div><dt>API</dt><dd>api.relead.com.mx · interfaz de servicio</dd></div>
           </dl>
         </aside>
       </section>

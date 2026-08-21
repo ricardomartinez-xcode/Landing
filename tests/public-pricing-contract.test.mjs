@@ -46,8 +46,8 @@ test('home and shell expose Pricing from the same contract', () => {
   assert.doesNotMatch(home, /\$149|1,490|\$399|3,990/);
 });
 
-test('owned public surfaces contain no obsolete price or app domain', () => {
-  const owned = ['app/page.tsx','app/pricing/page.tsx','components/public/PublicShell.tsx'].map(read).join('\n');
+test('owned public surfaces contain no obsolete price or stale domain', () => {
+  const owned = ['app/page.tsx','app/pricing/page.tsx','app/FAQs/page.tsx','app/install/InstallExperience.tsx','components/public/PublicShell.tsx'].map(read).join('\n');
   assert.doesNotMatch(owned, /\$149|1490|1,490|\$399|3990|3,990/);
-  assert.doesNotMatch(owned, /app\.relead\.com\.mx/);
+  assert.doesNotMatch(owned, /app\.relead\.com\.mx|api\.relead\.com\.mx\/(?:admin|console)/);
 });
