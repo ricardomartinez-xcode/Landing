@@ -65,6 +65,14 @@ const sections = [
     ]
   },
   {
+    title: 'Patrocinios y publicidad',
+    paragraphs: [
+      'ReLead puede reservar espacios para patrocinadores directos o publicidad contextual en superficies públicas autorizadas. Un patrocinio directo estático puede mostrarse sin cookies publicitarias ni identificadores de seguimiento cuando no realiza personalización ni seguimiento entre sitios.',
+      'La tecnología de un proveedor externo de publicidad no se cargará por el solo hecho de existir un espacio publicitario. Antes de habilitarla, ReLead deberá aprobar al proveedor, limitar los datos enviados y aplicar consentimiento cuando la tecnología, personalización, cookies o identificadores utilizados lo requieran.',
+      'No utilizamos contenido privado de terminales, chats, correos, prompts, credenciales, identificadores privados de red, Remote Chrome, secretos ni datos sensibles para seleccionar publicidad.'
+    ]
+  },
+  {
     title: 'Cookies y tecnologías similares',
     paragraphs: [
       'El Sitio puede usar cookies y tecnologías similares para recordar preferencias, habilitar funciones técnicas, reforzar la seguridad y obtener métricas de uso. Puedes limitar o eliminar cookies desde la configuración de tu navegador; desactivar cookies esenciales puede afectar algunas funciones.',
@@ -86,7 +94,7 @@ export default function PrivacyPage() {
       eyebrow="Privacidad"
       title="Aviso de Privacidad"
       summary="Cómo ReLead trata la información personal al operar su sitio y sus soluciones digitales."
-      updatedAt="27 de junio de 2026"
+      updatedAt="20 de agosto de 2026"
       sections={sections}
     />
   );
