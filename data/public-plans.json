@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "source_revision": "agent-6-public-pricing-ai-ui-20260820",
+  "currency": "MXN",
+  "plans": [
+    {
+      "slug": "free",
+      "name": "Free",
+      "description": "Red privada personal y funciones esenciales para empezar con RelNet.",
+      "monthly_price": 0,
+      "yearly_price": 0,
+      "self_service": true,
+      "ai": { "enabled": false, "monthly_credits": 0, "pooled": false, "quota": "none" }
+    },
+    {
+      "slug": "pro",
+      "name": "Pro",
+      "description": "Trabajo remoto avanzado, automatización y RelNet AI personal.",
+      "monthly_price": 199,
+      "yearly_price": 1990,
+      "self_service": true,
+      "ai": { "enabled": true, "monthly_credits": 100, "pooled": false, "quota": "monthly" }
+    },
+    {
+      "slug": "team",
+      "name": "Team",
+      "description": "Operación compartida para equipos con una bolsa común de RelNet AI.",
+      "monthly_price": 499,
+      "yearly_price": 4990,
+      "self_service": false,
+      "ai": { "enabled": true, "monthly_credits": 500, "pooled": true, "quota": "monthly" }
+    },
+    {
+      "slug": "business",
+      "name": "Business",
+      "description": "Despliegues administrados y condiciones comerciales acordadas por organización.",
+      "monthly_price": null,
+      "yearly_price": null,
+      "self_service": false,
+      "ai": { "enabled": true, "monthly_credits": null, "pooled": true, "quota": "contractual_configurable" }
+    }
+  ]
+}

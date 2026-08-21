@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import styles from './PublicShell.module.css';
 
-const appUrl = 'https://app.relead.com.mx';
+const consoleUrl = 'https://console.relead.com.mx';
 
 export function PublicShell({ children }: { children: ReactNode }) {
   return (
@@ -10,35 +10,17 @@ export function PublicShell({ children }: { children: ReactNode }) {
       <header className={styles.header}>
         <div className={styles.inner}>
           <Link href="/" className={styles.brand} aria-label="ReLead, inicio">
-            <span className={styles.brandMark}>R</span>
-            <span>
-              <strong>ReLead</strong>
-              <small>RelNet</small>
-            </span>
+            <span className={styles.brandMark}>R</span><span><strong>ReLead</strong><small>RelNet</small></span>
           </Link>
           <nav className={styles.nav} aria-label="Navegación principal">
-            <Link href="/#producto">Producto</Link>
-            <Link href="/#accesos">Accesos</Link>
-            <Link href="/install">Instalar</Link>
-            <Link href="/FAQs">FAQs</Link>
-            <a className={styles.primary} href={appUrl}>Abrir My RelNet</a>
+            <Link href="/#producto">Producto</Link><Link href="/#accesos">Accesos</Link><Link href="/install">Instalar</Link><Link href="/pricing">Pricing</Link><Link href="/FAQs">FAQs</Link>
+            <a className={styles.primary} href={consoleUrl}>Abrir Console</a>
           </nav>
         </div>
       </header>
       {children}
       <footer className={styles.footer}>
-        <div className={styles.inner}>
-          <div>
-            <strong>ReLead</strong>
-            <p>Infraestructura privada y operación remota con RelNet.</p>
-          </div>
-          <div className={styles.footerLinks}>
-            <Link href="/privacy">Privacidad</Link>
-            <Link href="/terms">Términos</Link>
-            <Link href="/FAQs">FAQs</Link>
-            <a href={appUrl}>My RelNet</a>
-          </div>
-        </div>
+        <div className={styles.inner}><div><strong>ReLead</strong><p>Infraestructura privada y operación remota con RelNet.</p></div><div className={styles.footerLinks}><Link href="/privacy">Privacidad</Link><Link href="/terms">Términos</Link><Link href="/pricing">Pricing</Link><Link href="/FAQs">FAQs</Link><a href={consoleUrl}>Console</a></div></div>
       </footer>
     </div>
   );
