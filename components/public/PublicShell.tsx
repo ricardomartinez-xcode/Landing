@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import styles from './PublicShell.module.css';
 
-const appUrl = 'https://console.relead.com.mx';
+const accessUrl = 'https://auth.relead.com.mx/access';
 
 export function PublicShell({ children }: { children: ReactNode }) {
   return (
@@ -21,7 +21,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
             <Link href="/#accesos">Accesos</Link>
             <Link href="/install">Instalar</Link>
             <Link href="/FAQs">FAQs</Link>
-            <a className={styles.primary} href={appUrl}>Abrir My RelNet</a>
+            <a className={styles.primary} href={accessUrl}>Acceder</a>
           </nav>
         </div>
       </header>
@@ -36,7 +36,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
             <Link href="/privacy">Privacidad</Link>
             <Link href="/terms">Términos</Link>
             <Link href="/FAQs">FAQs</Link>
-            <a href={appUrl}>My RelNet</a>
+            <a href={accessUrl}>Acceso seguro</a>
           </div>
         </div>
       </footer>
