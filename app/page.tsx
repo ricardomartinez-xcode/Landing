@@ -2,12 +2,7 @@ import Image from 'next/image';
 import { PublicAdSlot } from '@/components/monetization/PublicAdSlot';
 import styles from './page.module.css';
 
-const consoleUrl = 'https://console.relead.com.mx/console/';
-const builderUrl = 'https://builder.relead.com.mx/';
-const registerUrl = 'https://console.relead.com.mx/register';
-const loginUrl = 'https://console.relead.com.mx/auth/login';
-const billingUrl = 'https://console.relead.com.mx/billing';
-const apiUrl = 'https://console.relead.com.mx/developers';
+const accessUrl = 'https://auth.relead.com.mx/access';
 
 const features = [
   ['Mesh privado', 'Conecta nodos Windows, Linux y servicios sin publicar la red interna.'],
@@ -23,25 +18,25 @@ const plans = [
     name: 'Free', price: '$0 MXN', cadence: 'sin tarjeta',
     description: 'Para probar RelNet con una red personal real.',
     items: ['1 usuario', 'Hasta 10 nodos', '2 GB de RelDrop al mes', 'Console y métricas esenciales', 'Puede incluir patrocinio público'],
-    cta: 'Crear cuenta', href: registerUrl,
+    cta: 'Crear cuenta', href: accessUrl,
   },
   {
     name: 'Pro', price: '$149 MXN', cadence: '/mes · $1,490/año',
     description: 'Para operar infraestructura personal y automatizaciones sin cambiar de red.',
     items: ['Hasta 50 nodos', 'API externa y MCP', 'Remote Chrome', 'Automatización', 'Sin anuncios del plan'],
-    cta: 'Elegir Pro', href: `${billingUrl}?plan=pro`, featured: true,
+    cta: 'Elegir Pro', href: accessUrl, featured: true,
   },
   {
     name: 'Team', price: '$399 MXN', cadence: '/mes · $3,990/año',
     description: 'Para equipos pequeños que necesitan una red compartida y más capacidad.',
     items: ['Hasta 5 usuarios', 'Hasta 250 nodos', 'Entitlements por plan', 'API y automatización', 'Venta asistida mientras madura multiusuario'],
-    cta: 'Ver Team', href: `${billingUrl}?plan=team`,
+    cta: 'Ver Team', href: accessUrl,
   },
   {
     name: 'Business', price: 'Cotizar', cadence: 'por organización',
     description: 'Para operación de plataforma, mayor escala y necesidades empresariales.',
     items: ['Hasta 25 usuarios', 'Hasta 1,000 nodos', 'Mayor capacidad RelDrop', 'Operación empresarial', 'Venta asistida'],
-    cta: 'Hablar con ReLead', href: `${billingUrl}?plan=business`,
+    cta: 'Hablar con ReLead', href: accessUrl,
   },
 ];
 
@@ -56,8 +51,8 @@ export default function HomePage() {
             </a>
             <div className={styles.navLinks}>
               <a href="#producto">Producto</a><a href="#capacidades">Capacidades</a><a href="#planes">Planes</a><a href="#seguridad">Seguridad</a>
-              <a href={loginUrl} className={styles.navAdmin}>Iniciar sesión</a>
-              <a href={consoleUrl} className={styles.navCta}>RelNet Console <span>↗</span></a>
+              <a href={accessUrl} className={styles.navAdmin}>Iniciar sesión</a>
+              <a href={accessUrl} className={styles.navCta}>Acceder <span>↗</span></a>
             </div>
           </div>
         </div>
@@ -66,12 +61,12 @@ export default function HomePage() {
       <section className={styles.hero} id="inicio">
         <div className={`${styles.shell} ${styles.heroGrid}`}>
           <div className={styles.heroCopy}>
-            <span className={styles.eyebrow}>ReLead · RelNet v90</span>
+            <span className={styles.eyebrow}>ReLead · RelNet</span>
             <h1>Tu red privada.<br /><span>Una consola para operarla.</span></h1>
             <p>Conecta equipos, identidades y servicios en un plano privado; abre terminales, SSH, archivos, automatización y salida a Internet sin mezclar la operación diaria con la administración de plataforma.</p>
             <div className={styles.actions}>
-              <a className={styles.buttonPrimary} href={registerUrl}>Crear cuenta <span>→</span></a>
-              <a className={styles.buttonSecondary} href={consoleUrl}>Abrir RelNet Console</a>
+              <a className={styles.buttonPrimary} href={accessUrl}>Crear cuenta <span>→</span></a>
+              <a className={styles.buttonSecondary} href={accessUrl}>Acceder a RelNet</a>
             </div>
             <div className={styles.heroMeta}><span>OAuth / OTP</span><span>SSH identity</span><span>IKEv2 + mesh</span><span>MCP + API</span></div>
           </div>
@@ -97,8 +92,8 @@ export default function HomePage() {
 
       <section className={styles.product} id="producto">
         <div className={`${styles.shell} ${styles.sectionGrid}`}>
-          <div><span className={styles.eyebrow}>Un solo sistema</span><h2>RelNet Console para usuarios.<br/>Builder para la plataforma.</h2></div>
-          <p><strong>Console</strong> es la superficie diaria para nodos, red, terminal, SSH, archivos, MCP, API y facturación. <strong>Builder</strong> queda reservado para salud, releases, staging, Rescue, controllers y recuperación. La API no necesita rutas gráficas.</p>
+          <div><span className={styles.eyebrow}>Un solo sistema</span><h2>RelNet Console para usuarios.<br/>Un acceso seguro para operar tu red.</h2></div>
+          <p><strong>Console</strong> es la superficie diaria para nodos, red, terminal, SSH, archivos, MCP, API y facturación. Las operaciones internas de plataforma permanecen fuera de la experiencia pública. La API no necesita rutas gráficas.</p>
         </div>
       </section>
 
@@ -124,7 +119,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className={styles.footer}><div className={`${styles.shell} ${styles.footerInner}`}><div className={styles.footerBrand}><Image src="/relnet-brand.png" alt="ReLead RelNet" width={1951} height={892}/><span>Private network · control plane · remote operations</span></div><div className={styles.footerLinks}><a href={consoleUrl}>RelNet Console</a><a href={builderUrl}>Builder</a><a href={registerUrl}>Registro</a><a href={billingUrl}>Planes</a><a href={apiUrl}>API / MCP</a></div></div></footer>
+      <footer className={styles.footer}><div className={`${styles.shell} ${styles.footerInner}`}><div className={styles.footerBrand}><Image src="/relnet-brand.png" alt="ReLead RelNet" width={1951} height={892}/><span>Private network · control plane · remote operations</span></div><div className={styles.footerLinks}><a href={accessUrl}>Acceso seguro</a><a href="#producto">Producto</a><a href="#planes">Planes</a><a href={accessUrl}>API / MCP</a></div></div></footer>
     </main>
   );
 }
