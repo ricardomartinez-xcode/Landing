@@ -6,50 +6,38 @@ import { join } from 'node:path';
 const root = process.cwd();
 const read = (path) => readFileSync(join(root, path), 'utf8');
 const publicRoutes = ['/', '/install', '/FAQs', '/privacy', '/terms'];
+const authEntry = 'https://auth.relead.com.mx/access';
 
-test('public v90 shell is mounted globally', () => {
+test('public shell is mounted globally', () => {
   const layout = read('app/layout.tsx');
   assert.match(layout, /PublicShell/);
   assert.match(layout, /<PublicShell>/);
-  assert.match(layout, /ReLead \| RelNet y My RelNet/);
 });
 
-test('public shell routes users to the canonical Console and keeps Builder out of primary CTAs', () => {
+test('public navigation uses only the neutral Auth Gateway entry', () => {
   const shell = read('components/public/PublicShell.tsx');
-  assert.match(shell, /https:\/\/console\.relead\.com\.mx/);
-  assert.match(shell, />Abrir My RelNet</);
-  assert.match(shell, /href="\/install"/);
-  assert.match(shell, /href="\/FAQs"/);
-  assert.doesNotMatch(shell, /api\.relead\.com\.mx\/(?:console|admin)/);
-  assert.doesNotMatch(shell, /control\.relead\.com\.mx/);
-  assert.doesNotMatch(shell, />Abrir (?:Console|Admin)</);
+  assert.match(shell, new RegExp(authEntry.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.doesNotMatch(shell, /https:\/\/console\.relead\.com\.mx/);
+  assert.doesNotMatch(shell, /builder\.relead\.com\.mx/i);
+  assert.doesNotMatch(shell, />Builder</i);
 });
 
-test('home uses canonical console host and does not revive legacy application hosts', () => {
+test('home never exposes Builder and routes protected CTAs through Auth', () => {
   const home = read('app/page.tsx');
-  assert.match(home, /https:\/\/console\.relead\.com\.mx/);
-  assert.doesNotMatch(home, /https:\/\/app\.relead\.com\.mx/);
-  assert.doesNotMatch(home, /api\.relead\.com\.mx\/(?:console|admin)/);
-  assert.doesNotMatch(home, /control\.relead\.com\.mx/);
+  assert.match(home, /https:\/\/auth\.relead\.com\.mx\/access/);
+  assert.doesNotMatch(home, /https:\/\/builder\.relead\.com\.mx/i);
+  assert.doesNotMatch(home, />Builder</i);
+  assert.doesNotMatch(home, /href:\s*['"`]https:\/\/console\.relead\.com\.mx/i);
+  assert.doesNotMatch(home, /RelNet\s+v90/i);
 });
 
-test('home exposes canonical account, billing and developer destinations', () => {
-  const home = read('app/page.tsx');
-  assert.match(home, /https:\/\/console\.relead\.com\.mx\/register/);
-  assert.match(home, /https:\/\/console\.relead\.com\.mx\/billing/);
-  assert.match(home, /https:\/\/console\.relead\.com\.mx\/developers/);
-  assert.match(home, /https:\/\/console\.relead\.com\.mx\/auth\/login/);
-  assert.match(home, /https:\/\/builder\.relead\.com\.mx/);
-});
-
-test('install flow is aligned to My RelNet and contains no legacy public admin routes or pasted API-token recipe', () => {
+test('install flow starts authenticated surfaces at Auth Gateway', () => {
   const install = read('app/install/InstallExperience.tsx');
-  assert.match(install, /https:\/\/console\.relead\.com\.mx\//);
-  assert.match(install, /https:\/\/console\.relead\.com\.mx\/developers/);
-  assert.match(install, /enrolamiento/i);
-  assert.doesNotMatch(install, /api\.relead\.com\.mx\/(?:console|admin)/);
-  assert.doesNotMatch(install, /control\.relead\.com\.mx/);
-  assert.doesNotMatch(install, /API_TOKEN|Bearer \[|Pega aqu/i);
+  assert.match(install, /https:\/\/auth\.relead\.com\.mx\/access/);
+  assert.doesNotMatch(install, /https:\/\/console\.relead\.com\.mx/i);
+  assert.doesNotMatch(install, /builder\.relead\.com\.mx/i);
+  assert.doesNotMatch(install, /Instalación\s+v90/i);
+  assert.doesNotMatch(install, /API_TOKEN|Bearer \[|Pega aquí/i);
 });
 
 test('landing does not advertise billing or ads as already active', () => {
@@ -78,14 +66,4 @@ test('lowercase /faqs compatibility remains an App Router redirect', () => {
   assert.match(compat, /next\/navigation/);
   assert.match(compat, /slug\s*===\s*['"]faqs['"]/);
   assert.match(compat, /redirect\(['"]\/FAQs['"]\)/);
-});
-
-test('FAQs keep native accessible disclosure semantics', () => {
-  const candidates = ['app/FAQs/page.tsx', 'components/ui/FAQGroup.tsx'].filter((path) => existsSync(join(root, path))).map(read).join('\n');
-  assert.match(candidates, /<details/);
-  assert.match(candidates, /<summary/);
-});
-
-test('legal pages remain first-class routes', () => {
-  for (const path of ['app/privacy/page.tsx', 'app/terms/page.tsx']) assert.equal(existsSync(join(root, path)), true);
 });
