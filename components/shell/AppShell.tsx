@@ -9,8 +9,8 @@ import { NavIcon } from './NavIcon';
 import { primaryNav, routeLabel } from './nav';
 import styles from './AppShell.module.css';
 
-const consoleUrl = 'https://api.relead.com.mx/console';
-const adminUrl = 'https://api.relead.com.mx/admin';
+const consoleUrl = 'https://console.relead.com.mx/console/';
+const builderUrl = 'https://builder.relead.com.mx/';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -56,8 +56,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <a href={consoleUrl} className={styles.externalLink} aria-label="Abrir Console">
             <span className={styles.externalLabel}>Console</span><span className={styles.externalGlyph} aria-hidden="true">↗</span>
           </a>
-          <a href={adminUrl} className={styles.externalLink} aria-label="Abrir Admin">
-            <span className={styles.externalLabel}>Admin</span><span className={styles.externalGlyph} aria-hidden="true">↗</span>
+          <a href={builderUrl} className={styles.externalLink} aria-label="Abrir Builder">
+            <span className={styles.externalLabel}>Builder</span><span className={styles.externalGlyph} aria-hidden="true">↗</span>
           </a>
         </div>
       </aside>

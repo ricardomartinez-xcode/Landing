@@ -5,8 +5,8 @@ import styles from './install.module.css';
 
 type Platform = 'ios' | 'android' | 'windows' | 'linux' | 'other';
 
-const MY_RELNET_URL = 'https://app.relead.com.mx/';
-const DEVELOPERS_URL = 'https://app.relead.com.mx/developers';
+const MY_RELNET_URL = 'https://console.relead.com.mx/';
+const DEVELOPERS_URL = 'https://console.relead.com.mx/developers';
 const IOS_GUIDE_URL = '/shortcuts/RelNet-iOS-Instrucciones-v2.zip';
 
 function detectedPlatform(): Platform {

@@ -21,5 +21,9 @@
     "enabled": true
   },
   "workers_dev": true,
-  "preview_urls": true
+  "preview_urls": true,
+  "routes": [
+    { "pattern": "relead.com.mx", "custom_domain": true },
+    { "pattern": "www.relead.com.mx", "custom_domain": true }
+  ]
 }

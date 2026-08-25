@@ -3,9 +3,9 @@ import { PublicAdSlot } from '@/components/monetization/PublicAdSlot';
 import styles from './page.module.css';
 
 const consoleUrl = 'https://console.relead.com.mx/console/';
-const adminUrl = 'https://admin.relead.com.mx/admin/';
+const builderUrl = 'https://builder.relead.com.mx/';
 const registerUrl = 'https://console.relead.com.mx/register';
-const loginUrl = 'https://console.relead.com.mx/console/login';
+const loginUrl = 'https://console.relead.com.mx/auth/login';
 const billingUrl = 'https://console.relead.com.mx/billing';
 const apiUrl = 'https://console.relead.com.mx/developers';
 
@@ -97,8 +97,8 @@ export default function HomePage() {
 
       <section className={styles.product} id="producto">
         <div className={`${styles.shell} ${styles.sectionGrid}`}>
-          <div><span className={styles.eyebrow}>Un solo sistema</span><h2>RelNet Console para usuarios.<br/>Admin para la plataforma.</h2></div>
-          <p><strong>Console</strong> es la superficie diaria para nodos, red, terminal, SSH, archivos, MCP, API y facturación. <strong>Admin</strong> queda reservado para salud, releases, staging, Rescue, controllers y recuperación. La API no necesita rutas gráficas.</p>
+          <div><span className={styles.eyebrow}>Un solo sistema</span><h2>RelNet Console para usuarios.<br/>Builder para la plataforma.</h2></div>
+          <p><strong>Console</strong> es la superficie diaria para nodos, red, terminal, SSH, archivos, MCP, API y facturación. <strong>Builder</strong> queda reservado para salud, releases, staging, Rescue, controllers y recuperación. La API no necesita rutas gráficas.</p>
         </div>
       </section>
 
@@ -124,7 +124,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className={styles.footer}><div className={`${styles.shell} ${styles.footerInner}`}><div className={styles.footerBrand}><Image src="/relnet-brand.png" alt="ReLead RelNet" width={1951} height={892}/><span>Private network · control plane · remote operations</span></div><div className={styles.footerLinks}><a href={consoleUrl}>RelNet Console</a><a href={adminUrl}>Admin</a><a href={registerUrl}>Registro</a><a href={billingUrl}>Planes</a><a href={apiUrl}>API / MCP</a></div></div></footer>
+      <footer className={styles.footer}><div className={`${styles.shell} ${styles.footerInner}`}><div className={styles.footerBrand}><Image src="/relnet-brand.png" alt="ReLead RelNet" width={1951} height={892}/><span>Private network · control plane · remote operations</span></div><div className={styles.footerLinks}><a href={consoleUrl}>RelNet Console</a><a href={builderUrl}>Builder</a><a href={registerUrl}>Registro</a><a href={billingUrl}>Planes</a><a href={apiUrl}>API / MCP</a></div></div></footer>
     </main>
   );
 }

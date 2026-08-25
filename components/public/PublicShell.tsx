@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import styles from './PublicShell.module.css';
 
-const appUrl = 'https://app.relead.com.mx';
+const appUrl = 'https://console.relead.com.mx';
 
 export function PublicShell({ children }: { children: ReactNode }) {
   return (

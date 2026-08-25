@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from 'next';
-import { Manrope } from 'next/font/google';
 import { PublicShell } from '@/components/public/PublicShell';
 import './globals.css';
-
-const manrope = Manrope({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://relead.com.mx'),
@@ -32,7 +29,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body className={manrope.variable}>
+      <body>
         <PublicShell>{children}</PublicShell>
       </body>
     </html>

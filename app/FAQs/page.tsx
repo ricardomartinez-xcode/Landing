@@ -4,7 +4,7 @@ import { FAQGroup } from '@/components/ui/FAQGroup';
 import { PublicAdSlot } from '@/components/monetization/PublicAdSlot';
 import styles from './faqs.module.css';
 
-const adminUrl = 'https://api.relead.com.mx/admin/';
+const adminUrl = 'https://builder.relead.com.mx/';
 
 export const metadata: Metadata = {
   title: 'FAQs | RelNet by ReLead',
@@ -22,7 +22,7 @@ export default function FAQsPage() {
         </div>
         <div className={styles.headerActions}>
           <Link href="/install" className={styles.primaryAction}>Ir a instalación</Link>
-          <a href={adminUrl} className={styles.secondaryAction}>Abrir Admin ↗</a>
+          <a href={adminUrl} className={styles.secondaryAction}>Abrir Builder ↗</a>
         </div>
       </header>
 
@@ -143,7 +143,7 @@ export default function FAQsPage() {
             },
             {
               question: '¿Dónde reviso la salud o administración de la plataforma?',
-              answer: <p>Usa <a href={adminUrl}>Admin</a> para las funciones administrativas y de observabilidad que estén habilitadas para tu sesión.</p>
+              answer: <p>Usa <a href={adminUrl}>Builder</a> para las funciones administrativas y de observabilidad que estén habilitadas para tu sesión.</p>
             },
             {
               question: '¿Dónde consulto la información legal?',

@@ -14,9 +14,9 @@ test('public v90 shell is mounted globally', () => {
   assert.match(layout, /ReLead \| RelNet y My RelNet/);
 });
 
-test('public shell routes users to My RelNet and keeps internal console out of public CTAs', () => {
+test('public shell routes users to the canonical Console and keeps Builder out of primary CTAs', () => {
   const shell = read('components/public/PublicShell.tsx');
-  assert.match(shell, /https:\/\/app\.relead\.com\.mx/);
+  assert.match(shell, /https:\/\/console\.relead\.com\.mx/);
   assert.match(shell, />Abrir My RelNet</);
   assert.match(shell, /href="\/install"/);
   assert.match(shell, /href="\/FAQs"/);
@@ -38,12 +38,14 @@ test('home exposes canonical account, billing and developer destinations', () =>
   assert.match(home, /https:\/\/console\.relead\.com\.mx\/register/);
   assert.match(home, /https:\/\/console\.relead\.com\.mx\/billing/);
   assert.match(home, /https:\/\/console\.relead\.com\.mx\/developers/);
+  assert.match(home, /https:\/\/console\.relead\.com\.mx\/auth\/login/);
+  assert.match(home, /https:\/\/builder\.relead\.com\.mx/);
 });
 
 test('install flow is aligned to My RelNet and contains no legacy public admin routes or pasted API-token recipe', () => {
   const install = read('app/install/InstallExperience.tsx');
-  assert.match(install, /https:\/\/app\.relead\.com\.mx\//);
-  assert.match(install, /https:\/\/app\.relead\.com\.mx\/developers/);
+  assert.match(install, /https:\/\/console\.relead\.com\.mx\//);
+  assert.match(install, /https:\/\/console\.relead\.com\.mx\/developers/);
   assert.match(install, /enrolamiento/i);
   assert.doesNotMatch(install, /api\.relead\.com\.mx\/(?:console|admin)/);
   assert.doesNotMatch(install, /control\.relead\.com\.mx/);
