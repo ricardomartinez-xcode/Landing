@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ThemeControl } from '@/components/theme/ThemeControl';
 import { NavIcon } from './NavIcon';
-import { primaryNav, routeLabel } from '../nav';
+import { primaryNav, routeLabel } from './nav';
 import styles from './AppShell.module.css';
 
 const accessUrl = 'https://auth.relead.com.mx/access';
@@ -16,7 +16,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isActive = (href: string) => pathname.toLowerCase() === href.toLowerCase();
-
   return (
     <div className={styles.shell}>
       <aside className={`${styles.sidebar} ${mobileOpen ? styles.sidebarOpen : ''}`} aria-label="Navegación de RelNet">
@@ -27,12 +26,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
           <button className={styles.mobileClose} type="button" onClick={() => setMobileOpen(false)} aria-label="Cerrar navegación">×</button>
         </div>
-
         <div className={styles.environment}>
           <span className={styles.environmentDot} aria-hidden="true" />
           <div><strong>RelNet</strong><small>Private control plane</small></div>
         </div>
-
         <nav className={styles.nav} aria-label="Rutas principales">
           {primaryNav.map((item) => (
             <Link
@@ -42,12 +39,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               aria-current={isActive(item.href) ? 'page' : undefined}
               onClick={() => setMobileOpen(false)}
             >
-              <span className={styles.navGlyph} aria-hidden="true"><NavIcon name={item.icon} /></span>
+              <span className={styles.navGlyph} aria-hidden="true">
+                <NavIcon name={item.icon} />
+              </span>
               <span>{item.label}</span>
             </Link>
           ))}
         </nav>
-
         <div className={styles.sidebarFooter}>
           <span className={styles.sidebarCaption}>Acceso seguro</span>
           <a href={accessUrl} className={styles.externalLink} aria-label="Ingresar a RelNet">
@@ -55,9 +53,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </a>
         </div>
       </aside>
-
       {mobileOpen ? <button className={styles.backdrop} aria-label="Cerrar navegación" onClick={() => setMobileOpen(false)} /> : null}
-
       <div className={styles.workspace}>
         <header className={styles.topbar}>
           <div className={styles.topbarContext}>
@@ -74,7 +70,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <ThemeControl />
           </div>
         </header>
-
         <div className={styles.content}>{children}</div>
 
         <footer className={styles.footer}>
@@ -82,7 +77,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div>
             <Link href="/privacy">Privacidad</Link>
             <Link href="/terms">Términos</Link>
-            <Link href="/FAQ">FAQs</Link>
+            <Link href="/FAQs">FAQs</Link>
           </div>
         </footer>
       </div>
