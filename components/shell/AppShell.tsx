@@ -6,11 +6,10 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ThemeControl } from '@/components/theme/ThemeControl';
 import { NavIcon } from './NavIcon';
-import { primaryNav, routeLabel } from './nav';
+import { primaryNav, routeLabel } from '../nav';
 import styles from './AppShell.module.css';
 
-const consoleUrl = 'https://console.relead.com.mx/console/';
-const builderUrl = 'https://builder.relead.com.mx/';
+const accessUrl = 'https://auth.relead.com.mx/access';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -43,21 +42,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               aria-current={isActive(item.href) ? 'page' : undefined}
               onClick={() => setMobileOpen(false)}
             >
-              <span className={styles.navGlyph} aria-hidden="true">
-                <NavIcon name={item.icon} />
-              </span>
+              <span className={styles.navGlyph} aria-hidden="true"><NavIcon name={item.icon} /></span>
               <span>{item.label}</span>
             </Link>
           ))}
         </nav>
 
         <div className={styles.sidebarFooter}>
-          <span className={styles.sidebarCaption}>Superficies operativas</span>
-          <a href={consoleUrl} className={styles.externalLink} aria-label="Abrir Console">
-            <span className={styles.externalLabel}>Console</span><span className={styles.externalGlyph} aria-hidden="true">↗</span>
-          </a>
-          <a href={builderUrl} className={styles.externalLink} aria-label="Abrir Builder">
-            <span className={styles.externalLabel}>Builder</span><span className={styles.externalGlyph} aria-hidden="true">↗</span>
+          <span className={styles.sidebarCaption}>Acceso seguro</span>
+          <a href={accessUrl} className={styles.externalLink} aria-label="Ingresar a RelNet">
+            <span className={styles.externalLabel}>Ingresar</span><span className={styles.externalGlyph} aria-hidden="true">↗</span>
           </a>
         </div>
       </aside>
@@ -88,7 +82,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div>
             <Link href="/privacy">Privacidad</Link>
             <Link href="/terms">Términos</Link>
-            <Link href="/FAQs">FAQs</Link>
+            <Link href="/FAQ">FAQs</Link>
           </div>
         </footer>
       </div>
