@@ -4,21 +4,25 @@ import './globals.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://relead.com.mx'),
-  title: 'ReLead | RelNet y My RelNet',
-  description: 'ReLead conecta tus equipos con RelNet y centraliza la experiencia de usuario en My RelNet: red privada, nodos, acceso remoto, recursos y herramientas para desarrolladores.',
-  keywords: ['ReLead', 'RelNet', 'My RelNet', 'red privada', 'control remoto', 'infraestructura remota'],
+  title: 'RelNet | Private network by ReLead',
+  description: 'RelNet conecta tus equipos en una red privada y concentra nodos, acceso remoto y operación segura bajo una sola identidad.',
+  keywords: ['RelNet', 'ReLead', 'red privada', 'control remoto', 'infraestructura remota'],
+  icons: {
+    icon: [{ url: '/favicon.ico' }],
+    apple: [{ url: '/apple-touch-icon.png' }]
+  },
   openGraph: {
-    title: 'ReLead | RelNet y My RelNet',
+    title: 'RelNet | Private network by ReLead',
     description: 'Una red privada para tus equipos y una experiencia clara para operarla.',
     url: 'https://relead.com.mx',
-    siteName: 'ReLead',
+    siteName: 'RelNet by ReLead',
     locale: 'es_MX',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ReLead | RelNet y My RelNet',
-    description: 'RelNet conecta tus equipos. My RelNet concentra tu experiencia.'
+    title: 'RelNet | Private network by ReLead',
+    description: 'RelNet conecta tus equipos y concentra tu experiencia de red privada.'
   }
 };
 

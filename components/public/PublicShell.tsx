@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import styles from './PublicShell.module.css';
@@ -9,12 +10,16 @@ export function PublicShell({ children }: { children: ReactNode }) {
     <div className={styles.shell}>
       <header className={styles.header}>
         <div className={styles.inner}>
-          <Link href="/" className={styles.brand} aria-label="ReLead, inicio">
-            <span className={styles.brandMark}>R</span>
-            <span>
-              <strong>ReLead</strong>
-              <small>RelNet</small>
-            </span>
+          <Link href="/" className={styles.brand} aria-label="RelNet, inicio">
+            <Image
+              className={styles.brandLogo}
+              src="/relnet-brand-transparent.png"
+              alt="RelNet"
+              width={420}
+              height={185}
+              priority
+            />
+            <span className={styles.brandContext}>by ReLead</span>
           </Link>
           <nav className={styles.nav} aria-label="Navegación principal">
             <Link href="/#producto">Producto</Link>
@@ -29,8 +34,8 @@ export function PublicShell({ children }: { children: ReactNode }) {
       <footer className={styles.footer}>
         <div className={styles.inner}>
           <div>
-            <strong>ReLead</strong>
-            <p>Infraestructura privada y operación remota con RelNet.</p>
+            <strong>RelNet by ReLead</strong>
+            <p>Infraestructura privada y operación remota con una identidad de producto consistente.</p>
           </div>
           <div className={styles.footerLinks}>
             <Link href="/privacy">Privacidad</Link>
