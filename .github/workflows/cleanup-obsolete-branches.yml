@@ -1,0 +1,23 @@
+name: Cleanup obsolete Landing branches
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Delete superseded branches
+        run: |
+          set -euo pipefail
+          for branch in \
+            "feat/product-surface-routing-v1" \
+            "fix/public-auth-only-routing-20260825"; do
+            if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+              git push origin --delete "$branch"
+            fi
+          done
