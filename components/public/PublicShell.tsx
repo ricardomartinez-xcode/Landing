@@ -3,7 +3,8 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import styles from './PublicShell.module.css';
 
-const AUTH_ACCESS_URL = 'https://auth.relnets.com/access';
+const CONSOLE_SIGNUP_URL = 'https://console.relnets.com/signup';
+const CONSOLE_LOGIN_URL = 'https://console.relnets.com/login';
 
 export function PublicShell({ children }: { children: ReactNode }) {
   return (
@@ -20,8 +21,8 @@ export function PublicShell({ children }: { children: ReactNode }) {
             <Link href="/#planes">Planes</Link>
             <Link href="/install">Instalar</Link>
             <Link href="/FAQs">FAQs</Link>
-            <a href={AUTH_ACCESS_URL}>Inicia sesión</a>
-            <a className={styles.primary} href={AUTH_ACCESS_URL}>Crea tu cuenta</a>
+            <a href={CONSOLE_LOGIN_URL}>Inicia sesión</a>
+            <a className={styles.primary} href={CONSOLE_SIGNUP_URL}>Crea tu cuenta</a>
           </nav>
         </div>
       </header>
@@ -37,7 +38,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
             <Link href="/terms">Términos</Link>
             <Link href="/FAQs">FAQs</Link>
             <Link href="/install">Instalación</Link>
-            <a href={AUTH_ACCESS_URL}>Acceso seguro</a>
+            <a href={CONSOLE_LOGIN_URL}>Acceso seguro</a>
           </div>
         </div>
       </footer>
