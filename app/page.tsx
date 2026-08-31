@@ -1,8 +1,9 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { PublicAdSlot } from '@/components/monetization/PublicAdSlot';
 import styles from './page.module.css';
 
-const AUTH_URL = 'https://auth.relnets.com';
+const AUTH_URL = 'https://auth.relnets.com/access';
 const capabilities = [
   ['Red privada simple','Conecta dispositivos, usuarios y servicios con una experiencia guiada y centralizada.'],
   ['Console','Administra RelNets, miembros, dispositivos, accesos, actividad, automatizaciones y facturación desde una sola consola.'],
@@ -21,7 +22,7 @@ const plans = [
 
 export default function Home(){return <main className={styles.page}>
 <section className={styles.hero} id="inicio"><div className={styles.shell}><div className={styles.heroGrid}>
-<div className={styles.heroCopy}><span className={styles.kicker}>Network · Relay · Automate</span><h1>Tu red privada, <span>más simple, segura e inteligente.</span></h1><p>RelNets conecta tus dispositivos, personas y recursos para que puedas trabajar, acceder y automatizar desde cualquier lugar con una experiencia clara y centralizada.</p><div className={styles.actions}><a className={styles.primary} href={AUTH_URL}>Crea tu cuenta</a><a className={styles.secondary} href="#planes">Ver planes</a><a className={styles.ghost} href="/install">Instalación</a></div><div className={styles.trustRow}><span>Privacidad por diseño</span><span>PWA móvil</span><span>IA integrada</span><span>Sin anuncios en planes de paga</span></div></div>
+<div className={styles.heroCopy}><span className={styles.kicker}>Network · Relay · Automate</span><h1>Tu red privada, <span>más simple, segura e inteligente.</span></h1><p>RelNets conecta tus dispositivos, personas y recursos para que puedas trabajar, acceder y automatizar desde cualquier lugar con una experiencia clara y centralizada.</p><div className={styles.actions}><a className={styles.primary} href={AUTH_URL}>Crea tu cuenta</a><a className={styles.secondary} href="#planes">Ver planes</a><Link className={styles.ghost} href="/install">Instalación</Link></div><div className={styles.trustRow}><span>Privacidad por diseño</span><span>PWA móvil</span><span>IA integrada</span><span>Sin anuncios en planes de paga</span></div></div>
 <div className={styles.heroVisual}><Image src="/relnet-brand.png" alt="RelNets" width={1951} height={892} priority/><div className={styles.glowCard}><strong>Una Console para todo</strong><span>Red · Dispositivos · Automatización · IA · Suscripción</span></div></div>
 </div></div></section>
 
@@ -37,6 +38,6 @@ export default function Home(){return <main className={styles.page}>
 
 <section className={styles.pricing} id="planes"><div className={styles.shell}><div className={styles.sectionIntro}><div><span className={styles.kicker}>Planes</span><h2>Empieza gratis. Sube cuando necesites más capacidad.</h2></div><p>Los planes anuales Pro y Team incluyen 12 meses por el precio de 10.</p></div><div className={styles.planGrid}>{plans.map(plan=><article className={`${styles.planCard} ${plan.featured?styles.planFeatured:''}`} key={plan.name}><span className={styles.planBadge}>{plan.badge}</span><h3>{plan.name}</h3><div className={styles.price}><strong>{plan.price}</strong><span>{plan.cadence}</span></div><ul>{plan.features.map(f=><li key={f}>{f}</li>)}</ul><a className={plan.featured?styles.primary:styles.secondary} href={plan.href}>{plan.cta}</a></article>)}</div><div className={styles.creditPackages}><div><span className={styles.kicker}>Créditos de IA adicionales</span><h3>Tu suscripción incluye créditos. Compra más solo cuando los necesites.</h3></div><div className={styles.creditPills}><span><b>500</b> · $49 MXN</span><span><b>2,000</b> · $149 MXN</span><span><b>10,000</b> · $499 MXN</span></div></div></div></section>
 
-<section className={styles.installCta} id="instalacion"><div className={styles.shell}><div><span className={styles.kicker}>Instalación</span><h2>Windows, Linux, CLI y móvil desde una sola guía.</h2><p>En iOS y Android usa la PWA desde el navegador, agrégala a pantalla de inicio y descarga tu perfil VPN para conectarte al Mobile Gateway.</p></div><a className={styles.primary} href="/install">Abrir instalación</a></div></section>
-<section className={styles.finalCta}><div className={styles.shell}><Image src="/relnet-mark-transparent.png" alt="" width={110} height={110}/><div><span className={styles.kicker}>RelNets</span><h2>Tu red. Tu privacidad. Tu control.</h2></div><div className={styles.actions}><a className={styles.primary} href={AUTH_URL}>Crea tu cuenta</a><a className={styles.secondary} href={`${AUTH_URL}/login`}>Inicia sesión</a></div></div></section>
+<section className={styles.installCta} id="instalacion"><div className={styles.shell}><div><span className={styles.kicker}>Instalación</span><h2>Windows, Linux, CLI y móvil desde una sola guía.</h2><p>En iOS y Android usa la PWA desde el navegador, agrégala a pantalla de inicio y descarga tu perfil VPN para conectarte al Mobile Gateway.</p></div><Link className={styles.primary} href="/install">Abrir instalación</Link></div></section>
+<section className={styles.finalCta}><div className={styles.shell}><Image src="/relnet-mark-transparent.png" alt="" width={110} height={110}/><div><span className={styles.kicker}>RelNets</span><h2>Tu red. Tu privacidad. Tu control.</h2></div><div className={styles.actions}><a className={styles.primary} href={AUTH_URL}>Crea tu cuenta</a><a className={styles.secondary} href={AUTH_URL}>Inicia sesión</a></div></div></section>
 </main>}
