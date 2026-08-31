@@ -13,9 +13,10 @@ test('public shell is mounted globally', () => {
   assert.match(layout, /<PublicShell>/);
 });
 
-test('public navigation uses RelNets auth and never exposes internal restricted surfaces', () => {
+test('public navigation uses Console-owned identity and never exposes internal restricted surfaces', () => {
   const shell = read('components/public/PublicShell.tsx');
-  assert.match(shell, /https:\/\/auth\.relnets\.com/);
+  assert.match(shell, /https:\/\/console\.relnets\.com\/(login|signup)/);
+  assert.doesNotMatch(shell, /https:\/\/auth\.relnets\.com\/access/);
   assert.doesNotMatch(shell, /relead\.com\.mx/i);
   assert.doesNotMatch(shell, /builder/i);
 });
