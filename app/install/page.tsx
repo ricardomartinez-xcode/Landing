@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { InstallExperience } from './InstallExperience';
 
 export const metadata: Metadata = {
-  title: 'Instalar RelNet | ReLead',
-  description: 'Instala RelNet en iPhone, iPad, Android o Windows y accede a tu red privada desde cualquier dispositivo.'
+  title: 'Instalar RelNets | Windows, Linux, CLI y PWA',
+  description: 'Instala RelNets en Windows y Linux, usa la CLI o agrega la PWA a la pantalla de inicio en iOS y Android con perfil VPN para Mobile Gateway.'
 };
 
 export default function InstallPage() {
