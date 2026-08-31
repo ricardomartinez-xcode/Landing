@@ -18,7 +18,7 @@ test('commercial pricing and AI credits match approved catalog', () => {
   assert.match(home, /Consultar con ventas/i);
 });
 
-test('public URLs use relnets.com and auth.relnets.com only', () => {
+test('public URLs use relnets.com and Console-owned identity only', () => {
   const home = read('app/page.tsx');
   const shell = read('components/public/PublicShell.tsx');
   const install = read('app/install/InstallExperience.tsx');
@@ -26,8 +26,10 @@ test('public URLs use relnets.com and auth.relnets.com only', () => {
     assert.doesNotMatch(source, /relead\.com\.mx/i);
     assert.doesNotMatch(source, /builder/i);
   }
-  assert.match(home + shell + install, /auth\.relnets\.com/i);
-  assert.match(home + shell + install, /relnets\.com/i);
+  const publicSources = home + shell + install;
+  assert.match(publicSources, /console\.relnets\.com/i);
+  assert.match(publicSources, /relnets\.com/i);
+  assert.doesNotMatch(publicSources, /auth\.relnets\.com\/access/i);
 });
 
 test('mobile install is PWA-first with VPN profile', () => {
