@@ -1,13 +1,29 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
 import { join } from 'node:path';
-import { evaluateMonetization, canLoadProvider, monetizationEnabled } from '../lib/monetization/policy.ts';
-import { advertisingConsent } from '../lib/monetization/consent.ts';
-import { resolveContextualProvider } from '../lib/monetization/providers.ts';
+import { pathToFileURL } from 'node:url';
+import { tmpdir } from 'node:os';
+import ts from 'typescript';
 
 const root = process.cwd();
 const read = (p) => readFileSync(join(root, p), 'utf8');
+
+async function loadTs(relativePath) {
+  const source = read(relativePath);
+  const output = ts.transpileModule(source, {
+    compilerOptions: { module: ts.ModuleKind.ES2022, target: ts.ScriptTarget.ES2022 },
+    fileName: relativePath,
+  }).outputText;
+  const dir = mkdtempSync(join(tmpdir(), 'relnets-test-'));
+  const file = join(dir, relativePath.split('/').pop().replace(/\.ts$/, '.mjs'));
+  writeFileSync(file, output, 'utf8');
+  return import(pathToFileURL(file).href + `?v=${Date.now()}-${Math.random()}`);
+}
+
+const { evaluateMonetization, canLoadProvider, monetizationEnabled } = await loadTs('lib/monetization/policy.ts');
+const { advertisingConsent } = await loadTs('lib/monetization/consent.ts');
+const { resolveContextualProvider } = await loadTs('lib/monetization/providers.ts');
 
 test('public landing and docs allow only explicitly authorized public monetization', () => {
   for (const surface of ['public_landing', 'public_docs']) {
@@ -53,7 +69,6 @@ test('privacy distinguishes direct sponsorship from external advertising technol
   assert.match(privacy, /consentimiento/i);
 });
 
-
 test('consent hook defaults closed and contextual provider is lazy with blocker-safe fallback', async () => {
   assert.equal(advertisingConsent(), 'unknown');
   assert.equal(advertisingConsent({ advertising: false }), 'denied');
@@ -66,11 +81,10 @@ test('consent hook defaults closed and contextual provider is lazy with blocker-
   };
   const base = { surface: 'public_landing', placement: 'test', format: 'contextual_ad' };
   assert.equal(await resolveContextualProvider(adapter, { ...base, consent: 'unknown' }), null);
-  assert.equal(loads, 0, 'provider script must not lazy-load before consent');
+  assert.equal(loads, 0);
   assert.equal(await resolveContextualProvider(adapter, { ...base, consent: 'granted' }), null);
-  assert.equal(loads, 1, 'provider failure/ad blocker must fall back cleanly');
+  assert.equal(loads, 1);
 });
-
 
 test('public CSP blocks unapproved third-party advertising origins', () => {
   const config = read('next.config.ts');
