@@ -3,7 +3,11 @@ import Link from 'next/link';
 import { PublicAdSlot } from '@/components/monetization/PublicAdSlot';
 import styles from './page.module.css';
 
-const AUTH_URL = 'https://auth.relnets.com/access';
+const CONSOLE_URL = 'https://console.relnets.com';
+const SIGNUP_URL = `${CONSOLE_URL}/signup`;
+const LOGIN_URL = `${CONSOLE_URL}/login`;
+const PRO_MONTHLY_URL = `${SIGNUP_URL}?intent=billing&plan=pro&interval=month`;
+const TEAM_MONTHLY_URL = `${SIGNUP_URL}?intent=billing&plan=team&interval=month`;
 const capabilities = [
   ['Red privada simple','Conecta dispositivos, usuarios y servicios con una experiencia guiada y centralizada.'],
   ['Console','Administra RelNets, miembros, dispositivos, accesos, actividad, automatizaciones y facturación desde una sola consola.'],
@@ -14,15 +18,15 @@ const capabilities = [
 ];
 
 const plans = [
-  {name:'Free',price:'$0 MXN',cadence:'sin tarjeta',badge:'Para empezar',features:['1 usuario','Hasta 10 nodos','100 créditos de IA / mes','Console esencial','PWA móvil + perfil VPN','Incluye anuncios y patrocinio'],cta:'Crea tu cuenta',href:AUTH_URL},
-  {name:'Pro',price:'$199 MXN',cadence:'/mes · $1,990/año',badge:'2 meses sin costo al pagar anual',features:['Hasta 50 nodos','1,200 créditos de IA / mes','Agent RelNets vía MCP / API','Automatización avanzada','Control Center para Windows','Sin anuncios'],cta:'Elegir Pro',href:AUTH_URL,featured:true},
-  {name:'Team',price:'$499 MXN',cadence:'/mes · $4,990/año',badge:'2 meses sin costo al pagar anual',features:['Hasta 5 usuarios','Hasta 250 nodos','5,000 créditos de IA compartidos / mes','Espacios y administración compartida','Soporte prioritario','Sin anuncios'],cta:'Elegir Team',href:AUTH_URL},
+  {name:'Free',price:'$0 MXN',cadence:'sin tarjeta',badge:'Para empezar',features:['1 usuario','Hasta 10 nodos','100 créditos de IA / mes','Console esencial','PWA móvil + perfil VPN','Incluye anuncios y patrocinio'],cta:'Crea tu cuenta',href:SIGNUP_URL},
+  {name:'Pro',price:'$199 MXN',cadence:'/mes · $1,990/año',badge:'2 meses sin costo al pagar anual',features:['Hasta 50 nodos','1,200 créditos de IA / mes','Agent RelNets vía MCP / API','Automatización avanzada','Control Center para Windows','Sin anuncios'],cta:'Elegir Pro',href:PRO_MONTHLY_URL,featured:true},
+  {name:'Team',price:'$499 MXN',cadence:'/mes · $4,990/año',badge:'2 meses sin costo al pagar anual',features:['Hasta 5 usuarios','Hasta 250 nodos','5,000 créditos de IA compartidos / mes','Espacios y administración compartida','Soporte prioritario','Sin anuncios'],cta:'Elegir Team',href:TEAM_MONTHLY_URL},
   {name:'Enterprise',price:'Consultar con ventas',cadence:'según tus necesidades',badge:'A la medida',features:['Escala personalizada','Políticas y operación empresarial','Créditos de IA personalizados','Acompañamiento de implementación','Administración avanzada','Sin anuncios'],cta:'Consultar con ventas',href:'mailto:sales@relnets.com?subject=RelNets%20Enterprise'},
 ];
 
 export default function Home(){return <main className={styles.page}>
 <section className={styles.hero} id="inicio"><div className={styles.shell}><div className={styles.heroGrid}>
-<div className={styles.heroCopy}><span className={styles.kicker}>Network · Relay · Automate</span><h1>Tu red privada, <span>más simple, segura e inteligente.</span></h1><p>RelNets conecta tus dispositivos, personas y recursos para que puedas trabajar, acceder y automatizar desde cualquier lugar con una experiencia clara y centralizada.</p><div className={styles.actions}><a className={styles.primary} href={AUTH_URL}>Crea tu cuenta</a><a className={styles.secondary} href="#planes">Ver planes</a><Link className={styles.ghost} href="/install">Instalación</Link></div><div className={styles.trustRow}><span>Privacidad por diseño</span><span>PWA móvil</span><span>IA integrada</span><span>Sin anuncios en planes de paga</span></div></div>
+<div className={styles.heroCopy}><span className={styles.kicker}>Network · Relay · Automate</span><h1>Tu red privada, <span>más simple, segura e inteligente.</span></h1><p>RelNets conecta tus dispositivos, personas y recursos para que puedas trabajar, acceder y automatizar desde cualquier lugar con una experiencia clara y centralizada.</p><div className={styles.actions}><a className={styles.primary} href={SIGNUP_URL}>Crea tu cuenta</a><a className={styles.secondary} href="#planes">Ver planes</a><Link className={styles.ghost} href="/install">Instalación</Link></div><div className={styles.trustRow}><span>Privacidad por diseño</span><span>PWA móvil</span><span>IA integrada</span><span>Sin anuncios en planes de paga</span></div></div>
 <div className={styles.heroVisual}><Image src="/relnet-brand.png" alt="RelNets" width={1951} height={892} priority/><div className={styles.glowCard}><strong>Una Console para todo</strong><span>Red · Dispositivos · Automatización · IA · Suscripción</span></div></div>
 </div></div></section>
 
@@ -39,5 +43,5 @@ export default function Home(){return <main className={styles.page}>
 <section className={styles.pricing} id="planes"><div className={styles.shell}><div className={styles.sectionIntro}><div><span className={styles.kicker}>Planes</span><h2>Empieza gratis. Sube cuando necesites más capacidad.</h2></div><p>Los planes anuales Pro y Team incluyen 12 meses por el precio de 10.</p></div><div className={styles.planGrid}>{plans.map(plan=><article className={`${styles.planCard} ${plan.featured?styles.planFeatured:''}`} key={plan.name}><span className={styles.planBadge}>{plan.badge}</span><h3>{plan.name}</h3><div className={styles.price}><strong>{plan.price}</strong><span>{plan.cadence}</span></div><ul>{plan.features.map(f=><li key={f}>{f}</li>)}</ul><a className={plan.featured?styles.primary:styles.secondary} href={plan.href}>{plan.cta}</a></article>)}</div><div className={styles.creditPackages}><div><span className={styles.kicker}>Créditos de IA adicionales</span><h3>Tu suscripción incluye créditos. Compra más solo cuando los necesites.</h3></div><div className={styles.creditPills}><span><b>500</b> · $49 MXN</span><span><b>2,000</b> · $149 MXN</span><span><b>10,000</b> · $499 MXN</span></div></div></div></section>
 
 <section className={styles.installCta} id="instalacion"><div className={styles.shell}><div><span className={styles.kicker}>Instalación</span><h2>Windows, Linux, CLI y móvil desde una sola guía.</h2><p>En iOS y Android usa la PWA desde el navegador, agrégala a pantalla de inicio y descarga tu perfil VPN para conectarte al Mobile Gateway.</p></div><Link className={styles.primary} href="/install">Abrir instalación</Link></div></section>
-<section className={styles.finalCta}><div className={styles.shell}><Image src="/relnet-mark-transparent.png" alt="" width={110} height={110}/><div><span className={styles.kicker}>RelNets</span><h2>Tu red. Tu privacidad. Tu control.</h2></div><div className={styles.actions}><a className={styles.primary} href={AUTH_URL}>Crea tu cuenta</a><a className={styles.secondary} href={AUTH_URL}>Inicia sesión</a></div></div></section>
+<section className={styles.finalCta}><div className={styles.shell}><Image src="/relnet-mark-transparent.png" alt="" width={110} height={110}/><div><span className={styles.kicker}>RelNets</span><h2>Tu red. Tu privacidad. Tu control.</h2></div><div className={styles.actions}><a className={styles.primary} href={SIGNUP_URL}>Crea tu cuenta</a><a className={styles.secondary} href={LOGIN_URL}>Inicia sesión</a></div></div></section>
 </main>}
