@@ -1,0 +1,15 @@
+{
+  "name": "RelNets",
+  "short_name": "RelNets",
+  "description": "RelNets Console y acceso móvil",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#05070c",
+  "theme_color": "#0b7cff",
+  "icons": [
+    {"src":"/relnet-icon-192.png","sizes":"192x192","type":"image/png"},
+    {"src":"/relnet-icon-512.png","sizes":"512x512","type":"image/png"},
+    {"src":"/relnet-icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+  ]
+}
