@@ -50,3 +50,13 @@ test('canonical public routes still exist', () => {
     assert.equal(existsSync(join(root, path)), true, `${path} must exist`);
   }
 });
+
+
+test('system dark mode applies the same global surface tokens unless light is explicit', () => {
+  const globals = read('app/globals.css');
+  assert.match(globals, /@media \(prefers-color-scheme: dark\)/);
+  assert.match(globals, /:root:not\(\[data-theme='light'\]\)/);
+  assert.match(globals, /--surface: #11192b/);
+  assert.match(globals, /--surface-subtle: #10182a/);
+  assert.match(globals, /--text: #e8edf7/);
+});
