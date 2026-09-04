@@ -10,9 +10,7 @@ export const metadata: Metadata = {
   description: 'RelNets conecta infraestructura privada, controla accesos y gobierna identidades humanas, de máquinas y de IA desde un solo workspace.',
   keywords: ['RelNets', 'red privada', 'PWA', 'VPN', 'automatización', 'Agent RelNets', 'MCP', 'IA'],
   manifest: '/manifest.webmanifest',
-  icons: {
-    icon: ['/relnet-mark-transparent.png'],
-  },
+  icons: { icon: ['/relnet-mark-transparent.png'] },
   openGraph: {
     title: 'RelNets | Secure Infrastructure Workspace',
     description: 'Secure infrastructure. Without boundaries.',
@@ -38,12 +36,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-      </head>
-      <body>
-        <PublicShell>{children}</PublicShell>
-      </body>
+      <head><script dangerouslySetInnerHTML={{ __html: themeInitScript }} /></head>
+      <body><PublicShell>{children}</PublicShell></body>
     </html>
   );
 }
