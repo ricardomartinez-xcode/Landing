@@ -9,7 +9,7 @@ import { NavIcon } from './NavIcon';
 import { primaryNav, routeLabel } from './nav';
 import styles from './AppShell.module.css';
 
-const accessUrl = 'https://auth.relead.com.mx/access';
+const accessUrl = 'https://auth.relnets.com/access';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -18,17 +18,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const isActive = (href: string) => pathname.toLowerCase() === href.toLowerCase();
   return (
     <div className={styles.shell}>
-      <aside className={`${styles.sidebar} ${mobileOpen ? styles.sidebarOpen : ''}`} aria-label="Navegación de RelNet">
+      <aside className={`${styles.sidebar} ${mobileOpen ? styles.sidebarOpen : ''}`} aria-label="Navegación de RelNets">
         <div className={styles.brandRow}>
-          <Link href="/" className={styles.brand} onClick={() => setMobileOpen(false)} aria-label="RelNet, inicio">
-            <Image className={styles.brandWordmark} src="/relnet-brand-transparent.png" alt="RelNet" width={420} height={185} priority />
-            <Image className={styles.brandMark} src="/relnet-mark-transparent.png" alt="" aria-hidden="true" width={192} height={212} priority />
+          <Link href="/" className={styles.brand} onClick={() => setMobileOpen(false)} aria-label="RelNets, inicio">
+            <Image className={styles.brandMark} src="/relnets-mark.svg" alt="" aria-hidden="true" width={64} height={64} priority />
+            <span className={styles.brandCopy}><strong>RelNets</strong><small>Secure Infrastructure Workspace</small></span>
           </Link>
           <button className={styles.mobileClose} type="button" onClick={() => setMobileOpen(false)} aria-label="Cerrar navegación">×</button>
         </div>
         <div className={styles.environment}>
           <span className={styles.environmentDot} aria-hidden="true" />
-          <div><strong>RelNet</strong><small>Private control plane</small></div>
+          <div><strong>RelNets</strong><small>Secure Infrastructure Workspace</small></div>
         </div>
         <nav className={styles.nav} aria-label="Rutas principales">
           {primaryNav.map((item) => (
@@ -61,7 +61,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <span /><span /><span />
             </button>
             <div>
-              <span className={styles.breadcrumb}>relead.com.mx</span>
+              <span className={styles.breadcrumb}>relnets.com</span>
               <strong>{routeLabel(pathname)}</strong>
             </div>
           </div>
@@ -73,7 +73,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className={styles.content}>{children}</div>
 
         <footer className={styles.footer}>
-          <span>© {new Date().getFullYear()} ReLead</span>
+          <span>© {new Date().getFullYear()} RelNets</span>
           <div>
             <Link href="/privacy">Privacidad</Link>
             <Link href="/terms">Términos</Link>

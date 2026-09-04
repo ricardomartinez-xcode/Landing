@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">RelNets</title>
+  <defs>
+    <linearGradient id="g" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A798FA"/>
+      <stop offset=".48" stop-color="#7B61FF"/>
+      <stop offset="1" stop-color="#5B2ED6"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g fill="none" stroke="url(#g)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+    <path d="M18 11H29l24 24V18a7 7 0 0 0-7-7h-4"/>
+    <path d="M46 53H35L11 29v17a7 7 0 0 0 7 7h4"/>
+    <path d="M18 11a7 7 0 0 0-7 7v11l24 24"/>
+    <path d="M46 53a7 7 0 0 0 7-7V35L29 11"/>
+    <path d="M20 38l18-18"/>
+    <path d="M27 45l17-17"/>
+  </g>
+</svg>

@@ -12,7 +12,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
       <header className={styles.header}>
         <div className={styles.inner}>
           <Link href="/" className={styles.brand} aria-label="RelNets, inicio">
-            <Image className={styles.brandLogo} src="/relnet-mark-transparent.png" alt="" width={64} height={64} priority />
+            <Image className={styles.brandLogo} src="/relnets-mark.svg" alt="" width={64} height={64} priority />
             <span className={styles.brandCopy}>
               <strong>RelNets</strong>
               <small>Secure Infrastructure Workspace</small>
@@ -33,7 +33,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
       <footer className={styles.footer}>
         <div className={styles.inner}>
           <div className={styles.footerBrand}>
-            <Image src="/relnet-mark-transparent.png" alt="" width={48} height={48} />
+            <Image src="/relnets-mark.svg" alt="" width={48} height={48} />
             <div><strong>RelNets</strong><p>Secure Infrastructure Workspace</p></div>
           </div>
           <div className={styles.footerPillars} aria-label="Pilares de marca">

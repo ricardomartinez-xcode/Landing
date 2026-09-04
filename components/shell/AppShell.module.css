@@ -11,9 +11,11 @@
   background: var(--sidebar-bg);
 }
 .brandRow { min-height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px 10px; }
-.brand { width: 142px; display: inline-flex; align-items: center; }
-.brandWordmark { display: block; width: 100%; height: auto; }
-.brandMark { display: none; }
+.brand { min-width: 0; display: inline-flex; align-items: center; gap: 10px; }
+.brandMark { width: 34px; height: 34px; flex: 0 0 auto; filter: drop-shadow(0 0 12px rgba(123,97,255,.28)); }
+.brandCopy { min-width: 0; display: grid; line-height: 1.05; }
+.brandCopy strong { color: var(--text); font-size: .92rem; letter-spacing: -.025em; }
+.brandCopy small { margin-top: 3px; color: var(--violet); font-size: .54rem; letter-spacing: .035em; white-space: nowrap; }
 .mobileClose { display: none; border: 0; background: transparent; color: var(--text); font-size: 1.7rem; cursor: pointer; }
 .environment { display: flex; align-items: center; gap: 9px; margin: 0 4px 14px; padding: 9px 10px; border: 1px solid var(--border); border-radius: 10px; background: transparent; }
 .environmentDot { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 4px var(--success-soft); }
@@ -63,8 +65,8 @@
   .sidebar { width: 76px; padding-inline: 9px; }
   .brandRow { justify-content: center; padding-inline: 0; }
   .brand { width: 40px; justify-content: center; }
-  .brandWordmark { display: none; }
-  .brandMark { display: block; width: 38px; height: auto; }
+  .brandMark { width: 34px; height: 34px; }
+  .brandCopy { display: none; }
   .environment { justify-content: center; margin-inline: 4px; padding-inline: 8px; }
   .environment div, .navItem > span:last-child, .sidebarCaption, .externalLabel { display: none; }
   .navItem { justify-content: center; padding-inline: 0; }
@@ -76,8 +78,8 @@
 @media (max-width: 840px) {
   .sidebar { width: min(288px, 88vw); transform: translateX(-102%); transition: transform 180ms ease; box-shadow: 16px 0 40px rgba(0,0,0,.18); }
   .sidebarOpen { transform: translateX(0); }
-  .brandWordmark { display: block; }
-  .brandMark { display: none; }
+  .brandMark { display: block; }
+  .brandCopy { display: grid; }
   .mobileClose { width: 36px; height: 36px; display: inline-grid; place-items: center; }
   .backdrop { position: fixed; inset: 0; z-index: 35; display: block; border: 0; background: rgba(5, 10, 22, .48); }
   .workspace { margin-left: 0; }

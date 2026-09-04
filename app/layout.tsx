@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { PublicShell } from '@/components/public/PublicShell';
 import './globals.css';
 
-const themeInitScript = `(function(){try{var m=localStorage.getItem('relnet-theme')||'system';var dark=window.matchMedia('(prefers-color-scheme: dark)').matches;var t=m==='dark'||m==='light'?m:(dark?'dark':'light');var r=document.documentElement;r.dataset.theme=t;r.dataset.themeMode=m;}catch(e){var r=document.documentElement;r.dataset.theme='light';r.dataset.themeMode='system';}})();`;
+const themeInitScript = `(function(){try{var m=localStorage.getItem('relnet-theme')||'dark';var t=m==='light'?'light':'dark';var r=document.documentElement;r.dataset.theme=t;r.dataset.themeMode=m;}catch(e){var r=document.documentElement;r.dataset.theme='dark';r.dataset.themeMode='dark';}})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://relnets.com'),
@@ -11,7 +11,8 @@ export const metadata: Metadata = {
   keywords: ['RelNets', 'red privada', 'PWA', 'VPN', 'automatización', 'Agent RelNets', 'MCP', 'IA'],
   manifest: '/manifest.webmanifest',
   icons: {
-    icon: ['/relnet-mark-transparent.png'],
+    icon: [{ url: '/favicon.ico', type: 'image/x-icon' }, { url: '/relnets-mark.svg', type: 'image/svg+xml' }],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
   openGraph: {
     title: 'RelNets | Secure Infrastructure Workspace',

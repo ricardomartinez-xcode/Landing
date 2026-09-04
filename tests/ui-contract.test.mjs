@@ -40,9 +40,9 @@ test('install supports desktop, CLI and PWA mobile routes', () => {
 test('responsive public shell and landing contracts exist', () => {
   const shellCss = read('components/public/PublicShell.module.css');
   const pageCss = read('app/page.module.css');
-  assert.match(shellCss, /@media\(max-width:760px\)/);
-  assert.match(pageCss, /@media\(max-width:980px\)/);
-  assert.match(pageCss, /@media\(max-width:680px\)/);
+  assert.match(shellCss, /@media\s*\(max-width:\s*760px\)/);
+  assert.match(pageCss, /@media\s*\(max-width:\s*(980|1040)px\)/);
+  assert.match(pageCss, /@media\s*\(max-width:\s*680px\)/);
 });
 
 test('canonical public routes still exist', () => {
@@ -54,12 +54,13 @@ test('canonical public routes still exist', () => {
 
 test('system dark mode applies the same global surface tokens unless light is explicit', () => {
   const globals = read('app/globals.css');
-  assert.match(globals, /@media \(prefers-color-scheme: dark\)/);
-  assert.match(globals, /:root:not\(\[data-theme='light'\]\)/);
-  assert.match(globals, /--surface: #10141d/);
-  assert.match(globals, /--surface-subtle: #131722/);
-  assert.match(globals, /--text: #f3f4f7/);
-  assert.match(globals, /--accent: #7b61ff/);
-  assert.match(globals, /--success: #22c55e/);
-  assert.match(globals, /--warning: #ffb020/);
+  assert.match(globals, /:root \{/);
+  assert.match(globals, /color-scheme: dark/);
+  assert.match(globals, /:root\[data-theme='light'\]/);
+  assert.match(globals, /--surface: #10141D/i);
+  assert.match(globals, /--surface-subtle: #131722/i);
+  assert.match(globals, /--text: #F4F5F7/i);
+  assert.match(globals, /--accent: #7B61FF/i);
+  assert.match(globals, /--success: #22C55E/i);
+  assert.match(globals, /--warning: #FFB020/i);
 });

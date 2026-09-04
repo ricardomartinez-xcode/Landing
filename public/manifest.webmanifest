@@ -1,13 +1,17 @@
 {
   "name": "RelNets",
   "short_name": "RelNets",
-  "description": "RelNets Console y acceso móvil",
+  "description": "RelNets Secure Infrastructure Workspace — Secure infrastructure. Without boundaries.",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
-  "background_color": "#05070c",
-  "theme_color": "#0b7cff",
+  "background_color": "#0B0D14",
+  "theme_color": "#7B61FF",
   "icons": [
-    {"src":"/relnet-mark-transparent.png","sizes":"1024x1024","type":"image/png","purpose":"any maskable"}
+    {
+      "src": "/relnets-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ]
 }

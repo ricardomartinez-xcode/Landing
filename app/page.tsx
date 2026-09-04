@@ -48,7 +48,7 @@ export default function Home(){
               <div className={styles.fabricGrid}/>
               <div className={styles.fabricGlow}/>
               <div className={styles.fabricCore}>
-                <Image src="/relnet-mark-transparent.png" alt="RelNets" width={180} height={180} priority/>
+                <Image src="/relnets-mark.svg" alt="RelNets" width={180} height={180} priority/>
                 <strong>RelNets</strong><span>Secure Infrastructure Workspace</span>
               </div>
               <div className={`${styles.fabricNode} ${styles.fabricConnect}`}>Connect</div>
@@ -90,7 +90,7 @@ export default function Home(){
           </div>
           <div className={styles.agentCard}>
             <div className={styles.agentBrand}>
-              <Image src="/relnet-mark-transparent.png" alt="" width={180} height={180}/>
+              <Image src="/relnets-mark.svg" alt="" width={180} height={180}/>
               <div><small>AI infrastructure</small><strong>Agent RelNets</strong></div>
             </div>
             <p>MCP / API permite que ChatGPT y otros sistemas compatibles trabajen con RelNets sin heredar privilegios invisibles. La identidad, el tenant, el plan y la política siguen siendo autoridad del servidor.</p>
@@ -130,7 +130,7 @@ export default function Home(){
       <div className={styles.shell}>
         <div className={styles.consoleMock}>
           <aside>
-            <Image src="/relnet-mark-transparent.png" alt="RelNets" width={52} height={52}/>
+            <Image src="/relnets-mark.svg" alt="RelNets" width={52} height={52}/>
             <span>⌂</span><span>◎</span><span>◇</span><span>⚡</span><span>AI</span>
           </aside>
           <div className={styles.consoleMain}>
@@ -188,7 +188,7 @@ export default function Home(){
 
     <section className={styles.finalCta}>
       <div className={styles.shell}>
-        <Image src="/relnet-mark-transparent.png" alt="" width={110} height={110}/>
+        <Image src="/relnets-mark.svg" alt="" width={110} height={110}/>
         <div><span className={styles.kicker}>RelNets</span><h2>Secure infrastructure. Without boundaries.</h2></div>
         <div className={styles.actions}><a className={styles.primary} href={SIGNUP_URL}>Empieza gratis</a><a className={styles.secondary} href={LOGIN_URL}>Inicia sesión</a></div>
       </div>
