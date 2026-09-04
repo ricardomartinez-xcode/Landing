@@ -6,16 +6,16 @@ const themeInitScript = `(function(){try{var m=localStorage.getItem('relnet-them
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://relnets.com'),
-  title: 'RelNets | Network · Relay · Automate',
-  description: 'RelNets conecta tus dispositivos, personas y recursos en una red privada simple, segura e inteligente.',
+  title: 'RelNets | Secure Infrastructure Workspace',
+  description: 'RelNets conecta infraestructura privada, controla accesos y gobierna identidades humanas, de máquinas y de IA desde un solo workspace.',
   keywords: ['RelNets', 'red privada', 'PWA', 'VPN', 'automatización', 'Agent RelNets', 'MCP', 'IA'],
   manifest: '/manifest.webmanifest',
   icons: {
     icon: ['/relnet-mark-transparent.png'],
   },
   openGraph: {
-    title: 'RelNets | Network · Relay · Automate',
-    description: 'Tu red privada, más simple, segura e inteligente.',
+    title: 'RelNets | Secure Infrastructure Workspace',
+    description: 'Secure infrastructure. Without boundaries.',
     url: 'https://relnets.com',
     siteName: 'RelNets',
     locale: 'es_MX',
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'RelNets',
-    description: 'Tu red privada, más simple, segura e inteligente.',
+    description: 'Secure infrastructure. Without boundaries.',
   },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f5f8fc' },
-    { media: '(prefers-color-scheme: dark)', color: '#05070c' },
+    { media: '(prefers-color-scheme: light)', color: '#f7f8fb' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b0d14' },
   ],
 };
 

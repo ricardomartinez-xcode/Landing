@@ -8,13 +8,14 @@ const SIGNUP_URL = `${CONSOLE_URL}/signup`;
 const LOGIN_URL = `${CONSOLE_URL}/login`;
 const PRO_MONTHLY_URL = `${SIGNUP_URL}?intent=billing&plan=pro&interval=month`;
 const TEAM_MONTHLY_URL = `${SIGNUP_URL}?intent=billing&plan=team&interval=month`;
+
 const capabilities = [
-  ['Red privada simple','Conecta dispositivos, usuarios y servicios con una experiencia guiada y centralizada.'],
-  ['Console','Administra RelNets, miembros, dispositivos, accesos, actividad, automatizaciones y facturación desde una sola consola.'],
-  ['Windows Control Center','Controla estado, conexión y acciones frecuentes desde Windows sin depender de herramientas separadas.'],
-  ['Atajos para iOS','Automatiza acciones frecuentes con Atajos de iOS y conserva el acceso desde tu pantalla de inicio.'],
-  ['API + MCP','Integra RelNets con tus flujos, herramientas y sistemas de IA mediante interfaces autorizadas.'],
-  ['Instalación multiplataforma','Windows, Linux, CLI y una PWA móvil para iOS y Android con perfil VPN para Mobile Gateway.'],
+  ['Connect','Conecta personas, máquinas, servicios y sitios mediante infraestructura privada administrada desde un solo workspace.'],
+  ['Access','Otorga el acceso correcto con identidad, tenant, roles, políticas y privilegios temporales.'],
+  ['Govern','Haz que cada decisión importante sea explicable y auditable mediante políticas, aprobaciones y trazabilidad.'],
+  ['Operate','Administra nodos, sesiones, recursos, automatizaciones e integraciones sin fragmentar la operación.'],
+  ['AI + MCP','Da a los agentes una identidad propia, herramientas permitidas y controles de aprobación antes de actuar.'],
+  ['Everywhere','Windows, Linux, CLI, API y una PWA móvil para infraestructura distribuida y edge.'],
 ];
 
 const plans = [
@@ -24,24 +25,173 @@ const plans = [
   {name:'Enterprise',price:'Consultar con ventas',cadence:'según tus necesidades',badge:'A la medida',features:['Escala personalizada','Políticas y operación empresarial','Créditos de IA personalizados','Acompañamiento de implementación','Administración avanzada','Sin anuncios'],cta:'Consultar con ventas',href:'mailto:sales@relnets.com?subject=RelNets%20Enterprise'},
 ];
 
-export default function Home(){return <main className={styles.page}>
-<section className={styles.hero} id="inicio"><div className={styles.shell}><div className={styles.heroGrid}>
-<div className={styles.heroCopy}><span className={styles.kicker}>Network · Relay · Automate</span><h1>Tu red privada, <span>más simple, segura e inteligente.</span></h1><p>RelNets conecta tus dispositivos, personas y recursos para que puedas trabajar, acceder y automatizar desde cualquier lugar con una experiencia clara y centralizada.</p><div className={styles.actions}><a className={styles.primary} href={SIGNUP_URL}>Crea tu cuenta</a><a className={styles.secondary} href="#planes">Ver planes</a><Link className={styles.ghost} href="/install">Instalación</Link></div><div className={styles.trustRow}><span>Privacidad por diseño</span><span>PWA móvil</span><span>IA integrada</span><span>Sin anuncios en planes de paga</span></div></div>
-<div className={styles.heroVisual}><Image src="/relnet-brand.png" alt="RelNets" width={1951} height={892} priority/><div className={styles.glowCard}><strong>Una Console para todo</strong><span>Red · Dispositivos · Automatización · IA · Suscripción</span></div></div>
-</div></div></section>
+export default function Home(){
+  return <main className={styles.page}>
+    <section className={styles.hero} id="inicio">
+      <div className={styles.shell}>
+        <div className={styles.heroGrid}>
+          <div className={styles.heroCopy}>
+            <span className={styles.kicker}>Secure Infrastructure Workspace</span>
+            <h1>Secure infrastructure. <span>Without boundaries.</span></h1>
+            <p>RelNets entrega un workspace seguro donde cada conexión es intencional, verificada y protegida. Conecta infraestructura, controla accesos, gobierna identidades y opera desde una sola superficie.</p>
+            <div className={styles.actions}>
+              <a className={styles.primary} href={SIGNUP_URL}>Empieza gratis</a>
+              <a className={styles.secondary} href="#producto">Explorar producto</a>
+              <Link className={styles.ghost} href="/install">Instalación</Link>
+            </div>
+            <div className={styles.trustRow}>
+              <span>Secure by Design</span><span>Connected by Intent</span><span>Built to Scale</span><span>Identity · Policy · Audit</span>
+            </div>
+          </div>
+          <div className={styles.heroVisual}>
+            <div className={styles.fabricPanel}>
+              <div className={styles.fabricGrid}/>
+              <div className={styles.fabricGlow}/>
+              <div className={styles.fabricCore}>
+                <Image src="/relnet-mark-transparent.png" alt="RelNets" width={180} height={180} priority/>
+                <strong>RelNets</strong><span>Secure Infrastructure Workspace</span>
+              </div>
+              <div className={`${styles.fabricNode} ${styles.fabricConnect}`}>Connect</div>
+              <div className={`${styles.fabricNode} ${styles.fabricAccess}`}>Access</div>
+              <div className={`${styles.fabricNode} ${styles.fabricGovern}`}>Govern</div>
+              <div className={`${styles.fabricNode} ${styles.fabricOperate}`}>Operate</div>
+            </div>
+            <div className={styles.glowCard}><strong>One workspace</strong><span>People · Machines · AI · Private infrastructure</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section className={styles.section} id="producto"><div className={styles.shell}><div className={styles.sectionIntro}><div><span className={styles.kicker}>Lo que recibes</span><h2>RelNets se ocupa de la complejidad para que tú te enfoques en usar tu red.</h2></div><p>Configura accesos, conecta dispositivos, administra tu equipo y automatiza tareas sin tener que entender la infraestructura que existe detrás.</p></div><div className={styles.featureGrid}>{capabilities.map(([title,body],i)=><article className={styles.featureCard} key={title}><span className={styles.featureNumber}>{String(i+1).padStart(2,'0')}</span><h3>{title}</h3><p>{body}</p></article>)}</div></div></section>
+    <section className={styles.section} id="producto">
+      <div className={styles.shell}>
+        <div className={styles.sectionIntro}>
+          <div><span className={styles.kicker}>Four control layers</span><h2>Connect. Access. Govern. Operate.</h2></div>
+          <p>Una misma arquitectura de identidad y políticas controla cómo se conecta, quién entra, qué puede hacer y cómo queda registrada cada operación.</p>
+        </div>
+        <div className={styles.featureGrid}>
+          {capabilities.map(([title,body],i)=><article className={styles.featureCard} key={title}><span className={styles.featureNumber}>{String(i+1).padStart(2,'0')}</span><h3>{title}</h3><p>{body}</p></article>)}
+        </div>
+      </div>
+    </section>
 
-<section className={styles.aiSection} id="ia"><div className={styles.shell}><div className={styles.aiGrid}><div><span className={styles.kicker}>IA dentro de RelNets</span><h2>Menos pasos manuales. Más contexto para proteger y operar.</h2><p>La IA de RelNets ayuda a explicar actividad, orientar configuraciones, detectar situaciones que requieren atención y facilitar automatizaciones sin exponer innecesariamente tu información.</p><ul className={styles.cleanList}><li>Asistencia contextual dentro de Console.</li><li>Resúmenes operativos y ayuda para diagnóstico.</li><li>Sugerencias de seguridad y privacidad fáciles de entender.</li><li>Automatizaciones guiadas y acciones con autorización del usuario.</li></ul></div><div className={styles.agentCard}><div className={styles.agentBrand}><Image src="/relnet-mark-transparent.png" alt="" width={180} height={180}/><div><small>Integración de IA</small><strong>Agent RelNets</strong></div></div><p>MCP / API disponible para uso con ChatGPT y otros sistemas de IA compatibles. El acceso siempre depende de la identidad y permisos del usuario.</p><div className={styles.creditStrip}><span>Créditos incluidos por plan</span><b>Compra paquetes adicionales cuando los necesites.</b></div></div></div></div></section>
+    <section className={styles.aiSection} id="soluciones">
+      <div className={styles.shell}>
+        <div className={styles.aiGrid}>
+          <div>
+            <span className={styles.kicker}>People · Machines · AI</span>
+            <h2>La inteligencia artificial también necesita identidad, límites y aprobación.</h2>
+            <p>Agent RelNets opera bajo el mismo modelo de identidad y políticas que el resto del workspace: acceso explícito, herramientas permitidas, duración limitada y aprobación humana cuando una acción puede afectar producción.</p>
+            <ul className={styles.cleanList}>
+              <li>Identidades independientes para agentes y workloads.</li>
+              <li>Tool allowlists para MCP y automatización.</li>
+              <li>Aprobación humana para acciones privilegiadas o destructivas.</li>
+              <li>Auditoría de decisiones, herramientas y recursos afectados.</li>
+            </ul>
+          </div>
+          <div className={styles.agentCard}>
+            <div className={styles.agentBrand}>
+              <Image src="/relnet-mark-transparent.png" alt="" width={180} height={180}/>
+              <div><small>AI infrastructure</small><strong>Agent RelNets</strong></div>
+            </div>
+            <p>MCP / API permite que ChatGPT y otros sistemas compatibles trabajen con RelNets sin heredar privilegios invisibles. La identidad, el tenant, el plan y la política siguen siendo autoridad del servidor.</p>
+            <div className={styles.agentFlow}>
+              <span>Agent identity</span><i>→</i><span>Policy</span><i>→</i><span>Approval</span><i>→</i><span>Tool</span><i>→</i><span>Audit</span>
+            </div>
+            <div className={styles.creditStrip}><span>Créditos incluidos por plan</span><b>Compra capacidad adicional sólo cuando la necesites.</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section className={styles.security} id="seguridad"><div className={styles.shell}><div className={styles.sectionIntro}><div><span className={styles.kicker}>Privacidad y seguridad</span><h2>Protección que puedes entender visualmente.</h2></div><p>RelNets organiza identidad, dispositivos y accesos en capas claras para que tengas control sin convertir la seguridad en una lista de configuraciones difíciles.</p></div><div className={styles.securityDiagram}><div className={styles.orbit}><div className={styles.core}>Tu RelNet</div><div className={`${styles.node} ${styles.nodeOne}`}>Identidad</div><div className={`${styles.node} ${styles.nodeTwo}`}>Dispositivos</div><div className={`${styles.node} ${styles.nodeThree}`}>Accesos</div><div className={`${styles.node} ${styles.nodeFour}`}>IA</div></div><div className={styles.securityCopy}><h3>Tu experiencia se construye alrededor de quién eres y qué autorizas.</h3><p>Las operaciones sensibles requieren una identidad válida y los permisos correctos. La consola muestra estado y acciones sin exponer la estructura interna del servicio.</p><div className={styles.flow}><span>1 · Identifícate</span><i>→</i><span>2 · Autoriza</span><i>→</i><span>3 · Conecta</span></div></div></div></div></section>
+    <section className={styles.security} id="seguridad">
+      <div className={styles.shell}>
+        <div className={styles.sectionIntro}>
+          <div><span className={styles.kicker}>Secure by Design</span><h2>Identity first. Deny by default.</h2></div>
+          <p>La seguridad de RelNets parte de identidades individuales, privilegio mínimo, acceso temporal, aislamiento por tenant y decisiones de política explicables.</p>
+        </div>
+        <div className={styles.securityDiagram}>
+          <div className={styles.orbit}>
+            <div className={styles.core}>RelNets</div>
+            <div className={`${styles.node} ${styles.nodeOne}`}>Identity</div>
+            <div className={`${styles.node} ${styles.nodeTwo}`}>Resource</div>
+            <div className={`${styles.node} ${styles.nodeThree}`}>Policy</div>
+            <div className={`${styles.node} ${styles.nodeFour}`}>Audit</div>
+          </div>
+          <div className={styles.securityCopy}>
+            <h3>Cada conexión debe tener identidad, intención y una política que la justifique.</h3>
+            <p>Las operaciones sensibles requieren una identidad válida, el recurso correcto y autorización server-side. Los privilegios pueden expirar y las acciones importantes quedan vinculadas a su decisión de política.</p>
+            <div className={styles.flow}><span>1 · Identify</span><i>→</i><span>2 · Authorize</span><i>→</i><span>3 · Connect</span><i>→</i><span>4 · Audit</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section className={styles.consoleSection} id="console"><div className={styles.shell}><div className={styles.consoleMock}><aside><Image src="/relnet-mark-transparent.png" alt="RelNets" width={52} height={52}/><span>⌂</span><span>◎</span><span>◇</span><span>⚡</span><span>AI</span></aside><div className={styles.consoleMain}><header><div><small>RELNETS CONSOLE</small><h3>Mi RelNet</h3></div><span className={styles.online}>● Todo conectado</span></header><div className={styles.stats}><div><small>Dispositivos</small><strong>12</strong><span>11 activos</span></div><div><small>Usuarios</small><strong>03</strong><span>acceso administrado</span></div><div><small>IA</small><strong>842</strong><span>créditos disponibles</span></div></div><div className={styles.consolePanels}><div><small>Actividad reciente</small><strong>Sin eventos críticos</strong><p>RelNets mantiene el contexto de tus conexiones y accesos.</p></div><div><small>Automatización</small><strong>3 tareas activas</strong><p>Atajos, acciones programadas e integraciones desde una sola vista.</p></div></div></div></div><p className={styles.mockCaption}>Vista conceptual de la consola de administración de RelNets.</p></div></section>
+    <section className={styles.consoleSection} id="console">
+      <div className={styles.shell}>
+        <div className={styles.consoleMock}>
+          <aside>
+            <Image src="/relnet-mark-transparent.png" alt="RelNets" width={52} height={52}/>
+            <span>⌂</span><span>◎</span><span>◇</span><span>⚡</span><span>AI</span>
+          </aside>
+          <div className={styles.consoleMain}>
+            <header><div><small>RELNETS · SECURE INFRASTRUCTURE WORKSPACE</small><h3>Demo Infrastructure</h3></div><span className={styles.online}>● Infrastructure healthy</span></header>
+            <div className={styles.stats}>
+              <div><small>Protected resources</small><strong>42</strong><span>31 healthy</span></div>
+              <div><small>Active sessions</small><strong>06</strong><span>governed access</span></div>
+              <div><small>Pending approvals</small><strong>03</strong><span>JIT requests</span></div>
+            </div>
+            <div className={styles.consolePanels}>
+              <div><small>Governed access</small><strong>Every session has context</strong><p>Actor, resource, protocol, policy decision, TTL and audit correlation.</p></div>
+              <div><small>AI & MCP</small><strong>Agent guardrail active</strong><p>Destructive tools require explicit policy and human approval.</p></div>
+            </div>
+          </div>
+        </div>
+        <p className={styles.mockCaption}>Vista conceptual de RelNets Tenant Console. Las funciones productivas provienen de la Console y el Northbound reales.</p>
+      </div>
+    </section>
 
-<section className={styles.sponsorBand} aria-label="Publicidad"><div className={styles.shell}><div className={styles.sponsorLabel}><span>Patrocinado</span><p>La landing pública y el plan Free pueden incluir anuncios para apoyar el desarrollo de RelNets.</p></div><PublicAdSlot surface="public_landing" format="contextual_ad" placement="home-mid" consent="unknown"/></div></section>
+    <section className={styles.sponsorBand} aria-label="Publicidad">
+      <div className={styles.shell}>
+        <div className={styles.sponsorLabel}><span>Patrocinado</span><p>La landing pública y el plan Free pueden incluir anuncios para apoyar el desarrollo de RelNets.</p></div>
+        <PublicAdSlot surface="public_landing" format="contextual_ad" placement="home-mid" consent="unknown"/>
+      </div>
+    </section>
 
-<section className={styles.pricing} id="planes"><div className={styles.shell}><div className={styles.sectionIntro}><div><span className={styles.kicker}>Planes</span><h2>Empieza gratis. Sube cuando necesites más capacidad.</h2></div><p>Los planes anuales Pro y Team incluyen 12 meses por el precio de 10.</p></div><div className={styles.planGrid}>{plans.map(plan=><article className={`${styles.planCard} ${plan.featured?styles.planFeatured:''}`} key={plan.name}><span className={styles.planBadge}>{plan.badge}</span><h3>{plan.name}</h3><div className={styles.price}><strong>{plan.price}</strong><span>{plan.cadence}</span></div><ul>{plan.features.map(f=><li key={f}>{f}</li>)}</ul><a className={plan.featured?styles.primary:styles.secondary} href={plan.href}>{plan.cta}</a></article>)}</div><div className={styles.creditPackages}><div><span className={styles.kicker}>Créditos de IA adicionales</span><h3>Tu suscripción incluye créditos. Compra más solo cuando los necesites.</h3></div><div className={styles.creditPills}><span><b>500</b> · $49 MXN</span><span><b>2,000</b> · $149 MXN</span><span><b>10,000</b> · $499 MXN</span></div></div></div></section>
+    <section className={styles.pricing} id="planes">
+      <div className={styles.shell}>
+        <div className={styles.sectionIntro}>
+          <div><span className={styles.kicker}>Plans</span><h2>Empieza gratis. Escala cuando tu infraestructura lo necesite.</h2></div>
+          <p>Se mantienen los planes y flujos de billing productivos. Los planes anuales Pro y Team incluyen 12 meses por el precio de 10.</p>
+        </div>
+        <div className={styles.planGrid}>
+          {plans.map(plan=><article className={`${styles.planCard} ${plan.featured?styles.planFeatured:''}`} key={plan.name}>
+            <span className={styles.planBadge}>{plan.badge}</span>
+            <h3>{plan.name}</h3>
+            <div className={styles.price}><strong>{plan.price}</strong><span>{plan.cadence}</span></div>
+            <ul>{plan.features.map(f=><li key={f}>{f}</li>)}</ul>
+            <a className={plan.featured?styles.primary:styles.secondary} href={plan.href}>{plan.cta}</a>
+          </article>)}
+        </div>
+        <div className={styles.creditPackages}>
+          <div><span className={styles.kicker}>Créditos de IA adicionales</span><h3>Tu suscripción incluye créditos. Compra más sólo cuando los necesites.</h3></div>
+          <div className={styles.creditPills}><span><b>500</b> · $49 MXN</span><span><b>2,000</b> · $149 MXN</span><span><b>10,000</b> · $499 MXN</span></div>
+        </div>
+      </div>
+    </section>
 
-<section className={styles.installCta} id="instalacion"><div className={styles.shell}><div><span className={styles.kicker}>Instalación</span><h2>Windows, Linux, CLI y móvil desde una sola guía.</h2><p>En iOS y Android usa la PWA desde el navegador, agrégala a pantalla de inicio y descarga tu perfil VPN para conectarte al Mobile Gateway.</p></div><Link className={styles.primary} href="/install">Abrir instalación</Link></div></section>
-<section className={styles.finalCta}><div className={styles.shell}><Image src="/relnet-mark-transparent.png" alt="" width={110} height={110}/><div><span className={styles.kicker}>RelNets</span><h2>Tu red. Tu privacidad. Tu control.</h2></div><div className={styles.actions}><a className={styles.primary} href={SIGNUP_URL}>Crea tu cuenta</a><a className={styles.secondary} href={LOGIN_URL}>Inicia sesión</a></div></div></section>
-</main>}
+    <section className={styles.installCta} id="instalacion">
+      <div className={styles.shell}>
+        <div><span className={styles.kicker}>Everywhere</span><h2>Windows, Linux, CLI y móvil desde una sola guía.</h2><p>En iOS y Android usa la PWA desde el navegador, agrégala a pantalla de inicio y descarga tu perfil VPN para conectarte al Mobile Gateway.</p></div>
+        <Link className={styles.primary} href="/install">Abrir instalación</Link>
+      </div>
+    </section>
+
+    <section className={styles.finalCta}>
+      <div className={styles.shell}>
+        <Image src="/relnet-mark-transparent.png" alt="" width={110} height={110}/>
+        <div><span className={styles.kicker}>RelNets</span><h2>Secure infrastructure. Without boundaries.</h2></div>
+        <div className={styles.actions}><a className={styles.primary} href={SIGNUP_URL}>Empieza gratis</a><a className={styles.secondary} href={LOGIN_URL}>Inicia sesión</a></div>
+      </div>
+    </section>
+  </main>
+}

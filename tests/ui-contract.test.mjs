@@ -56,7 +56,10 @@ test('system dark mode applies the same global surface tokens unless light is ex
   const globals = read('app/globals.css');
   assert.match(globals, /@media \(prefers-color-scheme: dark\)/);
   assert.match(globals, /:root:not\(\[data-theme='light'\]\)/);
-  assert.match(globals, /--surface: #11192b/);
-  assert.match(globals, /--surface-subtle: #10182a/);
-  assert.match(globals, /--text: #e8edf7/);
+  assert.match(globals, /--surface: #10141d/);
+  assert.match(globals, /--surface-subtle: #131722/);
+  assert.match(globals, /--text: #f3f4f7/);
+  assert.match(globals, /--accent: #7b61ff/);
+  assert.match(globals, /--success: #22c55e/);
+  assert.match(globals, /--warning: #ffb020/);
 });
