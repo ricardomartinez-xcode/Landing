@@ -13,16 +13,19 @@ export function PublicShell({ children }: { children: ReactNode }) {
         <div className={styles.inner}>
           <Link href="/" className={styles.brand} aria-label="RelNets, inicio">
             <Image className={styles.brandLogo} src="/relnet-mark-transparent.png" alt="" width={64} height={64} priority />
-            <span>RelNets</span>
+            <span className={styles.brandCopy}>
+              <strong>RelNets</strong>
+              <small>Secure Infrastructure Workspace</small>
+            </span>
           </Link>
-          <nav className={styles.nav}>
+          <nav className={styles.nav} aria-label="Navegación principal">
             <Link href="/#producto">Producto</Link>
-            <Link href="/#ia">IA</Link>
+            <Link href="/#soluciones">Soluciones</Link>
+            <Link href="/#seguridad">Seguridad</Link>
             <Link href="/#planes">Planes</Link>
             <Link href="/install">Instalar</Link>
-            <Link href="/FAQs">FAQs</Link>
             <a href={CONSOLE_LOGIN_URL}>Inicia sesión</a>
-            <a className={styles.primary} href={CONSOLE_SIGNUP_URL}>Crea tu cuenta</a>
+            <a className={styles.primary} href={CONSOLE_SIGNUP_URL}>Empieza gratis</a>
           </nav>
         </div>
       </header>
@@ -31,7 +34,12 @@ export function PublicShell({ children }: { children: ReactNode }) {
         <div className={styles.inner}>
           <div className={styles.footerBrand}>
             <Image src="/relnet-mark-transparent.png" alt="" width={48} height={48} />
-            <div><strong>RelNets</strong><p>Network · Relay · Automate</p></div>
+            <div><strong>RelNets</strong><p>Secure Infrastructure Workspace</p></div>
+          </div>
+          <div className={styles.footerPillars} aria-label="Pilares de marca">
+            <span>Secure by Design</span>
+            <span>Connected by Intent</span>
+            <span>Built to Scale</span>
           </div>
           <div className={styles.footerLinks}>
             <Link href="/privacy">Privacidad</Link>
